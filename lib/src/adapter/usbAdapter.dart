@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:quick_usb/quick_usb.dart';
 
@@ -42,6 +43,14 @@ class UsbAdapter {
               element.device.vendorId == device.vendorId &&
               element.device.productId == device.productId)
           .device;
+
+      if(Platform.isAndroid){
+        bool hasPermission = await QuickUsb.hasPermission(device);
+        if(!hasPermission){
+          await QuickUsb.requestPermission(device);
+        }
+      }
+
       openDevice = await QuickUsb.openDevice(device);
       if (!openDevice) {
         return false;
