@@ -1,0 +1,332 @@
+<component name="libraryTable">
+  <library name="Dart Packages" type="DartPackagesLibraryType">
+    <properties>
+      <option name="packageNameToDirsMap">
+        <entry key="archive">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/archive-2.0.13/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="args">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/args-1.6.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="async">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/async-2.8.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="boolean_selector">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/boolean_selector-2.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="characters">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/characters-1.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="charcode">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/charcode-1.3.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="clock">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/clock-1.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="collection">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/collection-1.15.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="convert">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/convert-2.1.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="crypto">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/crypto-2.1.5/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="csslib">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/csslib-0.16.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="cupertino_icons">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/cupertino_icons-1.0.3/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="esc_pos_utils">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/esc_pos_utils-1.0.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="fake_async">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/fake_async-1.2.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="ffi">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/ffi-1.1.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter">
+          <value>
+            <list>
+              <option value="$USER_HOME$/development/flutter/packages/flutter/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_lints">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_lints-1.0.4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_test">
+          <value>
+            <list>
+              <option value="$USER_HOME$/development/flutter/packages/flutter_test/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="gbk_codec">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/gbk_codec-0.3.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="hex">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/hex-0.1.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="html">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/html-0.14.0+4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="image">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/image-2.1.19/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="libusb">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/libusb-0.3.23-nullsafety.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="lints">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/lints-1.0.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="matcher">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/matcher-0.12.10/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="meta">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/meta-1.7.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="path">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/path-1.8.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="petitparser">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/petitparser-3.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="plugin_platform_interface">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/plugin_platform_interface-2.0.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="quick_usb">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/quick_usb-0.3.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="sky_engine">
+          <value>
+            <list>
+              <option value="$USER_HOME$/development/flutter/bin/cache/pkg/sky_engine/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="source_span">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/source_span-1.8.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="stack_trace">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/stack_trace-1.10.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="stream_channel">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/stream_channel-2.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="string_scanner">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/string_scanner-1.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="term_glyph">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/term_glyph-1.2.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="test_api">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/test_api-0.4.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="typed_data">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/typed_data-1.3.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="vector_math">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/vector_math-2.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="xml">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/xml-4.5.1/lib" />
+            </list>
+          </value>
+        </entry>
+      </option>
+    </properties>
+    <CLASSES>
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/archive-2.0.13/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/args-1.6.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/async-2.8.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/boolean_selector-2.1.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/characters-1.1.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/charcode-1.3.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/clock-1.1.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/collection-1.15.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/convert-2.1.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/crypto-2.1.5/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/csslib-0.16.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/cupertino_icons-1.0.3/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/esc_pos_utils-1.0.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/fake_async-1.2.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/ffi-1.1.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_lints-1.0.4/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/gbk_codec-0.3.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/hex-0.1.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/html-0.14.0+4/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/image-2.1.19/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/libusb-0.3.23-nullsafety.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/lints-1.0.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/matcher-0.12.10/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/meta-1.7.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/path-1.8.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/petitparser-3.1.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/plugin_platform_interface-2.0.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/quick_usb-0.3.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/source_span-1.8.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/stack_trace-1.10.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/stream_channel-2.1.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/string_scanner-1.1.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/term_glyph-1.2.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/test_api-0.4.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/typed_data-1.3.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/vector_math-2.1.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/xml-4.5.1/lib" />
+      <root url="file://$USER_HOME$/development/flutter/bin/cache/pkg/sky_engine/lib" />
+      <root url="file://$USER_HOME$/development/flutter/packages/flutter/lib" />
+      <root url="file://$USER_HOME$/development/flutter/packages/flutter_test/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
