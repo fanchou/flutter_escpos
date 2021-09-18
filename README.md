@@ -7,6 +7,13 @@ ESC/POS And TSC Printer driver for flutter.
 - [quick_usb](https://github.com/woodemi/quick_usb) for cross-platform USB plugin for Flutter.
 - [esc_pos_utils](https://github.com/andrey-ushakov/esc_pos_utils) for base ESC/POS commands.
 
+## Features
+
+- Support USB and Network Adapter;
+- Support ESC and TSC command;
+- Support Pos printer and Label printer;
+- Support multi platform(test on Windows,MacOs,Android);
+
 ## Tips
 
 - On Windows, Use [Zadig](https://zadig.akeo.ie/) to install the WinUSB driver for your printer.
