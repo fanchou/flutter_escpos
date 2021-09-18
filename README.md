@@ -16,6 +16,9 @@ ESC/POS And TSC Printer driver for flutter.
 
 - See ./examples for more examples.
 
+![WechatIMG3702](https://user-images.githubusercontent.com/2160502/133883820-e6bd4310-422d-47c5-8921-ca1ef395d7bf.jpeg)
+
+
 ## TODO
 
 - ~~Network Adapter~~
