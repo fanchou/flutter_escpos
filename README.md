@@ -1,6 +1,6 @@
 # flutter_escpos
 
-ESC/POS Printer driver for flutter.
+ESC/POS And TSC Printer driver for flutter.
 
 ## Dependencies
 
@@ -18,6 +18,6 @@ ESC/POS Printer driver for flutter.
 
 ## TODO
 
-- Network Adapter
+- ~~Network Adapter~~
 - Bluetooth Adapter
 - SerialPort Adapter
