@@ -30,7 +30,8 @@ dependencies:
   flutter:
     sdk: flutter
   esc_pos_utils: ^1.0.0
-  quick_usb: ^0.3.0
+  quick_usb:
+    git: git://github.com/woodemi/quick_usb.git
   flutter_escpos:
     path: ../
 
