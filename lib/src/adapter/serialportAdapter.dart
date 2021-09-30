@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 
-/// Copyright (C), 2019-2021, 深圳新语网络科技有限公司
 /// FileName: serialportAdapter
 /// Author: zhoufan
 /// Date: 2021/9/18 19:00
