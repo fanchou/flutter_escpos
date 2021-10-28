@@ -1,6 +1,6 @@
 name: flutter_escpos
 description: ESC/POS printer for flutter
-version: 0.0.3
+version: 0.0.4
 homepage:
 
 environment:
@@ -13,7 +13,7 @@ dependencies:
   esc_pos_utils: ^1.0.0
   quick_usb:
     git: git://github.com/woodemi/quick_usb.git
-  flutter_libserialport: ^0.2.2
+  # flutter_libserialport: ^0.2.2
 
 dev_dependencies:
   flutter_test:

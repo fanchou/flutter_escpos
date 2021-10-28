@@ -20,7 +20,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   UsbAdapter usbAdapter;
   NetworkAdapter networkAdapter;
-  SerialPortAdapter serialPortAdapter;
+  // SerialPortAdapter serialPortAdapter;
   CapabilityProfile capabilityProfile;
   UsbDevice device;
   UsbDeviceDescription usbDeviceDescription;
@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     usbAdapter = UsbAdapter.instance;
     networkAdapter = NetworkAdapter.instance;
-    serialPortAdapter = SerialPortAdapter.instance;
+    // serialPortAdapter = SerialPortAdapter.instance;
     super.initState();
     getCapabilityProfile();
     deviceFuture = getDeviceList();
@@ -73,22 +73,22 @@ class _MyAppState extends State<MyApp> {
     return "Loaded Successfully";
   }
 
-  Future<String> getSerialPortList() async {
-    serialPortList = await SerialPortAdapter.getSerialPortList();
-
-    deviceWidget.clear();
-    serialPort = serialPortList[0];
-
-    for (var element in serialPortList) {
-      Widget serial = DropdownMenuItem(
-          value: element.toString(),
-          child: Text(element.toString())
-      );
-      deviceWidget.add(serial);
-    }
-
-    return "Loaded Successfully";
-  }
+  // Future<String> getSerialPortList() async {
+  //   serialPortList = await SerialPortAdapter.getSerialPortList();
+  //
+  //   deviceWidget.clear();
+  //   serialPort = serialPortList[0];
+  //
+  //   for (var element in serialPortList) {
+  //     Widget serial = DropdownMenuItem(
+  //         value: element.toString(),
+  //         child: Text(element.toString())
+  //     );
+  //     deviceWidget.add(serial);
+  //   }
+  //
+  //   return "Loaded Successfully";
+  // }
 
 
   int _radioGroupA = 0;
@@ -98,7 +98,7 @@ class _MyAppState extends State<MyApp> {
       _radioGroupA = value;
     });
     if(_radioGroupA == 1){
-      deviceFuture = getSerialPortList();
+      // deviceFuture = getSerialPortList();
     }else if(_radioGroupA == 0){
       getDeviceList();
     }
@@ -200,7 +200,7 @@ class _MyAppState extends State<MyApp> {
                                 if(_radioGroupA == 0){
                                   await UsbAdapter.connect(device);
                                 }else if(_radioGroupA == 1){
-                                  await SerialPortAdapter.connect(serialPort, baudRate: "9600");
+                                  // await SerialPortAdapter.connect(serialPort, baudRate: "9600");
                                 }
                               },
                               style: ButtonStyle(
@@ -220,7 +220,7 @@ class _MyAppState extends State<MyApp> {
                                 if(_radioGroupA == 0){
                                   await UsbAdapter.disconnect();
                                 }else if(_radioGroupA == 1){
-                                  await SerialPortAdapter.disconnect();
+                                  // await SerialPortAdapter.disconnect();
                                 }
                               },
                               style: ButtonStyle(
