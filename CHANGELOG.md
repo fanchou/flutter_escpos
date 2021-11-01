@@ -1,3 +1,6 @@
+## 0.0.5
+- replace networking adapter;
+
 ## 0.0.4
 - remove serialport adapter;
 
