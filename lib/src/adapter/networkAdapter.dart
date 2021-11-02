@@ -14,7 +14,7 @@ class NetworkAdapter{
   static NetworkAdapter get instance => _getInstance();
   static NetworkAdapter _instance;
 
-  static RawSocket device;
+  static Socket device;
 
   NetworkAdapter._internal();
 
@@ -28,16 +28,17 @@ class NetworkAdapter{
 
   static Future<void> connect(String address, {int port = 9100}) async{
     try{
-      device = await RawSocket.connect(address, port, timeout: const Duration(seconds: 5));
-      // device = await Socket.connect(address, port, timeout:  const Duration(seconds: 5));
+      // device = await RawSocket.connect(address, port, timeout: const Duration(seconds: 5));
+      device = await Socket.connect(address, port, timeout:  const Duration(seconds: 5));
     }catch(e){
       print("报错了" + e.toString());
     }
   }
 
   Future<void> write(List<int> data) async {
-    await device.write(data);
-    // await device.add(data);
+    // await device.write(data);
+    await device.add(Uint8List.fromList(data));
+    await device.flush();
   }
 
   Future<void> read(Function callback) async{
