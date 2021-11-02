@@ -48,8 +48,8 @@ class NetworkAdapter{
   }
 
   static Future<void> disconnect() async {
-    device.close();
-    // device.destroy();
+    // device.close();
+    device.destroy();
   }
 
 }
