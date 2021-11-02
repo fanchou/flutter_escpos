@@ -16,6 +16,8 @@ class NetworkAdapter{
 
   static Socket device;
 
+  static Future<void> _socketFlushed;
+
   NetworkAdapter._internal();
 
   static NetworkAdapter _getInstance() {
@@ -30,6 +32,7 @@ class NetworkAdapter{
     try{
       // device = await RawSocket.connect(address, port, timeout: const Duration(seconds: 5));
       device = await Socket.connect(address, port, timeout:  const Duration(seconds: 5));
+      _socketFlushed = new Future.value(true);
     }catch(e){
       print("报错了" + e.toString());
     }
@@ -37,8 +40,10 @@ class NetworkAdapter{
 
   Future<void> write(List<int> data) async {
     // await device.write(data);
-    await device.add(Uint8List.fromList(data));
-    await device.flush();
+    await _socketFlushed;
+    device.add(data);
+    _socketFlushed = device.flush();
+    return _socketFlushed;
   }
 
   Future<void> read(Function callback) async{
