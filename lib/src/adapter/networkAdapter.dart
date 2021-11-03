@@ -51,8 +51,11 @@ class NetworkAdapter{
       int round = (bufferLength / sliceSize).ceil();
       for(int i = 0; i < round; i++){
         int fromIndex = i * sliceSize;
-        int toIndex = (i+1) * sliceSize <= bufferLength ? sliceSize : (i+1) *sliceSize - bufferLength;
-        device.write(bytes, fromIndex, toIndex);
+        if((i+1) * sliceSize <= bufferLength){
+          device.write(bytes, fromIndex, sliceSize);
+        }else{
+          device.write(bytes, fromIndex);
+        }
       }
     }else{
       device.write(bytes);
