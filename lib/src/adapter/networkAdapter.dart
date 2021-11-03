@@ -37,7 +37,27 @@ class NetworkAdapter{
 
   Future<void> write(List<int> data) async {
     // await device.write(data);
-    device.add(data);
+    // 这里进行拆包发送
+
+    Uint8List bytes = Uint8List.fromList(data);
+
+    int getBL() => bytes.fold(0, (s, list) => s + list.bitLength);
+
+    ByteBuffer dataBuffer = bytes.buffer;
+
+    int bufferLength = dataBuffer.lengthInBytes;
+    int round = (bufferLength / 1024).ceil();
+
+    for(int i = 0; i < round; i++){
+      Uint8List slice;
+      if(i*1024 < bufferLength) {
+        slice = dataBuffer.asUint8List(i * 1024, 1024);
+      }else{
+        slice = dataBuffer.asUint8List(i * 1024, i*1024 - bufferLength);
+      }
+      device.add(data);
+    }
+
   }
 
   Future<void> read(Function callback) async{
