@@ -14,7 +14,7 @@ class NetworkAdapter{
   static NetworkAdapter get instance => _getInstance();
   static NetworkAdapter _instance;
 
-  static Socket device;
+  static RawSocket device;
 
   NetworkAdapter._internal();
 
@@ -28,34 +28,30 @@ class NetworkAdapter{
 
   static Future<void> connect(String address, {int port = 9100}) async{
     try{
-      // device = await RawSocket.connect(address, port, timeout: const Duration(seconds: 5));
-      device = await Socket.connect(address, port, timeout:  const Duration(seconds: 5));
+      device = await RawSocket.connect(address, port, timeout: const Duration(seconds: 5));
+      // device = await Socket.connect(address, port, timeout:  const Duration(seconds: 5));
     }catch(e){
       print("报错了" + e.toString());
     }
   }
 
   Future<void> write(List<int> data) async {
-    // await device.write(data);
-    // 这里进行拆包发送
 
     Uint8List bytes = Uint8List.fromList(data);
 
-    int getBL() => bytes.fold(0, (s, list) => s + list.bitLength);
+    // await device.write(data);
+    // 这里进行拆包发送
 
     ByteBuffer dataBuffer = bytes.buffer;
-
     int bufferLength = dataBuffer.lengthInBytes;
     int round = (bufferLength / 1024).ceil();
 
     for(int i = 0; i < round; i++){
-      Uint8List slice;
       if(i*1024 < bufferLength) {
-        slice = dataBuffer.asUint8List(i * 1024, 1024);
+        device.write(bytes, i * 1024, 1024);
       }else{
-        slice = dataBuffer.asUint8List(i * 1024, i*1024 - bufferLength);
+        device.write(bytes, i * 1024, i*1024 - bufferLength);
       }
-      device.add(data);
     }
 
   }
@@ -67,8 +63,8 @@ class NetworkAdapter{
   }
 
   static Future<void> disconnect() async {
-    // device.close();
-    device.destroy();
+    device.close();
+    // device.destroy();
   }
 
 }
