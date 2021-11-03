@@ -42,15 +42,19 @@ class NetworkAdapter{
     // await device.write(data);
     // 这里进行拆包发送
 
+    final int sliceSize = 100;
+
     int bufferLength = bytes.length;
 
-    if(bufferLength > 1024){
-      int round = (bufferLength / 1024).ceil();
+    print("打印内容的长度" + bufferLength.toString());
+
+    if(bufferLength > sliceSize){
+      int round = (bufferLength / sliceSize).ceil();
       for(int i = 0; i < round; i++){
-        if(i*1024 < bufferLength) {
-          device.write(bytes, i * 1024, 1024);
+        if(i*sliceSize < bufferLength) {
+          device.write(bytes, i * sliceSize, sliceSize);
         }else{
-          device.write(bytes, i * 1024, i*1024 - bufferLength);
+          device.write(bytes, i * sliceSize, i*sliceSize - bufferLength);
         }
       }
     }else{
