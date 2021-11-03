@@ -42,8 +42,7 @@ class NetworkAdapter{
     // await device.write(data);
     // 这里进行拆包发送
 
-    ByteBuffer dataBuffer = bytes.buffer;
-    int bufferLength = dataBuffer.lengthInBytes;
+    int bufferLength = bytes.lengthInBytes;
     int round = (bufferLength / 1024).ceil();
 
     for(int i = 0; i < round; i++){
