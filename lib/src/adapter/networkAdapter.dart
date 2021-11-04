@@ -71,7 +71,7 @@ class NetworkAdapter{
   }
 
   static Future<void> disconnect() async {
-    device.close();
+    await device.close();
     // device.destroy();
   }
 
