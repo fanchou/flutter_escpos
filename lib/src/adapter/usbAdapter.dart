@@ -79,7 +79,7 @@ class UsbAdapter {
   }
 
   Future<void> write(List<int> data) async {
-    await QuickUsb.bulkTransferOut(_endpoint, Uint8List.fromList(data));
+    await QuickUsb.bulkTransferOut(_endpoint, Uint8List.fromList(data), timeout: 3000);
   }
 
   Future<void> read(Function callback) async {
