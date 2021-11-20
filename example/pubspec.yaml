@@ -29,7 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  esc_pos_utils: ^1.0.0
+  esc_pos_utils:
+    git: git://github.com/fanchou/esc_pos_utils.git
   quick_usb:
     git: git://github.com/woodemi/quick_usb.git
   flutter_escpos:
