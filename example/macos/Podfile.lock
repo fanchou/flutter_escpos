@@ -1,33 +1,20 @@
 PODS:
-  - flutter_libserialport (0.0.1):
-    - FlutterMacOS
-    - libserialport
   - FlutterMacOS (1.0.0)
-  - libserialport (0.1.1)
   - quick_usb (0.0.1):
     - FlutterMacOS
 
 DEPENDENCIES:
-  - flutter_libserialport (from `Flutter/ephemeral/.symlinks/plugins/flutter_libserialport/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - quick_usb (from `Flutter/ephemeral/.symlinks/plugins/quick_usb/macos`)
 
-SPEC REPOS:
-  trunk:
-    - libserialport
-
 EXTERNAL SOURCES:
-  flutter_libserialport:
-    :path: Flutter/ephemeral/.symlinks/plugins/flutter_libserialport/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   quick_usb:
     :path: Flutter/ephemeral/.symlinks/plugins/quick_usb/macos
 
 SPEC CHECKSUMS:
-  flutter_libserialport: d1a505fd4b05785f7b50cc7c93b361937ea1c5bd
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
-  libserialport: 1cb25e66ef3c92a8e59c2ea3820302c3fa2268cd
   quick_usb: 036467c5deecb1da58b824f4847ce1ee774c9947
 
 PODFILE CHECKSUM: 6eac6b3292e5142cfc23bdeb71848a40ec51c14c
