@@ -18,8 +18,7 @@ class Printer {
 
   Printer(this._paperSize, this._profile, this.adapter,
       {int spaceBetweenRows = 5}) {
-    _generator =
-        Generator(paperSize, profile, spaceBetweenRows: spaceBetweenRows);
+    _generator = Generator(paperSize, profile, spaceBetweenRows: spaceBetweenRows);
   }
 
   Future<void> connect() async {

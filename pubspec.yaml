@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  win32: ^2.4.1
+  ffi: ^1.1.0
   esc_pos_utils:
     git:
       url: https://github.com/fanchou/esc_pos_utils.git
