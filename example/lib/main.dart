@@ -18,13 +18,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  UsbAdapter usbAdapter;
+  Printer printer;
+  USBPrinterManager usbAdapter;
   NetworkAdapter networkAdapter;
   // SerialPortAdapter serialPortAdapter;
   CapabilityProfile capabilityProfile;
-  UsbDevice device;
-  UsbDeviceDescription usbDeviceDescription;
-  List<UsbDeviceDescription> usbList = [];
+  POSPrinter device;
+  List<POSPrinter> usbList = [];
   List<String> serialPortList = [];
   String serialPort = '';
   Future<String> deviceFuture;
@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    usbAdapter = UsbAdapter.instance;
+    usbAdapter = USBPrinterManager.instance;
     networkAdapter = NetworkAdapter.instance;
     // serialPortAdapter = SerialPortAdapter.instance;
     super.initState();
@@ -46,28 +46,24 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<String> getDeviceList() async {
-    List<UsbDeviceDescription> returnedUsbList;
-    returnedUsbList = await UsbAdapter.getDevicesWithDescription();
+    printer = Printer(PaperSize.mm80, capabilityProfile, usbAdapter);
+    final usbList = await printer.findPrinter();
 
-    print("USB列表： " + returnedUsbList.toString());
+    print("USB列表： " + usbList.toString());
     deviceWidget.clear();
 
-    usbList = returnedUsbList;
-    usbDeviceDescription = usbList[0];
-    device = usbDeviceDescription.device;
+    POSPrinter device = usbList[0];
 
     for(var item in usbList){
       Widget usb = DropdownMenuItem(
           value: item,
-          child: Text(item.product.toString()));
+          child: Text(item.name.toString()));
       deviceWidget.add(usb);
 
     }
 
     setState(() {
-      usbList = returnedUsbList;
-      usbDeviceDescription = usbList[0];
-      device = usbDeviceDescription.device;
+      device = device;
     });
 
     return "Loaded Successfully";
@@ -174,14 +170,12 @@ class _MyAppState extends State<MyApp> {
                               icon: const Icon(Icons.print),
                               hint: const Text("select printer"),
                               isExpanded: true,
-                              value: _radioGroupA == 0 ? usbDeviceDescription : serialPort,
+                              value: _radioGroupA == 0 ? device : serialPort,
                               underline: Container(color: Colors.black),
                               onChanged: (newDevice) {
                                 setState(() {
                                   if(_radioGroupA == 0){
-                                    usbDeviceDescription =
-                                    newDevice as UsbDeviceDescription;
-                                    device = usbDeviceDescription.device;
+                                    device = newDevice;
                                   }else if(_radioGroupA == 1){
                                     serialPort = newDevice;
                                   }
@@ -198,7 +192,7 @@ class _MyAppState extends State<MyApp> {
                           ElevatedButton(
                               onPressed: () async {
                                 if(_radioGroupA == 0){
-                                  await UsbAdapter.connect(device);
+                                  await printer.connect(device);
                                 }else if(_radioGroupA == 1){
                                   // await SerialPortAdapter.connect(serialPort, baudRate: "9600");
                                 }
@@ -218,7 +212,7 @@ class _MyAppState extends State<MyApp> {
                           ElevatedButton(
                               onPressed: () async {
                                 if(_radioGroupA == 0){
-                                  await UsbAdapter.disconnect();
+                                  await printer.disconnect();
                                 }else if(_radioGroupA == 1){
                                   // await SerialPortAdapter.disconnect();
                                 }
@@ -260,7 +254,7 @@ class _MyAppState extends State<MyApp> {
                         children: [
                           ElevatedButton(
                               onPressed: () async {
-                                Printer(PaperSize.mm80, capabilityProfile, usbAdapter)
+                                printer
                                   ..reset()
                                   ..text("中文测试",
                                       containsChinese: true,

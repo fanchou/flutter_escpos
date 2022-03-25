@@ -22,9 +22,9 @@ abstract class PrinterManager {
   int spaceBetweenRows = 5;
   POSPrinter printer;
 
-  Future<ConnectionResponse> connect({Duration timeout});
+  Future<ConnectionResponse> connect(POSPrinter printer,{Duration timeout});
 
-  Future<ConnectionResponse> writeBytes(List<int> data, {bool isDisconnect: true});
+  Future<ConnectionResponse> write(List<int> data, {bool isDisconnect: true});
 
   Future<ConnectionResponse> disconnect({Duration timeout});
 

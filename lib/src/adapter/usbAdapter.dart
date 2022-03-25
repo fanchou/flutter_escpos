@@ -38,11 +38,9 @@ class UsbAdapter {
     try {
       // reGetDevicesWithDescription
       List<UsbDeviceDescription> deviceList = await getDevicesWithDescription();
-      device = deviceList
-          .firstWhere((element) =>
+      device = deviceList.firstWhere((element) =>
               element.device.vendorId == device.vendorId &&
-              element.device.productId == device.productId)
-          .device;
+              element.device.productId == device.productId).device;
 
       if(Platform.isAndroid){
         bool hasPermission = await QuickUsb.hasPermission(device);
