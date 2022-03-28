@@ -64,22 +64,18 @@ class USBPrinterManager extends PrinterManager {
           ..ref.pOutputFile = nullptr
           ..ref.pDatatype = pDataType;
         szPrinterName = printer.name.toNativeUtf16();
-        final phPrinter = calloc<HANDLE>();
 
         if (OpenPrinter(szPrinterName, phPrinter, nullptr) == FALSE) {
           this.isConnected = false;
-          this.printer.connected = false;
           return Future<ConnectionResponse>.value(
               ConnectionResponse.printerNotConnected);
         } else {
           this.hPrinter = phPrinter.value;
           this.isConnected = true;
-          this.printer.connected = true;
           return Future<ConnectionResponse>.value(ConnectionResponse.success);
         }
       } catch(e) {
         this.isConnected = false;
-        this.printer.connected = false;
         return Future<ConnectionResponse>.value(ConnectionResponse.timeout);
       }
     }else{
@@ -261,7 +257,7 @@ class USBPrinterManager extends PrinterManager {
 }
 
 extension IntParsing on List<int> {
-  Pointer<Uint8> toUint8() {
+  Pointer<BYTE> toUint8() {
     final result = calloc<Uint8>(this.length);
     final nativeString = result.asTypedList(this.length);
     nativeString.setAll(0, this);
