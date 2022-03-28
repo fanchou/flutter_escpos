@@ -19,6 +19,27 @@ class POSPrinter {
 
   factory POSPrinter.instance() => POSPrinter();
 
+  factory POSPrinter.fromMap(Map<dynamic, dynamic> map) {
+    return POSPrinter(
+      name: map['name'],
+      address: map['address'],
+      deviceId: map['deviceId'],
+      vendorId: map['vendorId'],
+      productId: map['productId'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'address': address,
+      'deviceId': deviceId,
+      'vendorId': vendorId,
+      'productId': productId
+    };
+  }
+
+
   POSPrinter({
     this.id,
     this.name,
