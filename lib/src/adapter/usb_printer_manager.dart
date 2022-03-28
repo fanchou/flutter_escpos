@@ -164,7 +164,6 @@ class USBPrinterManager extends PrinterManager {
       free(docInfo);
       free(szPrinterName);
       this.isConnected = false;
-      this.printer.connected = false;
       if (timeout != null) {
         await Future.delayed(timeout, () => null);
       }
