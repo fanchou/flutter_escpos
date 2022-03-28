@@ -227,22 +227,10 @@ class USBPrinterManager extends PrinterManager {
           print("dwBytesWritten.value != dwCount");
         }
 
-        if (isDisconnect) {
-          // Tidy up the printer handle.
-          ClosePrinter(hPrinter);
-        }
         return ConnectionResponse.success;
       } catch (e) {
         print("Windows打印机错误 $e");
         rethrow;
-      } finally {
-        // 这里最好释放一下，不然可能释放不掉
-        free(phPrinter);
-        free(pDocName);
-        free(pDataType);
-        free(dwBytesWritten);
-        free(docInfo);
-        free(szPrinterName);
       }
     }else{
       if (!this.isConnected) {
