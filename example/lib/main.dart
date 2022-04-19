@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/services.dart';
-import 'package:quick_usb/quick_usb.dart';
 import 'package:image/image.dart' as gImage;
 import 'package:flutter_escpos/flutter_escpos.dart';
 
@@ -48,7 +47,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<String> getDeviceList() async {
-    printer = Printer(PaperSize.mm80, capabilityProfile, usbAdapter);
+    printer = Printer(usbAdapter);
     final usbList = await printer.findPrinter();
 
     print("USB列表： " + usbList.toString());
@@ -70,23 +69,6 @@ class _MyAppState extends State<MyApp> {
 
     return "Loaded Successfully";
   }
-
-  // Future<String> getSerialPortList() async {
-  //   serialPortList = await SerialPortAdapter.getSerialPortList();
-  //
-  //   deviceWidget.clear();
-  //   serialPort = serialPortList[0];
-  //
-  //   for (var element in serialPortList) {
-  //     Widget serial = DropdownMenuItem(
-  //         value: element.toString(),
-  //         child: Text(element.toString())
-  //     );
-  //     deviceWidget.add(serial);
-  //   }
-  //
-  //   return "Loaded Successfully";
-  // }
 
   Future<List<int>> buildText() async{
     try {
