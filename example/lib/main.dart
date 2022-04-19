@@ -18,6 +18,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  PrintScriptUtil printScriptUtil;
   Printer printer;
   USBPrinterManager usbAdapter;
   NetworkAdapter networkAdapter;
@@ -38,6 +39,7 @@ class _MyAppState extends State<MyApp> {
     // serialPortAdapter = SerialPortAdapter.instance;
     super.initState();
     getCapabilityProfile();
+    printScriptUtil = PrintScriptUtil(PaperSize.mm80, capabilityProfile);
     deviceFuture = getDeviceList();
   }
 
@@ -85,6 +87,84 @@ class _MyAppState extends State<MyApp> {
   //
   //   return "Loaded Successfully";
   // }
+
+  Future<List<int>> buildText() async{
+    try {
+      printScriptUtil
+        ..reset()
+        ..text("中文测试",
+            containsChinese: true,
+            styles: const PosStyles(
+                width: PosTextSize.size2,
+                height: PosTextSize.size2,
+                align: PosAlign.center))..text("繁體字測試",
+          containsChinese: true,
+          styles: const PosStyles(
+            width: PosTextSize.size2,
+            height: PosTextSize.size2,
+            align: PosAlign.center,
+          ))..text("にほんご",
+          containsChinese: true,
+          styles: const PosStyles(
+              width: PosTextSize.size2,
+              height: PosTextSize.size2,
+              align: PosAlign.center))
+        ..emptyLines(1)
+        ..hr(ch: '=')
+        ..emptyLines(1)
+        ..text("望庐山瀑布",
+            containsChinese: true,
+            styles: const PosStyles(
+              align: PosAlign.center,
+              width: PosTextSize.size2,
+              height: PosTextSize.size2,
+            ))..text("唐 李白",
+          containsChinese: true,
+          linesAfter: 1,
+          styles: const PosStyles(
+            align: PosAlign.center,
+          ))..text("日照香爐生紫煙",
+          linesAfter: 1,
+          containsChinese: true,
+          styles: const PosStyles(
+            width: PosTextSize.size2,
+            height: PosTextSize.size2,
+            align: PosAlign.center,
+          ))..text("遙看瀑布掛前川",
+          linesAfter: 1,
+          containsChinese: true,
+          styles: const PosStyles(
+              width: PosTextSize.size2,
+              height: PosTextSize.size2,
+              align: PosAlign.center))..text("飛流直下三千尺",
+          linesAfter: 1,
+          containsChinese: true,
+          styles: const PosStyles(
+              width: PosTextSize.size2,
+              height: PosTextSize.size2,
+              align: PosAlign.center))..text("疑是銀河落九天",
+          linesAfter: 1,
+          containsChinese: true,
+          styles: const PosStyles(
+              width: PosTextSize.size2,
+              height: PosTextSize.size2,
+              align: PosAlign.center))
+        ..emptyLines(1)
+        ..hr(ch: '=')
+        ..text("English test",
+            styles: const PosStyles(align: PosAlign.center))
+        ..hr(ch: '=')
+        ..text("What language is thine, O sea?")..text(
+          "The language of eternal question.")..text(
+          "What language is thy answer, O sky?")..text(
+          "The language of eternal silence.")
+        ..qrcode("escpos printer test", size: QRSize.Size6)
+        ..cut();
+      return printScriptUtil.bytes;
+    } catch (e) {
+      rethrow;
+    }
+  }
 
 
   int _radioGroupA = 0;
@@ -254,83 +334,13 @@ class _MyAppState extends State<MyApp> {
                         children: [
                           ElevatedButton(
                               onPressed: () async {
-                                printer
-                                  ..reset()
-                                  ..text("中文测试",
-                                      containsChinese: true,
-                                      styles: const PosStyles(
-                                          width: PosTextSize.size2,
-                                          height: PosTextSize.size2,
-                                          align: PosAlign.center))
-                                  ..text("繁體字測試",
-                                      containsChinese: true,
-                                      styles: const PosStyles(
-                                        width: PosTextSize.size2,
-                                        height: PosTextSize.size2,
-                                        align: PosAlign.center,
-                                      ))
-                                  ..text("にほんご",
-                                      containsChinese: true,
-                                      styles: const PosStyles(
-                                          width: PosTextSize.size2,
-                                          height: PosTextSize.size2,
-                                          align: PosAlign.center))
-                                  ..emptyLines(1)
-                                  ..hr(ch: '=')
-                                  ..emptyLines(1)
-                                  ..text("望庐山瀑布",
-                                      containsChinese: true,
-                                      styles: const PosStyles(
-                                        align: PosAlign.center,
-                                        width: PosTextSize.size2,
-                                        height: PosTextSize.size2,
-                                      ))
-                                  ..text("唐 李白",
-                                      containsChinese: true,
-                                      linesAfter: 1,
-                                      styles: const PosStyles(
-                                        align: PosAlign.center,
-                                      ))
-                                  ..text("日照香爐生紫煙",
-                                      linesAfter: 1,
-                                      containsChinese: true,
-                                      styles: const PosStyles(
-                                        width: PosTextSize.size2,
-                                        height: PosTextSize.size2,
-                                        align: PosAlign.center,
-                                      ))
-                                  ..text("遙看瀑布掛前川",
-                                      linesAfter: 1,
-                                      containsChinese: true,
-                                      styles: const PosStyles(
-                                          width: PosTextSize.size2,
-                                          height: PosTextSize.size2,
-                                          align: PosAlign.center))
-                                  ..text("飛流直下三千尺",
-                                      linesAfter: 1,
-                                      containsChinese: true,
-                                      styles: const PosStyles(
-                                          width: PosTextSize.size2,
-                                          height: PosTextSize.size2,
-                                          align: PosAlign.center))
-                                  ..text("疑是銀河落九天",
-                                      linesAfter: 1,
-                                      containsChinese: true,
-                                      styles: const PosStyles(
-                                          width: PosTextSize.size2,
-                                          height: PosTextSize.size2,
-                                          align: PosAlign.center))
-                                  ..emptyLines(1)
-                                  ..hr(ch: '=')
-                                  ..text("English test",
-                                      styles: const PosStyles(align: PosAlign.center))
-                                  ..hr(ch: '=')
-                                  ..text("What language is thine, O sea?")
-                                  ..text("The language of eternal question.")
-                                  ..text("What language is thy answer, O sky?")
-                                  ..text("The language of eternal silence.")
-                                  ..qrcode("escpos printer test", size: QRSize.Size6)
-                                  ..cut();
+                                try {
+                                  await printer.print(await buildText());
+                                }catch (e){
+                                  print("打印报错");
+                                }finally {
+                                  printer.disconnect();
+                                }
                               },
                               style: ButtonStyle(
                                 padding: MaterialStateProperty.all(

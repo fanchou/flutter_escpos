@@ -8,4 +8,5 @@ export './src/adapter/networkAdapter.dart';
 export './src/adapter/serialportAdapter.dart';
 export './src/model/usb_printer.dart';
 export './src/model/pos_printer.dart';
+export './src/printScriptUtil.dart';
 

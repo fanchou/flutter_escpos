@@ -39,6 +39,11 @@ class Printer {
     await adapter.disconnect();
   }
 
+  // 打印方法
+  Future<void> print(List<int> data) async {
+    await adapter.write(data);
+  }
+
 
   Future<void> reset() async {
     await adapter.write(_generator.reset());

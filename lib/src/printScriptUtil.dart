@@ -24,6 +24,7 @@ class PrintScriptUtil {
   List<int> get bytes => _bytes;
 
   PrintScriptUtil reset() {
+    _bytes = []; // reset data;
     _bytes += _generator.reset();
     return this;
   }
