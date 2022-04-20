@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   PrintScriptUtil printScriptUtil;
   Printer printer;
   USBPrinterManager usbAdapter;
-  NetworkAdapter networkAdapter;
+  NetworkPrinterManager networkPrinterManager;
   // SerialPortAdapter serialPortAdapter;
   CapabilityProfile capabilityProfile;
   POSPrinter device;
@@ -34,7 +34,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     usbAdapter = USBPrinterManager.instance;
-    networkAdapter = NetworkAdapter.instance;
+    // networkAdapter = NetworkAdapter.instance;
+    networkPrinterManager = NetworkPrinterManager.instance;
     // serialPortAdapter = SerialPortAdapter.instance;
     super.initState();
     getCapabilityProfile();
@@ -47,20 +48,20 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<String> getDeviceList() async {
+    print("这里是否执行了");
     printer = Printer(usbAdapter);
     final usbList = await printer.findPrinter();
 
     print("USB列表： " + usbList.toString());
     deviceWidget.clear();
 
-    POSPrinter device = usbList[0];
+    device = usbList[0];
 
     for(var item in usbList){
       Widget usb = DropdownMenuItem(
           value: item,
           child: Text(item.name.toString()));
       deviceWidget.add(usb);
-
     }
 
     setState(() {
@@ -159,6 +160,9 @@ class _MyAppState extends State<MyApp> {
       // deviceFuture = getSerialPortList();
     }else if(_radioGroupA == 0){
       getDeviceList();
+    }else {
+      deviceWidget.clear();
+      printer = Printer(networkPrinterManager);
     }
   }
 
@@ -295,7 +299,8 @@ class _MyAppState extends State<MyApp> {
                             visible: _radioGroupA == 2,
                             child: ElevatedButton(
                                 onPressed: () async {
-                                  await NetworkAdapter.connect("192.168.2.235");
+                                  device = NetworkPrinter(address: "192.168.2.235", port: 9100);
+                                  await printer.connect(device);
                                 },
                                 style: ButtonStyle(
                                   padding: MaterialStateProperty.all(

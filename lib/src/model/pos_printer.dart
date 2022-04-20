@@ -10,6 +10,7 @@ class POSPrinter {
   String id;
   String name;
   String address;
+  int port;
   int deviceId;
   int vendorId;
   int productId;
@@ -44,6 +45,7 @@ class POSPrinter {
     this.id,
     this.name,
     this.address,
+    this.port,
     this.deviceId,
     this.vendorId,
     this.productId,
