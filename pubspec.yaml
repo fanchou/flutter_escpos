@@ -14,7 +14,7 @@ dependencies:
   ffi: ^1.1.0
   esc_pos_utils:
     git:
-      url: https://github.com/fanchou/esc_pos_utils.git
+      url: https://gitee.com/fanchou/esc_pos_utils.git
   quick_usb: ^0.3.1
   # flutter_libserialport: ^0.2.2
 
