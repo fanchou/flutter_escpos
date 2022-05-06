@@ -32,7 +32,9 @@ dependencies:
   esc_pos_utils:
     git:
       url: https://gitee.com/fanchou/esc_pos_utils.git
-  quick_usb: ^0.3.1
+  quick_usb:
+    git:
+      url: https://github.com/woodemi/quick_usb.git
   flutter_escpos:
     path: ../
 
