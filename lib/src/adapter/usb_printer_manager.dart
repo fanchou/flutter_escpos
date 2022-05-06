@@ -10,7 +10,6 @@ import '../findUsbPrinter.dart';
 import '../model/pos_printer.dart';
 import '../model/usb_printer.dart';
 
-/// Copyright (C), 2019-2022, 深圳新语网络科技有限公司
 /// FileName: usb_printer_manager
 /// Author: zhoufan
 /// Date: 2022/3/13 15:42
@@ -20,7 +19,7 @@ import '../model/usb_printer.dart';
 class USBPrinterManager extends PrinterManager {
 
   static UsbEndpoint _endpoint;
-  static POSPrinter _printer;
+  POSPrinter _printer;
 
   static USBPrinterManager get instance => _getInstance();
   static USBPrinterManager _instance;
@@ -44,40 +43,40 @@ class USBPrinterManager extends PrinterManager {
     print("QuickUSB init: $init");
   }
 
-  // win32
-  Pointer<IntPtr> phPrinter = calloc<HANDLE>();
-  Pointer<Utf16> pDocName = 'My Document'.toNativeUtf16();
-  Pointer<Utf16> pDataType = 'RAW'.toNativeUtf16();
-  Pointer<Uint32> dwBytesWritten = calloc<DWORD>();
-  Pointer<DOC_INFO_1> docInfo;
-  Pointer<Utf16> szPrinterName;
-  int hPrinter;
-  int dwCount;
+  // // win32
+  // final phPrinter = calloc<HANDLE>();
+  // final pDocName = 'My Document'.toNativeUtf16();
+  // final pDataType = 'RAW'.toNativeUtf16();
+  // final dwBytesWritten = calloc<DWORD>();
+  // var docInfo;
+  // var szPrinterName;
+  // int hPrinter;
+  // int dwCount;
 
   @override
   Future<ConnectionResponse> connect(POSPrinter printer,{Duration timeout: const Duration(seconds: 5)}) async{
     _printer = printer;
     if(Platform.isWindows){
-      try {
-        docInfo = calloc<DOC_INFO_1>()
-          ..ref.pDocName = pDocName
-          ..ref.pOutputFile = nullptr
-          ..ref.pDatatype = pDataType;
-        szPrinterName = printer.name.toNativeUtf16();
-
-        if (OpenPrinter(szPrinterName, phPrinter, nullptr) == FALSE) {
-          this.isConnected = false;
-          return Future<ConnectionResponse>.value(
-              ConnectionResponse.printerNotConnected);
-        } else {
-          this.hPrinter = phPrinter.value;
-          this.isConnected = true;
-          return Future<ConnectionResponse>.value(ConnectionResponse.success);
-        }
-      } catch(e) {
-        this.isConnected = false;
-        return Future<ConnectionResponse>.value(ConnectionResponse.timeout);
-      }
+      // try {
+      //   docInfo = calloc<DOC_INFO_1>()
+      //     ..ref.pDocName = pDocName
+      //     ..ref.pOutputFile = nullptr
+      //     ..ref.pDatatype = pDataType;
+      //   szPrinterName = printer.name.toNativeUtf16();
+      //
+      //   if (OpenPrinter(szPrinterName, phPrinter, nullptr) == FALSE) {
+      //     this.isConnected = false;
+      //     return Future<ConnectionResponse>.value(
+      //         ConnectionResponse.printerNotConnected);
+      //   } else {
+      //     this.hPrinter = phPrinter.value;
+      //     this.isConnected = true;
+      //     return Future<ConnectionResponse>.value(ConnectionResponse.success);
+      //   }
+      // } catch(e) {
+      //   this.isConnected = false;
+      //   return Future<ConnectionResponse>.value(ConnectionResponse.timeout);
+      // }
     }else{
       bool openDevice = false;
       try {
@@ -156,13 +155,6 @@ class USBPrinterManager extends PrinterManager {
   @override
   Future<ConnectionResponse> disconnect({Duration timeout}) async{
     if (Platform.isWindows) {
-      ClosePrinter(hPrinter);
-      free(phPrinter);
-      free(pDocName);
-      free(pDataType);
-      free(dwBytesWritten);
-      free(docInfo);
-      free(szPrinterName);
       this.isConnected = false;
       if (timeout != null) {
         await Future.delayed(timeout, () => null);
@@ -182,9 +174,29 @@ class USBPrinterManager extends PrinterManager {
   @override
   Future<ConnectionResponse> write(List<int> data, {bool isDisconnect = true}) async{
     if (Platform.isWindows) {
+      int hPrinter;
+      int dwCount;
+      final phPrinter = calloc<HANDLE>();
+      final pDocName = 'My Document'.toNativeUtf16();
+      final pDataType = 'RAW'.toNativeUtf16();
+      final dwBytesWritten = calloc<DWORD>();
+      final docInfo = calloc<DOC_INFO_1>()
+        ..ref.pDocName = pDocName
+        ..ref.pOutputFile = nullptr
+        ..ref.pDatatype = pDataType;
+
+      final szPrinterName = _printer.name.toNativeUtf16();
+
       try {
+
         if (!this.isConnected) {
-          await connect(_printer);
+          if (OpenPrinter(szPrinterName, phPrinter, nullptr) == FALSE) {
+            this.isConnected = false;
+            return ConnectionResponse.timeout;
+          } else {
+            hPrinter = phPrinter.value;
+            this.isConnected = true;
+          }
         }
 
         // Inform the spooler the document is beginning.
@@ -216,6 +228,8 @@ class USBPrinterManager extends PrinterManager {
           ClosePrinter(hPrinter);
         }
 
+        ClosePrinter(hPrinter);
+
         // Inform the spooler that the document is ending.
         if (EndDocPrinter(hPrinter) == 0) {
           ClosePrinter(hPrinter);
@@ -229,7 +243,13 @@ class USBPrinterManager extends PrinterManager {
         return ConnectionResponse.success;
       } catch (e) {
         print("Windows打印机错误 $e");
-        rethrow;
+      }finally {
+        free(phPrinter);
+        free(pDocName);
+        free(pDataType);
+        free(dwBytesWritten);
+        free(docInfo);
+        free(szPrinterName);
       }
     }else{
       if (!this.isConnected) {
