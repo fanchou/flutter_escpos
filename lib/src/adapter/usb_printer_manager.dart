@@ -256,8 +256,6 @@ class USBPrinterManager extends PrinterManager {
         await connect(_printer);
       }
 
-      print("打印机就位" + _endpoint.toString() + " 打印数据" + data.toString());
-
       await QuickUsb.bulkTransferOut(_endpoint, Uint8List.fromList(data), timeout: 6000);
     }
   }

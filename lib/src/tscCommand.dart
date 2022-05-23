@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:image/image.dart';
-import 'package:gbk_codec/gbk_codec.dart';
+// import 'package:gbk_codec/gbk_codec.dart';
+import 'package:fast_gbk/fast_gbk.dart';
 
 /// Copyright (C), 2019-2021, 深圳新语网络科技有限公司
 /// FileName: tscCommand
@@ -211,7 +212,7 @@ class TscPrinter{
   /// send Command
   Future sendCommand(String command) async {
     // Uint8List com = utf8.encode(command);
-    List<int> data = gbk_bytes.encode(command);
+    List<int> data = gbk.encode(command);
     try {
       await adapter.write(data);
     } catch (e) {
