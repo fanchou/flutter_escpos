@@ -176,6 +176,7 @@ class USBPrinterManager extends PrinterManager {
     if (Platform.isWindows) {
       int hPrinter;
       int dwCount;
+      int dwJob;
       final phPrinter = calloc<HANDLE>();
       final pDocName = 'My Document'.toNativeUtf16();
       final pDataType = 'RAW'.toNativeUtf16();
@@ -186,6 +187,7 @@ class USBPrinterManager extends PrinterManager {
         ..ref.pDatatype = pDataType;
 
       final szPrinterName = _printer.name.toNativeUtf16();
+      final lpData = data.toUint8();
 
       try {
 
@@ -200,7 +202,7 @@ class USBPrinterManager extends PrinterManager {
         }
 
         // Inform the spooler the document is beginning.
-        final dwJob = StartDocPrinter(hPrinter, 1, docInfo);
+        dwJob = StartDocPrinter(hPrinter, 1, docInfo);
         if (dwJob == 0) {
           ClosePrinter(hPrinter);
           return ConnectionResponse.printInProgress;
@@ -213,7 +215,6 @@ class USBPrinterManager extends PrinterManager {
         }
 
         // Send the data to the printer.
-        final lpData = data.toUint8();
         dwCount = data.length;
         if (WritePrinter(hPrinter, lpData, dwCount, dwBytesWritten) == 0) {
           EndPagePrinter(hPrinter);
@@ -250,6 +251,7 @@ class USBPrinterManager extends PrinterManager {
         free(dwBytesWritten);
         free(docInfo);
         free(szPrinterName);
+        free(lpData);
       }
     }else{
       if (!this.isConnected) {
