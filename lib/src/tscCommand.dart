@@ -9,8 +9,7 @@ import 'package:fast_gbk/fast_gbk.dart';
 /// Date: 2021/9/17 13:10
 /// Description: tsc commands
 
-class TscPrinter{
-
+class TscPrinter {
   final dynamic adapter;
 
   TscPrinter(this.adapter);
@@ -32,18 +31,37 @@ class TscPrinter{
    * @param sensor_distance 传感器距离
    * @param sensor_offset   传感器偏移
    */
-  Future<void> setup(int width, int height, int speed, int density, int sensor, int sensor_distance, int sensor_offset) async{
+  Future<void> setup(int width, int height, int speed, int density, int sensor,
+      int sensor_distance, int sensor_offset) async {
     String message;
-    String size = "SIZE " + width.toString() + " mm" + ", " + height.toString() + " mm";
+    String size =
+        "SIZE " + width.toString() + " mm" + ", " + height.toString() + " mm";
     String speed_value = "SPEED " + speed.toString();
     String density_value = "DENSITY " + density.toString();
     String sensor_value = "";
     if (sensor == 0) {
-      sensor_value = "GAP " + sensor_distance.toString() + " mm" + ", " + sensor_offset.toString() + " mm";
+      sensor_value = "GAP " +
+          sensor_distance.toString() +
+          " mm" +
+          ", " +
+          sensor_offset.toString() +
+          " mm";
     } else if (sensor == 1) {
-      sensor_value = "BLINE " + sensor_distance.toString() + " mm" + ", " + sensor_offset.toString() + " mm";
+      sensor_value = "BLINE " +
+          sensor_distance.toString() +
+          " mm" +
+          ", " +
+          sensor_offset.toString() +
+          " mm";
     }
-    message = size + "\n" + speed_value + "\n" + density_value + "\n" + sensor_value + "\n";
+    message = size +
+        "\n" +
+        speed_value +
+        "\n" +
+        density_value +
+        "\n" +
+        sensor_value +
+        "\n";
 
     await sendCommand(message);
   }
@@ -79,7 +97,8 @@ class TscPrinter{
    * @param text             你要打印的文字
    * @return 范例 TEXT 100,100,”4”,0,1,1,”DEMO FOR TEXT
    */
-  Future<void> text(int x, int y, String font, int rotation, int x_multiplication, int y_multiplication, String text) async {
+  Future<void> text(int x, int y, String font, int rotation,
+      int x_multiplication, int y_multiplication, String text) async {
     String message;
     String s = "TEXT ";
     String position = "$x,$y";
@@ -88,7 +107,19 @@ class TscPrinter{
     String x_value = "" + x_multiplication.toString();
     String y_value = "" + y_multiplication.toString();
     String string_value = "\"" + text + "\"";
-    message = s + position + "," + size_value + "," + rota + "," + x_value + "," + y_value + "," + string_value + "\r\n";
+    message = s +
+        position +
+        "," +
+        size_value +
+        "," +
+        rota +
+        "," +
+        x_value +
+        "," +
+        y_value +
+        "," +
+        string_value +
+        "\r\n";
     await sendCommand(message);
   }
 
@@ -99,7 +130,16 @@ class TscPrinter{
   }
 
   /// barCode
-  Future<void> barcode(int x, int y, String type, int height, int human_readable, int rotation, int narrow, int wide, String string) async {
+  Future<void> barcode(
+      int x,
+      int y,
+      String type,
+      int height,
+      int human_readable,
+      int rotation,
+      int narrow,
+      int wide,
+      String string) async {
     String message = "";
     String barcode = "BARCODE ";
     String position = x.toString() + "," + y.toString();
@@ -110,10 +150,25 @@ class TscPrinter{
     String narrow_value = "" + narrow.toString();
     String wide_value = "" + wide.toString();
     String string_value = "\"" + string + "\"";
-    message = barcode + position + " ," + mode + " ," + height_value + " ," + human_value + " ," + rota + " ," + narrow_value + " ," + wide_value + " ," + string_value + "\r\n";
+    message = barcode +
+        position +
+        " ," +
+        mode +
+        " ," +
+        height_value +
+        " ," +
+        human_value +
+        " ," +
+        rota +
+        " ," +
+        narrow_value +
+        " ," +
+        wide_value +
+        " ," +
+        string_value +
+        "\r\n";
     await sendCommand(message);
   }
-
 
   /**
    * qrcode
@@ -139,7 +194,8 @@ class TscPrinter{
    * @param content          content
    * @return "QRCODE 50,50,H,4,A,0,M2,S7,\"123TSCtest\"\n"
    */
-  Future<void> qrcode(int x, int y, String eccLevel, int cellWidth, String mode, int rotation, String version, String mask, String content) async {
+  Future<void> qrcode(int x, int y, String eccLevel, int cellWidth, String mode,
+      int rotation, String version, String mask, String content) async {
     String message;
     String qrcode = "QRCODE ";
     String position = "$x,$y";
@@ -150,13 +206,29 @@ class TscPrinter{
     String qrVersion = "$version";
     String qrMask = "$mask";
     String string_value = "\"" + content + "\"";
-    message = qrcode + position + "," + ecc + "," + size + "," + encodeMode + "," + rota + "," + qrVersion + "," + qrMask + "," + string_value + "\r\n";
+    message = qrcode +
+        position +
+        "," +
+        ecc +
+        "," +
+        size +
+        "," +
+        encodeMode +
+        "," +
+        rota +
+        "," +
+        qrVersion +
+        "," +
+        qrMask +
+        "," +
+        string_value +
+        "\r\n";
     print("二维码指令集合: " + message);
     await sendCommand(message);
   }
 
   /// This command draws a bar on the label format.
-  Future<void> bar(int x, int y, int width, int height) async{
+  Future<void> bar(int x, int y, int width, int height) async {
     String message;
     String bar = "BAR ";
     String position = "$x,$y";
@@ -172,12 +244,12 @@ class TscPrinter{
     String bar = "PUTBMP ";
     String position = "$x,$y";
     String content = "\"" + name + "\"";
-    message = bar + position +  ',' + content + "\r\n";
+    message = bar + position + ',' + content + "\r\n";
     await sendCommand(message);
   }
 
   /// Download
-  Future<void> Download(String fileName,Image imgSrc) async {
+  Future<void> Download(String fileName, Image imgSrc) async {
     List<int> bytes = [];
     final Image image = Image.from(imgSrc);
     Uint8List imgData = image.getBytes();
@@ -196,8 +268,19 @@ class TscPrinter{
     }
   }
 
-  /// todo bitmap
-  /// todo box
+  /// todo 打印位图
+
+  /// 打印框
+  Future<void> box(
+      int startX, int startY, int endX, int endY, int width) async {
+    String message;
+    String bar = "BAR ";
+    String position = "$startX,$startY,$endX,$endY";
+    String boxWidth = "$width";
+    message = bar + position + "," + boxWidth + "\r\n";
+    await sendCommand(message);
+  }
+
   /// todo CIRCLE
   /// todo ELLIPSE
   /// todo ERASE
@@ -220,4 +303,3 @@ class TscPrinter{
     }
   }
 }
-
