@@ -14,6 +14,10 @@ class TscPrinter {
 
   TscPrinter(this.adapter);
 
+  List<int> _bytes;
+
+  List<int> get bytes => _bytes;
+
   /**
    * 打印机初始化
    *
@@ -62,8 +66,7 @@ class TscPrinter {
         "\n" +
         sensor_value +
         "\n";
-
-    await sendCommand(message);
+    _bytes += message.codeUnits;
   }
 
   /**
@@ -120,13 +123,13 @@ class TscPrinter {
         "," +
         string_value +
         "\r\n";
-    await sendCommand(message);
+    _bytes += gbk.encode(message);
   }
 
   Future<void> printlabel(int quantity, int copy) async {
     String message = "";
     message = "PRINT " + quantity.toString() + ", " + copy.toString() + "\r\n";
-    await sendCommand(message);
+    _bytes += message.codeUnits;
   }
 
   /// barCode
@@ -167,7 +170,7 @@ class TscPrinter {
         " ," +
         string_value +
         "\r\n";
-    await sendCommand(message);
+    _bytes += message.codeUnits;
   }
 
   /**
@@ -223,8 +226,7 @@ class TscPrinter {
         "," +
         string_value +
         "\r\n";
-    print("二维码指令集合: " + message);
-    await sendCommand(message);
+    _bytes += message.codeUnits;
   }
 
   /// This command draws a bar on the label format.
@@ -235,7 +237,7 @@ class TscPrinter {
     String barWidth = "$width";
     String barHeight = "$height";
     message = bar + position + "," + barWidth + "," + barHeight + "\r\n";
-    await sendCommand(message);
+    _bytes += message.codeUnits;
   }
 
   /// PUTBMP
@@ -245,7 +247,7 @@ class TscPrinter {
     String position = "$x,$y";
     String content = "\"" + name + "\"";
     message = bar + position + ',' + content + "\r\n";
-    await sendCommand(message);
+    _bytes += message.codeUnits;
   }
 
   /// Download
@@ -278,7 +280,7 @@ class TscPrinter {
     String position = "$startX,$startY,$endX,$endY";
     String boxWidth = "$width";
     message = bar + position + "," + boxWidth + "\r\n";
-    await sendCommand(message);
+    _bytes += message.codeUnits;
   }
 
   /// todo CIRCLE
@@ -288,18 +290,15 @@ class TscPrinter {
 
   /// clear buffer
   Future<void> clearBuffer() async {
+    _bytes = [];
     String message = "CLS\r\n";
-    await sendCommand(message);
+    _bytes += message.codeUnits;
   }
 
   /// send Command
-  Future sendCommand(String command) async {
+  Future<List<int>> sendCommand(String command) async {
     // Uint8List com = utf8.encode(command);
     List<int> data = gbk.encode(command);
-    try {
-      await adapter.write(data);
-    } catch (e) {
-      print(e);
-    }
+    return data;
   }
 }
