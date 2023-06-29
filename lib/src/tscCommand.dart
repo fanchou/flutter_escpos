@@ -10,12 +10,7 @@ import 'package:fast_gbk/fast_gbk.dart';
 /// Description: tsc commands
 
 class TscPrinter {
-  final dynamic adapter;
-
-  TscPrinter(this.adapter);
-
   List<int> _bytes;
-
   List<int> get bytes => _bytes;
 
   /**
@@ -264,7 +259,7 @@ class TscPrinter {
     bytes += header;
     bytes += imgData.toList();
     try {
-      await adapter.write(bytes);
+      // await adapter.write(bytes);
     } catch (e) {
       print(e);
     }
