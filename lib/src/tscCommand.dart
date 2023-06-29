@@ -274,7 +274,7 @@ class TscPrinter {
   Future<void> box(
       int startX, int startY, int endX, int endY, int width) async {
     String message;
-    String bar = "BAR ";
+    String bar = "BOX ";
     String position = "$startX,$startY,$endX,$endY";
     String boxWidth = "$width";
     message = bar + position + "," + boxWidth + "\r\n";
