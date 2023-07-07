@@ -47,12 +47,12 @@ class ZPLPrinter {
   Future<void> setup(
     int width,
     int height,
-    int ratio, {
+    int printerRatio, {
     int density = 10,
     Offset origin = const Offset(0, 0),
     int speed = 3,
   }) async {
-    ratio = ratio; // 全部保存，计算是需要用到
+    ratio = printerRatio; // 全部保存，计算是需要用到
     _commandString += '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n' +
         '^PR$speed\n^MD$density\n^LH${origin.dx * ratio},${origin.dy * ratio}\n';
     _bytes += _commandString.codeUnits;
