@@ -164,11 +164,10 @@ class ZPLPrinter {
     String content, {
     String turn = 'N',
     int model = 2,
-    int scale = 3,
+    int scale = 2,
     String quality = 'Q',
     int mask = 7,
   }) async {
-    scale = ratio == 12 ? 3 : 2;
     _commandString += '^FO${x * ratio},${y * ratio}' +
         '^BQ$turn,$model,$scale,$quality,$mask\n';
     String text = '^FD$content^FS\n';
