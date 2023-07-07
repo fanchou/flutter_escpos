@@ -124,8 +124,8 @@ class ZPLPrinter {
   Future<void> box(
     int x,
     int y, {
-    int width = 1,
-    int height = 1,
+    double width = 1,
+    double height = 1,
     int thickness = 1,
     String color = 'B',
     int radius = 0,
