@@ -15,9 +15,7 @@ dependencies:
   esc_pos_utils:
     git:
       url: https://gitee.com/fanchou/esc_pos_utils.git
-  quick_usb:
-    git:
-      url: https://github.com/woodemi/quick_usb.git
+  quick_usb: 0.4.0
   # flutter_libserialport: ^0.2.2
 
 dev_dependencies:
