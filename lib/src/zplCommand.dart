@@ -170,7 +170,7 @@ class ZPLPrinter {
   }) async {
     _commandString += '^FO${x * ratio},${y * ratio}' +
         '^BQ$turn,$model,$scale,$quality,$mask\n';
-    String text = '^FD$content^FS\n';
+    String text = '^FDMM,A$content^FS\n';
     _commandString += text;
     _bytes += _commandString.codeUnits;
   }
