@@ -86,7 +86,6 @@ class ZPLPrinter {
     }
 
     String turnChar;
-    String alignChar;
 
     // 旋转方向
     switch (style.turn) {
@@ -104,23 +103,8 @@ class ZPLPrinter {
         break;
     }
 
-    // 对齐方式
-    switch (style.align) {
-      case ZPLAlign.Left:
-        alignChar = '0';
-        break;
-      case ZPLAlign.Right:
-        alignChar = '1';
-        break;
-      case ZPLAlign.Auto:
-        alignChar = '2';
-        break;
-    }
-
-    _commandString += '^FW$turnChar,$alignChar\n';
-    _bytes += _commandString.codeUnits;
     String textInfo = '^FO${x * ratio},${y * ratio}' +
-        '^A${style.fontFamily},${style.scaleX},${style.scaleY}^FD$text^FS\n';
+        '^A${style.fontFamily},$turnChar,${style.scaleY},${style.scaleX}^FD$text^FS\n';
     _commandString += textInfo;
     List<int> texHex = utf8.encode(textInfo);
     _bytes += texHex;
@@ -185,7 +169,6 @@ class TextStyles {
     this.fontFamily = '7', // todo 这个是不靠谱的，不同打印机可能是不同的
     this.scaleX = 24,
     this.scaleY = 24,
-    this.align = ZPLAlign.Auto,
     this.turn = ZPLTurn.Normal,
   });
 
@@ -198,9 +181,6 @@ class TextStyles {
 
   // x 方向上的缩放大小
   final int scaleY;
-
-  // 对齐方式
-  final ZPLAlign align;
 
   // 旋转方向
   final ZPLTurn turn;
