@@ -176,6 +176,69 @@ class ZPLPrinter {
   }
 
   /**
+   * 打印条码
+   *
+   * @param x          x坐标 单位：mm，注意这里是mm,会自动根据分辨率转化的
+   * @param y          y坐标 单位：mm，注意这里是mm,会自动根据分辨率转化的
+   * @param type       条码的类型
+   * @param content    条码内容
+   * @param turn       旋转方向
+   * @param check      校验位
+                       默认值：N(No) = 不打印校验位
+                       其他值: Y(Yes) = 打印校验位
+   * @param height     条码高度
+                       默认值:由^BY 设置
+                       其他值:1 到 9999 点
+   * @param isShowCode 是否打印识别码
+                       默认值: Y = 打印(Yes)
+                       其他值:N = 不打印(No)
+   * @param isBelow    将识别码打印在条码上方
+                       默认值: N = 不打印在条码上方
+                       其他值: Y = 打印在条码上方
+   */
+  Future<void> barCode(int x, int y, BarcodeType type, String content,
+      {String turn = 'N',
+      String check = 'N',
+      int height = 40,
+      String isShowCode = 'Y',
+      String isBelow = 'N'}) async {
+    String _pre;
+    switch (type) {
+      case BarcodeType.CODE11:
+        _pre = '^B1$turn,$check,$height,$isShowCode,$isBelow';
+        break;
+      case BarcodeType.CODE39:
+        _pre = '^B3$turn,$check,$height,$isShowCode,$isBelow';
+        break;
+      case BarcodeType.CODE49:
+        _pre = '^B4$turn,$height,$isShowCode,A';
+        break;
+      case BarcodeType.CODE93:
+        _pre = '^BA$turn,$height,$isShowCode,$isBelow,$check';
+        break;
+      case BarcodeType.CODE128:
+        _pre = '^BC$turn,$height,$isShowCode,$isBelow,$check,N';
+        break;
+      case BarcodeType.EAN8:
+        _pre = '^B8$turn,$height,$isBelow';
+        break;
+      case BarcodeType.EAN13:
+        _pre = '^BE$turn,$height,$isShowCode,$isBelow';
+        break;
+      case BarcodeType.UPCA:
+        _pre = '^BU$turn,$height,$isShowCode,$isBelow,$check';
+        break;
+      case BarcodeType.UPCE:
+        _pre = '^B9$turn,$height,$isShowCode,$isBelow,$check';
+        break;
+    }
+
+    String command = '^FO${x * ratio},${y * ratio}$_pre\n^FDMM,A$content^FS\n';
+    _commandString += command;
+    _bytes += _commandString.codeUnits;
+  }
+
+  /**
    * 打印文字
    *
    * @param x          x坐标 单位：mm，注意这里是mm,会自动根据分辨率转化的
@@ -231,3 +294,16 @@ enum ZPLAlign { Left, Right, Auto }
 
 // 旋转方向 正常、90、180、270
 enum ZPLTurn { Normal, Roated, Inverted, Bottom }
+
+// 条码类型
+enum BarcodeType {
+  CODE11,
+  CODE39,
+  CODE49,
+  CODE93,
+  CODE128,
+  EAN8,
+  EAN13,
+  UPCA,
+  UPCE
+}
