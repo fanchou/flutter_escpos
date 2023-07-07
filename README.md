@@ -16,8 +16,8 @@ ESC/POS And TSC Printer driver for flutter.
 
 ## Tips
 
-- On Windows, Use [Zadig](https://zadig.akeo.ie/) to install the WinUSB driver for your printer.
-- On Windows, If you don't want to use Zadig, you can use dev branch(Use Win32 API).
+- ~On Windows, Use [Zadig](https://zadig.akeo.ie/) to install the WinUSB driver for your printer~.
+- ~On Windows, If you don't want to use Zadig, you can use dev branch(Use Win32 API)~.
 
 - On Mac, Need to set the USB permissions of the project.
 
