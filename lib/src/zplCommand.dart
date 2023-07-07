@@ -136,6 +136,47 @@ class ZPLPrinter {
   }
 
   /**
+   * 打印二维码
+   *
+   * @param x          x坐标 单位：mm，注意这里是mm,会自动根据分辨率转化的
+   * @param y          y坐标 单位：mm，注意这里是mm,会自动根据分辨率转化的
+   * @param content    二维码内容
+   * @param turn       旋转方向
+   * @param model      模式 默认值: 2(增强型)
+                       其他值: 1(原始型)
+   * @param scale      放大因子
+                       默认值:2(200dpi 机器)/3(300dpi 机器)
+                       其他值:1 到 10
+   * @param quality    纠错率
+                       默认值:Q(参数为空)/M(参数非法)
+                       其他值:H = 超高纠错等级
+                       Q = 高纠错等级
+                       M = 普通纠错等级
+                       L = 高密度等级
+   * @param mask       掩码
+                       默认值: 7
+                       其他值: 0 到 7
+   */
+
+  Future<void> qrCode(
+    int x,
+    int y,
+    String content, {
+    String turn = 'N',
+    int model = 2,
+    int scale = 3,
+    String quality = 'Q',
+    int mask = 7,
+  }) async {
+    scale = ratio == 12 ? 3 : 2;
+    _commandString += '^FO${x * ratio},${y * ratio}' +
+        '^BQ$turn,$model,$scale,$quality,$mask\n';
+    String text = '^FD$content^FS\n';
+    _commandString += text;
+    _bytes += _commandString.codeUnits;
+  }
+
+  /**
    * 打印文字
    *
    * @param x          x坐标 单位：mm，注意这里是mm,会自动根据分辨率转化的
