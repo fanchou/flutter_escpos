@@ -99,6 +99,9 @@ class ZPLPrinter {
       case ZPLTurn.Bottom:
         turnChar = 'B';
         break;
+      case ZPLTurn.Normal:
+        turnChar = 'N';
+        break;
     }
 
     // 对齐方式
@@ -183,7 +186,7 @@ class TextStyles {
     this.scaleX = 24,
     this.scaleY = 24,
     this.align = ZPLAlign.Auto,
-    this.turn = ZPLTurn.Inverted,
+    this.turn = ZPLTurn.Normal,
   });
 
   // 字体类型
@@ -206,5 +209,5 @@ class TextStyles {
 // 对齐方式
 enum ZPLAlign { Left, Right, Auto }
 
-// 旋转方向 90、180、270
-enum ZPLTurn { Roated, Inverted, Bottom }
+// 旋转方向 正常、90、180、270
+enum ZPLTurn { Normal, Roated, Inverted, Bottom }
