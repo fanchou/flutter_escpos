@@ -10,7 +10,7 @@ ESC/POS And TSC Printer driver for flutter.
 ## Features
 
 - Support USB and Network Adapter;
-- Support ESC and TSC command;
+- Support ESC、TSC、ZPL command;
 - Support Pos printer and Label printer;
 - Support multi platform(test on Windows,MacOs,Android);
 
