@@ -16,8 +16,8 @@ class ZPLPrinter {
 
   String _commandString = '';
 
-  String _startTag = '^XA \n';
-  String _endTag = '^XA \n';
+  String _startTag = '^XA\n';
+  String _endTag = '^XZ\n';
 
   // todo 如果记录一个高度值，是否更加方便计算？？？
 
@@ -53,15 +53,14 @@ class ZPLPrinter {
     int speed = 3,
   }) async {
     ratio = ratio; // 全部保存，计算是需要用到
-    _commandString +=
-        '^CI28 ^PW$width \n ^LL$height \n ^PR$speed ^MD$density \n' +
-            '^LH${origin.dx * ratio},${origin.dy * ratio} \n';
+    _commandString += '^CI28\n^PW$width\n^LL$height\n^PR$speed\n^MD$density\n' +
+        '^LH${origin.dx * ratio},${origin.dy * ratio}\n';
     _bytes += _commandString.codeUnits;
   }
 
   Future<void> builder() async {
     String fullCommand = _startTag + _commandString + _endTag;
-    log(fullCommand, name: '完整指令集');
+    log('\n' + fullCommand, name: '完整指令集');
   }
 
   /**
@@ -110,10 +109,10 @@ class ZPLPrinter {
         break;
     }
 
-    _commandString += '^FW$turnChar,$alignChar \n';
+    _commandString += '^FW$turnChar,$alignChar\n';
     _bytes += _commandString.codeUnits;
-    String textInfo = 'FO${x * ratio},${y * ratio}' +
-        '^A${style.fontFamily},${style.scaleX},${style.scaleY}^FD$text^FS \n';
+    String textInfo = '^FO${x * ratio},${y * ratio}' +
+        '^A${style.fontFamily},${style.scaleX},${style.scaleY}^FD$text^FS\n';
     _commandString += textInfo;
     List<int> texHex = utf8.encode(textInfo);
     _bytes += texHex;
@@ -139,8 +138,8 @@ class ZPLPrinter {
     String color = 'B',
     int radius = 0,
   }) async {
-    _commandString += 'FO${x * ratio},${y * ratio}' +
-        'GB${width * ratio},${height * ratio},${thickness * ratio},$color,$ratio \n';
+    _commandString += '^FO${x * ratio},${y * ratio}' +
+        '^GB${width * ratio},${height * ratio},${thickness * ratio},$color,$radius\n';
     _bytes += _commandString.codeUnits;
   }
 
@@ -163,7 +162,7 @@ class ZPLPrinter {
       final _hexCode = HEX.encode(imageBytes);
       final _asciiCode = String.fromCharCodes(HEX.decode(_hexCode));
       _commandString += '^FO${x * ratio},${y * ratio}' +
-          '^GF$compression,$_total,$_total,$_widthBytes,$_asciiCode^FS \n';
+          '^GF$compression,$_total,$_total,$_widthBytes,$_asciiCode^FS\n';
       _bytes += _commandString.codeUnits;
     });
   }
