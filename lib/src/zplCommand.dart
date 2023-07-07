@@ -11,7 +11,7 @@ import 'package:hex/hex.dart';
 /// Description:
 
 class ZPLPrinter {
-  List<int> _bytes;
+  List<int> _bytes = [];
   List<int> get bytes => _bytes;
 
   String _commandString = '';
@@ -53,15 +53,19 @@ class ZPLPrinter {
     int speed = 3,
   }) async {
     ratio = ratio; // 全部保存，计算是需要用到
-    _commandString +=
-        '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n^PR$speed\n^MD$density\n' +
-            '^LH${origin.dx * ratio},${origin.dy * ratio}\n';
+    _commandString += '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n' +
+        '^PR$speed\n^MD$density\n^LH${origin.dx * ratio},${origin.dy * ratio}\n';
     _bytes += _commandString.codeUnits;
   }
 
   Future<void> builder() async {
     String fullCommand = _startTag + _commandString + _endTag;
     log('\n' + fullCommand, name: '完整指令集');
+  }
+
+  clearBuffer() {
+    _commandString = '';
+    _bytes = [];
   }
 
   /**
