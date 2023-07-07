@@ -144,7 +144,7 @@ class ZPLPrinter {
     int radius = 0,
   }) async {
     _commandString += '^FO${x * ratio},${y * ratio}' +
-        '^GB${width * ratio},${height * ratio},${thickness},$color,$radius\n';
+        '^GB${width * ratio},${height * ratio},${thickness},$color,$radius^FS\n';
     _bytes += _commandString.codeUnits;
   }
 
