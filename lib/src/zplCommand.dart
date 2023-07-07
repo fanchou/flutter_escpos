@@ -22,7 +22,7 @@ class ZPLPrinter {
   // todo 如果记录一个高度值，是否更加方便计算？？？
 
   // 点密度
-  int ratio = 8;
+  int ratio;
 
   /**
    * 打印机初始化
@@ -53,8 +53,9 @@ class ZPLPrinter {
     int speed = 3,
   }) async {
     ratio = ratio; // 全部保存，计算是需要用到
-    _commandString += '^CI28\n^PW$width\n^LL$height\n^PR$speed\n^MD$density\n' +
-        '^LH${origin.dx * ratio},${origin.dy * ratio}\n';
+    _commandString +=
+        '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n^PR$speed\n^MD$density\n' +
+            '^LH${origin.dx * ratio},${origin.dy * ratio}\n';
     _bytes += _commandString.codeUnits;
   }
 
@@ -139,7 +140,7 @@ class ZPLPrinter {
     int radius = 0,
   }) async {
     _commandString += '^FO${x * ratio},${y * ratio}' +
-        '^GB${width * ratio},${height * ratio},${thickness * ratio},$color,$radius\n';
+        '^GB${width * ratio},${height * ratio},${thickness},$color,$radius\n';
     _bytes += _commandString.codeUnits;
   }
 
