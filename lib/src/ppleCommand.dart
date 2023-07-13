@@ -18,8 +18,8 @@ class PPLEPrinter {
 
   String _commandString = '';
 
-  String _startTag = 'N<CR><LE>';
-  String _endTag = 'W1<CR><LE>';
+  String _startTag = 'N\r\n';
+  String _endTag = 'W1\r\n';
 
   // todo 如果记录一个高度值，是否更加方便计算？？？
 
@@ -57,8 +57,8 @@ class PPLEPrinter {
   }) async {
     ratio = printerRatio; // 全部保存，计算是需要用到
     _commandString +=
-        'q${width * ratio}<CR><LE>Q${height * ratio},${gap * ratio}<CR><LE>' +
-            'S$speed<CR><LE>R${origin.dx * ratio},${origin.dy * ratio}<CR><LE>';
+        'q${width * ratio}\r\nQ${height * ratio},${gap * ratio}\r\n' +
+            'S$speed\r\nR${origin.dx * ratio},${origin.dy * ratio}\r\n';
     _bytes += _commandString.codeUnits;
   }
 
@@ -109,7 +109,7 @@ class PPLEPrinter {
 
     String textInfo =
         'T${x * ratio},${y * ratio},$turnChar,${style.fontFamily},' +
-            '${style.scaleX},${style.scaleY},N,$text<CR><LE>';
+            '${style.scaleX},${style.scaleY},N,$text\r\n';
     _commandString += textInfo;
     List<int> texHex = textInfo.codeUnits;
     _bytes += texHex;
