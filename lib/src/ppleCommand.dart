@@ -56,6 +56,7 @@ class PPLEPrinter {
     int speed = 3,
   }) async {
     ratio = printerRatio; // 全部保存，计算是需要用到
+    _bytes += _startTag.codeUnits;
     // _commandString +=
     //     'q${width * ratio}\r\nQ${height * ratio},${gap * ratio}\r\n' +
     //         'S$speed\r\nR${origin.dx * ratio},${origin.dy * ratio}\r\n';
@@ -64,6 +65,7 @@ class PPLEPrinter {
 
   Future<void> builder() async {
     String fullCommand = _startTag + _commandString + _endTag;
+    _bytes += _endTag.codeUnits;
     log('\n' + fullCommand, name: '完整指令集');
   }
 
