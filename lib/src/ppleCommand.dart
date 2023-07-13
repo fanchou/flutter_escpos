@@ -109,7 +109,7 @@ class PPLEPrinter {
 
     String textInfo =
         'T${x * ratio},${y * ratio},$turnChar,${style.fontFamily},' +
-            '${style.scaleX},${style.scaleY},N,$text\r\n';
+            '${style.scaleX},${style.scaleY},N,"$text"\r\n';
     _commandString += textInfo;
     List<int> texHex = textInfo.codeUnits;
     _bytes += texHex;
