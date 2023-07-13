@@ -137,8 +137,8 @@ class PPLEPrinter {
     String color = 'B',
     int radius = 0,
   }) async {
-    _commandString += '^FO${x * ratio},${y * ratio}' +
-        '^GB${width * ratio},${height * ratio},${thickness},$color,$radius^FS\n';
+    _commandString +=
+        'X${x * ratio},${y * ratio},$thickness,${(x + width) * ratio},${(y + height) * ratio}\r\n';
     _bytes += _commandString.codeUnits;
   }
 
@@ -153,7 +153,7 @@ class PPLEPrinter {
       其他值: 1(原始型)
    * @param scale      放大因子
       默认值:2(200dpi 机器)/3(300dpi 机器)
-      其他值:1 到 10
+      其他值:1 到 9
    * @param quality    纠错率
       默认值:Q(参数为空)/M(参数非法)
       其他值:H = 超高纠错等级
@@ -169,16 +169,14 @@ class PPLEPrinter {
     int x,
     int y,
     String content, {
-    String turn = 'N',
+    String turn = '0',
     int model = 2,
-    int scale = 2,
-    String quality = 'Q',
-    int mask = 7,
+    int scale = 5,
+    String quality = '2',
+    int mask = 0,
   }) async {
-    _commandString += '^FO${x * ratio},${y * ratio}' +
-        '^BQ$turn,$model,$scale,$quality,$mask\n';
-    String text = '^FDMM,A$content^FS\n';
-    _commandString += text;
+    _commandString +=
+        'b${x * ratio},${y * ratio},QR,0,0,o$turn,r$scale,m$model,g$quality,s$mask,"$content"\r\n';
     _bytes += _commandString.codeUnits;
   }
 
@@ -204,10 +202,10 @@ class PPLEPrinter {
       其他值: Y = 打印在条码上方
    */
   Future<void> barCode(int x, int y, BarcodeType type, String content,
-      {String turn = 'N',
+      {String turn = '0',
       String check = 'N',
       int height = 40,
-      String isShowCode = 'Y',
+      String isShowCode = 'B',
       String isBelow = 'N'}) async {
     String _pre;
     switch (type) {
@@ -215,32 +213,33 @@ class PPLEPrinter {
         _pre = '^B1$turn,$check,$height,$isShowCode,$isBelow';
         break;
       case BarcodeType.CODE39:
-        _pre = '^B3$turn,$check,$height,$isShowCode,$isBelow';
+        _pre = '3';
         break;
       case BarcodeType.CODE49:
         _pre = '^B4$turn,$height,$isShowCode,A';
         break;
       case BarcodeType.CODE93:
-        _pre = '^BA$turn,$height,$isShowCode,$isBelow,$check';
+        _pre = '9';
         break;
       case BarcodeType.CODE128:
-        _pre = '^BC$turn,$height,$isShowCode,$isBelow,$check,N';
+        _pre = '1';
         break;
       case BarcodeType.EAN8:
-        _pre = '^B8$turn,$height,$isBelow';
+        _pre = 'E80';
         break;
       case BarcodeType.EAN13:
-        _pre = '^BE$turn,$height,$isShowCode,$isBelow';
+        _pre = 'E30';
         break;
       case BarcodeType.UPCA:
-        _pre = '^BU$turn,$height,$isShowCode,$isBelow,$check';
+        _pre = 'UA0';
         break;
       case BarcodeType.UPCE:
-        _pre = '^B9$turn,$height,$isShowCode,$isBelow,$check';
+        _pre = 'UE0';
         break;
     }
 
-    String command = '^FO${x * ratio},${y * ratio}$_pre\n^FDMM,A$content^FS\n';
+    String command =
+        'B${x * ratio},${y * ratio},$turn,$_pre,3,5,$height,$isShowCode,"$content"\r\n';
     _commandString += command;
     _bytes += _commandString.codeUnits;
   }
