@@ -111,7 +111,7 @@ class PPLEPrinter {
         'T${x * ratio},${y * ratio},$turnChar,${style.fontFamily},' +
             '${style.scaleX},${style.scaleY},N,$text<CR><LE>';
     _commandString += textInfo;
-    List<int> texHex = utf8.encode(textInfo);
+    List<int> texHex = textInfo.codeUnits;
     _bytes += texHex;
   }
 
