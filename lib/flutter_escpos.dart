@@ -3,6 +3,7 @@ library flutter_escpos;
 export './src/printer.dart';
 export './src/tscCommand.dart';
 export './src/zplCommand.dart';
+export './src/ppleCommand.dart';
 export './src/adapter/usbAdapter.dart';
 export './src/adapter/usb_printer_manager.dart';
 export './src/adapter/networkAdapter.dart';
