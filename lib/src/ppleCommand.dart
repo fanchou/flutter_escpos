@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:hex/hex.dart';
-
+import 'package:fast_gbk/fast_gbk.dart';
 import 'textStyle.dart';
 
 /// Copyright (C), 2019-2023, 深圳新语网络科技有限公司
@@ -113,7 +113,7 @@ class PPLEPrinter {
         'T${x * ratio},${y * ratio},$turnChar,${style.fontFamily},' +
             '${style.scaleX},${style.scaleY},N,"$text"\r\n';
     _commandString += textInfo;
-    List<int> texHex = utf8.encode(textInfo);
+    List<int> texHex = gbk.encode(textInfo);
     _bytes += texHex;
   }
 
