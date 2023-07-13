@@ -18,8 +18,8 @@ class PPLEPrinter {
 
   String _commandString = '';
 
-  String _startTag = 'N\n';
-  String _endTag = 'W1\n';
+  String _startTag = 'N<CR><LE>';
+  String _endTag = 'W1<CR><LE>';
 
   // todo 如果记录一个高度值，是否更加方便计算？？？
 
