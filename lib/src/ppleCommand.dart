@@ -57,10 +57,10 @@ class PPLEPrinter {
   }) async {
     ratio = printerRatio; // 全部保存，计算是需要用到
     _bytes += _startTag.codeUnits;
-    // _commandString +=
-    //     'q${width * ratio}\r\nQ${height * ratio},${gap * ratio}\r\n' +
-    //         'S$speed\r\nR${origin.dx * ratio},${origin.dy * ratio}\r\n';
-    // _bytes += _commandString.codeUnits;
+    _commandString +=
+        'q${width * ratio}\r\nQ${height * ratio},${gap * ratio}\r\n' +
+            'S$speed\r\nR${origin.dx * ratio},${origin.dy * ratio}\r\n';
+    _bytes += _commandString.codeUnits;
   }
 
   Future<void> builder() async {
@@ -113,7 +113,7 @@ class PPLEPrinter {
         'T${x * ratio},${y * ratio},$turnChar,${style.fontFamily},' +
             '${style.scaleX},${style.scaleY},N,"$text"\r\n';
     _commandString += textInfo;
-    List<int> texHex = textInfo.codeUnits;
+    List<int> texHex = utf8.encode(textInfo);
     _bytes += texHex;
   }
 
