@@ -56,10 +56,10 @@ class PPLEPrinter {
     int speed = 3,
   }) async {
     ratio = printerRatio; // 全部保存，计算是需要用到
-    _commandString +=
-        'q${width * ratio}\r\nQ${height * ratio},${gap * ratio}\r\n' +
-            'S$speed\r\nR${origin.dx * ratio},${origin.dy * ratio}\r\n';
-    _bytes += _commandString.codeUnits;
+    // _commandString +=
+    //     'q${width * ratio}\r\nQ${height * ratio},${gap * ratio}\r\n' +
+    //         'S$speed\r\nR${origin.dx * ratio},${origin.dy * ratio}\r\n';
+    // _bytes += _commandString.codeUnits;
   }
 
   Future<void> builder() async {
