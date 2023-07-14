@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:flutter_escpos/src/laberAdapter/pple_adapter.dart';
 import 'package:hex/hex.dart';
 
+import 'enums/label_enums.dart';
+import 'labelprinter.dart';
 import 'textStyle.dart';
 
 /// Copyright (C), 2019-2023, 深圳新语网络科技有限公司
@@ -91,16 +94,16 @@ class ZPLPrinter {
 
     // 旋转方向
     switch (style.turn) {
-      case ZPLTurn.Inverted:
+      case Turn.turn270:
         turnChar = 'I';
         break;
-      case ZPLTurn.Roated:
+      case Turn.turn90:
         turnChar = 'R';
         break;
-      case ZPLTurn.Bottom:
+      case Turn.turn180:
         turnChar = 'B';
         break;
-      case ZPLTurn.Normal:
+      case Turn.turn0:
         turnChar = 'N';
         break;
     }
@@ -263,4 +266,6 @@ class ZPLPrinter {
       _bytes += _commandString.codeUnits;
     });
   }
+
+  LabelPrinter p = LabelPrinter(PPLEAdapter());
 }

@@ -1,3 +1,5 @@
+import 'enums/label_enums.dart';
+
 /// Copyright (C), 2019-2023, 深圳新语网络科技有限公司
 /// FileName: textStyle.dart
 /// Author: zhoufan
@@ -13,7 +15,7 @@ class TextStyles {
     this.fontFamily = '7', // todo 这个是不靠谱的，不同打印机可能是不同的
     this.scaleX = 24,
     this.scaleY = 24,
-    this.turn = ZPLTurn.Normal,
+    this.turn = Turn.turn0,
   });
 
   // 字体类型
@@ -27,24 +29,8 @@ class TextStyles {
   final int scaleY;
 
   // 旋转方向
-  final ZPLTurn turn;
+  final Turn turn;
 }
 
 // 对齐方式
 enum ZPLAlign { Left, Right, Auto }
-
-// 旋转方向 正常、90、180、270
-enum ZPLTurn { Normal, Roated, Inverted, Bottom }
-
-// 条码类型
-enum BarcodeType {
-  CODE11,
-  CODE39,
-  CODE49,
-  CODE93,
-  CODE128,
-  EAN8,
-  EAN13,
-  UPCA,
-  UPCE
-}

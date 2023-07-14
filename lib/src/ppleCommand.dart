@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:hex/hex.dart';
 import 'package:fast_gbk/fast_gbk.dart';
+import 'enums/label_enums.dart';
 import 'textStyle.dart';
 
 /// Copyright (C), 2019-2023, 深圳新语网络科技有限公司
@@ -95,16 +96,16 @@ class PPLEPrinter {
 
     // 旋转方向
     switch (style.turn) {
-      case ZPLTurn.Inverted:
+      case Turn.turn270:
         turnChar = '3';
         break;
-      case ZPLTurn.Roated:
+      case Turn.turn90:
         turnChar = '1';
         break;
-      case ZPLTurn.Bottom:
+      case Turn.turn180:
         turnChar = '2';
         break;
-      case ZPLTurn.Normal:
+      case Turn.turn0:
         turnChar = '0';
         break;
     }
