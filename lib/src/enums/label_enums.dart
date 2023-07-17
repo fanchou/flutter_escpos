@@ -10,7 +10,7 @@ enum LabelAlign { Left, Right, Auto }
 // 旋转方向 正常、90、180、270
 enum Turn { turn0, turn90, turn180, turn270 }
 
-enum CommandType { TSC, ZPL, PPLE }
+enum CommandType { TSC, ZPL, PPLE, CPCL }
 
 // 条码类型
 enum BarcodeType {

@@ -1,18 +1,18 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:flutter_escpos/src/enums/label_enums.dart';
 import 'package:flutter_escpos/src/textStyle.dart';
-import 'package:fast_gbk/fast_gbk.dart';
-import '../enums/label_enums.dart';
 import '../label_interface.dart';
 
 /// Copyright (C), 2019-2023, 深圳新语网络科技有限公司
-/// FileName: pple_adapter
+/// FileName: zpl_adapter
 /// Author: zhoufan
-/// Date: 2023/7/14 11:16
+/// Date: 2023/7/15 00:34
 /// Description:
 
-class PPLEAdapter implements LabelInterFace {
+class ZPLAdapter implements LabelInterFace {
   @override
   List<int> bytes = [];
 
@@ -20,22 +20,22 @@ class PPLEAdapter implements LabelInterFace {
   String commandString = '';
 
   @override
-  String endTag = 'W1\r\n';
+  String endTag = '^XZ\n';
 
   @override
   int ratio;
 
   @override
-  String startTag = 'N\r\n';
+  String startTag = '^XA\n';
 
   @override
-  CommandType type = CommandType.PPLE;
+  CommandType type;
 
   @override
   Future<void> bLine(int startX, int startY, int endX, int endY,
       {int thickness = 1, String color = 'B'}) async {
-    commandString +=
-        'LS${startX * ratio},${startY * ratio},$thickness,${endX * ratio},${endY * ratio}\r\n';
+    commandString += '^FO${startX * ratio},${startX * ratio}\n' +
+        '^GD${(endX - startX) * ratio},${(endY - startY) * ratio},${thickness},$color,R^FS\n';
     bytes += commandString.codeUnits;
   }
 
@@ -49,36 +49,35 @@ class PPLEAdapter implements LabelInterFace {
     String _pre;
     switch (type) {
       case BarcodeType.CODE11:
-        _pre = '';
+        _pre = '^B1$turn,$check,$height,$isShowCode,$isBelow';
         break;
       case BarcodeType.CODE39:
-        _pre = '3';
+        _pre = '^B3$turn,$check,$height,$isShowCode,$isBelow';
         break;
       case BarcodeType.CODE49:
-        _pre = '';
+        _pre = '^B4$turn,$height,$isShowCode,A';
         break;
       case BarcodeType.CODE93:
-        _pre = '9';
+        _pre = '^BA$turn,$height,$isShowCode,$isBelow,$check';
         break;
       case BarcodeType.CODE128:
-        _pre = '1';
+        _pre = '^BC$turn,$height,$isShowCode,$isBelow,$check,N';
         break;
       case BarcodeType.EAN8:
-        _pre = 'E80';
+        _pre = '^B8$turn,$height,$isBelow';
         break;
       case BarcodeType.EAN13:
-        _pre = 'E30';
+        _pre = '^BE$turn,$height,$isShowCode,$isBelow';
         break;
       case BarcodeType.UPCA:
-        _pre = 'UA0';
+        _pre = '^BU$turn,$height,$isShowCode,$isBelow,$check';
         break;
       case BarcodeType.UPCE:
-        _pre = 'UE0';
+        _pre = '^B9$turn,$height,$isShowCode,$isBelow,$check';
         break;
     }
 
-    String command =
-        'B${x * ratio},${y * ratio},$turn,$_pre,3,5,$height,$isShowCode,"$content"\r\n';
+    String command = '^FO${x * ratio},${y * ratio}$_pre\n^FDMM,A$content^FS\n';
     commandString += command;
     bytes += commandString.codeUnits;
   }
@@ -90,22 +89,30 @@ class PPLEAdapter implements LabelInterFace {
       int thickness = 1,
       String color = 'B',
       int radius = 0}) async {
-    commandString +=
-        'X${x * ratio},${y * ratio},$thickness,${(x + width) * ratio},${(y + height) * ratio}\r\n';
+    commandString += '^FO${x * ratio},${y * ratio}' +
+        '^GB${width * ratio},${height * ratio},${thickness},$color,$radius^FS\n';
     bytes += commandString.codeUnits;
+  }
+
+  @override
+  Future<void> builder() async {
+    commandString += endTag;
+    bytes += endTag.codeUnits;
+    // TODO 最好debug模式下才开启
+    log('\n' + commandString, name: '完整指令集');
+  }
+
+  @override
+  clearBuffer() {
+    commandString = '';
+    bytes = [];
   }
 
   @override
   Future<void> hLine(int x, int y,
       {double width = 1, int thickness = 1, String color = 'B'}) async {
-    if (color == 'B') {
-      commandString +=
-          'LO${x * ratio},${y * ratio},${width * ratio},$thickness\r\n';
-    } else {
-      commandString +=
-          'LW${x * ratio},${y * ratio},${width * ratio},$thickness\r\n';
-    }
-
+    commandString += '^FO${x * ratio},${y * ratio}' +
+        '^GB${width * ratio},0,${thickness},$color,0^FS\n';
     bytes += commandString.codeUnits;
   }
 
@@ -123,74 +130,59 @@ class PPLEAdapter implements LabelInterFace {
       int scale = 2,
       String quality = 'Q',
       int mask = 7}) async {
-    // todo 这里需要进一步抽象
-    commandString +=
-        'b${x * ratio},${y * ratio},QR,0,0,o$turn,r$scale,m$model,g$quality,s$mask,"$content"\r\n';
+    commandString += '^FO${x * ratio},${y * ratio}' +
+        '^BQ$turn,$model,$scale,$quality,$mask\n';
+    String text = '^FDMM,A$content^FS\n';
+    commandString += text;
     bytes += commandString.codeUnits;
   }
 
   @override
   Future<void> setup(num width, num height, int pRatio,
       {int gap, int density, int speed, Offset origin}) async {
-    ratio = pRatio; // 全部保存，计算是需要用到
+    ratio = pRatio;
     commandString += startTag;
-    commandString +=
-        'q${width * ratio}\r\nQ${height * ratio},${gap * ratio}\r\n' +
-            'S$speed\r\nR${origin.dx * ratio},${origin.dy * ratio}\r\n';
+    commandString += '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n' +
+        '^PR$speed\n^MD$density\n^LH${origin.dx * ratio},${origin.dy * ratio}\n';
     bytes += commandString.codeUnits;
   }
 
   @override
   Future<void> text(int x, int y, String text, {TextStyles style}) async {
+    if (style == null) {
+      style = TextStyles();
+    }
+
     String turnChar;
 
     // 旋转方向
     switch (style.turn) {
       case Turn.turn270:
-        turnChar = '3';
+        turnChar = 'I';
         break;
       case Turn.turn90:
-        turnChar = '1';
+        turnChar = 'R';
         break;
       case Turn.turn180:
-        turnChar = '2';
+        turnChar = 'B';
         break;
       case Turn.turn0:
-        turnChar = '0';
+        turnChar = 'N';
         break;
     }
 
-    String textInfo =
-        'T${x * ratio},${y * ratio},$turnChar,${style.fontFamily},' +
-            '${style.scaleX},${style.scaleY},N,"$text"\r\n';
+    String textInfo = '^FO${x * ratio},${y * ratio}' +
+        '^A${style.fontFamily},$turnChar,${style.scaleY},${style.scaleX}^FD$text^FS\n';
     commandString += textInfo;
-    List<int> texHex = gbk.encode(textInfo);
+    List<int> texHex = utf8.encode(textInfo);
     bytes += texHex;
   }
 
   @override
   Future<void> vLine(int x, int y,
       {double height = 1, int thickness = 1, String color = 'B'}) async {
-    if (color == 'B') {
-      commandString +=
-          'LO${x * ratio},${y * ratio},$thickness,${height * ratio}\r\n';
-    } else {
-      'LW${x * ratio},${y * ratio},$thickness,${height * ratio}\r\n';
-    }
-
+    commandString += '^FO${x * ratio},${y * ratio}' +
+        '^GB0,${height * ratio},${thickness},$color,0^FS\n';
     bytes += commandString.codeUnits;
-  }
-
-  @override
-  Future<void> builder() async {
-    commandString += endTag;
-    bytes += endTag.codeUnits;
-    log('\n' + commandString, name: '完整指令集');
-  }
-
-  @override
-  clearBuffer() {
-    commandString = '';
-    bytes = [];
   }
 }

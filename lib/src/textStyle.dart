@@ -16,6 +16,8 @@ class TextStyles {
     this.scaleX = 24,
     this.scaleY = 24,
     this.turn = Turn.turn0,
+    this.isBold = false,
+    this.inverse = false,
   });
 
   // 字体类型
@@ -30,6 +32,12 @@ class TextStyles {
 
   // 旋转方向
   final Turn turn;
+
+  // 是否加粗
+  final bool isBold;
+
+  // 是否反色
+  final bool inverse;
 }
 
 // 对齐方式
