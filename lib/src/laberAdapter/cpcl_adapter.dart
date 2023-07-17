@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_escpos/src/enums/label_enums.dart';
 
 import 'package:flutter_escpos/src/textStyle.dart';
@@ -37,13 +38,16 @@ class CPCLAdapter implements LabelInterFace {
   @override
   Future<void> bLine(int startX, int startY, int endX, int endY,
       {int thickness = 1, String color = 'B'}) async {
+    String message;
     if (color == 'B') {
-      commandString +=
+      message =
           'LINE ${startX * ratio} ${startY * ratio} ${endX * ratio} ${endY * ratio} $thickness\r\n';
     } else {
-      commandString +=
+      commandString =
           'INVERSE-LINE ${startX * ratio} ${startY * ratio} ${endX * ratio} ${endY * ratio} $thickness\r\n';
     }
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -95,10 +99,10 @@ class CPCLAdapter implements LabelInterFace {
         break;
     }
 
-    String command =
+    String message =
         '$_turnString $_type 2 2 $height ${x * ratio} ${y * ratio} $content\r\n';
-    commandString += command;
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -108,35 +112,43 @@ class CPCLAdapter implements LabelInterFace {
       int thickness = 1,
       String color = 'B',
       int radius = 0}) async {
-    commandString +=
+    String message;
+    message =
         'BOX ${x * ratio} ${y * ratio} ${(x + width) * ratio} ${(y + height) * ratio} $thickness\r\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
   Future<void> builder() async {
     commandString += endTag;
     bytes += endTag.codeUnits;
-    // TODO 最好debug模式下才开启
-    log('\n' + commandString, name: '完整指令集');
+    if (kDebugMode) {
+      log('\n' + commandString, name: '完整指令集');
+    }
   }
 
   @override
   clearBuffer() {
-    // TODO: implement clearBuffer
-    throw UnimplementedError();
+    commandString = '';
+    bytes = [];
   }
 
   @override
   Future<void> hLine(int x, int y,
       {double width = 1, int thickness = 1, String color = 'B'}) async {
+    String message;
     if (color == 'B') {
-      commandString +=
+      message =
           'LINE ${x * ratio} ${y * ratio} ${(x + width) * ratio} $y $thickness\r\n';
+      commandString += message;
+      bytes += message.codeUnits;
     } else {
-      commandString +=
+      message =
           'INVERSE-LINE ${x * ratio} ${y * ratio} ${(x + width) * ratio} $y $thickness\r\n';
     }
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -153,30 +165,35 @@ class CPCLAdapter implements LabelInterFace {
       int scale = 6,
       String quality = 'Q',
       int mask = 7}) async {
+    String message;
     commandString += 'B QR ${x * ratio} ${y * ratio} M $model U $scale\r\n' +
         '$quality $mask MA,$content\r\nENDQR\r\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
   Future<void> setup(num width, num height, int pRatio,
       {int gap, int density = 0, int speed = 3, Offset origin}) async {
     int DPI = 203;
+    String message;
     if (pRatio == 8) {
       DPI = 203;
     }
 
     ratio = pRatio; // 全部保存，计算是需要用到
-    commandString += '!0 $DPI $DPI 1\r\n' +
+    message = '!0 $DPI $DPI 1\r\n' +
         'PAGE-WIDTH ${width * ratio}\r\n' +
         'SPEED $speed\r\n' +
         'CONTRAST $density\r\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
   Future<void> text(int x, int y, String text, {TextStyles style}) async {
     String turnChar;
+    String message;
     // 旋转方向
     switch (style.turn) {
       case Turn.turn270:
@@ -210,25 +227,31 @@ class CPCLAdapter implements LabelInterFace {
     }
 
     if (!style.isBold) {
-      commandString += 'SETBOLD 0\r\n' +
+      message = 'SETBOLD 0\r\n' +
           'SETMAG ${style.scaleX} ${style.scaleY}\r\n' +
           '$turnChar ${style.fontFamily} 0 ${x * ratio} ${y * ratio} $text\r\n';
     } else {
-      commandString += 'SETBOLD 2\r\n' +
+      message = 'SETBOLD 2\r\n' +
           'SETMAG ${style.scaleX} ${style.scaleY}\r\n' +
           '$turnChar ${style.fontFamily} 0 ${x * ratio} ${y * ratio} $text\r\n';
     }
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
   Future<void> vLine(int x, int y,
       {double height = 1, int thickness = 1, String color = 'B'}) async {
+    String message;
     if (color == 'B') {
-      commandString +=
+      message =
           'LINE ${x * ratio} ${y * ratio} ${x * ratio} ${(y + height) * ratio} $thickness\r\n';
     } else {
-      commandString +=
+      message =
           'INVERSE-LINE ${x * ratio} ${y * ratio} ${x * ratio} ${(y + height) * ratio} $thickness\r\n';
     }
+
+    commandString += message;
+    bytes += message.codeUnits;
   }
 }
