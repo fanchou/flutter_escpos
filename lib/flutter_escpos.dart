@@ -14,3 +14,4 @@ export './src/model/usb_printer.dart';
 export './src/model/network_printer.dart';
 export './src/model/pos_printer.dart';
 export './src/printScriptUtil.dart';
+export './src/labelprinter.dart';
