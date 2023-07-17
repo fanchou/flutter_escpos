@@ -162,7 +162,7 @@ class CPCLAdapter implements LabelInterFace {
   Future<void> setup(num width, num height, int pRatio,
       {int gap, int density = 0, int speed = 3, Offset origin}) async {
     ratio = pRatio; // 全部保存，计算是需要用到
-    commandString += '! 0 ${width * ratio} ${height * ratio} 1\r\n' +
+    commandString += '!0 ${width * ratio} ${height * ratio} 1\r\n' +
         'SPEED $speed\r\n' +
         'CONTRAST $density\r\n';
     bytes += commandString.codeUnits;
