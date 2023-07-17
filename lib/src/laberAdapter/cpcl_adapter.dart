@@ -186,6 +186,7 @@ class CPCLAdapter implements LabelInterFace {
         'PAGE-WIDTH ${width * ratio}\r\n' +
         'SPEED $speed\r\n' +
         'CONTRAST $density\r\n';
+    log(message, name: '初始化指令');
     commandString += message;
     bytes += message.codeUnits;
   }
