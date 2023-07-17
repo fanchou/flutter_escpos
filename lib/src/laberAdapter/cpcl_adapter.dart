@@ -182,7 +182,7 @@ class CPCLAdapter implements LabelInterFace {
     }
 
     ratio = pRatio; // 全部保存，计算是需要用到
-    message = '!0 $DPI $DPI 1\r\n' +
+    message = '! 0 $DPI $DPI 1\r\n' +
         'PAGE-WIDTH ${width * ratio}\r\n' +
         'SPEED $speed\r\n' +
         'CONTRAST $density\r\n';
