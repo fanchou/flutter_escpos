@@ -23,7 +23,7 @@ class CPCLAdapter implements LabelInterFace {
   String commandString = '';
 
   @override
-  String endTag = 'PRINT\r';
+  String endTag = 'PRINT\r\n';
 
   @override
   int ratio;
@@ -39,10 +39,10 @@ class CPCLAdapter implements LabelInterFace {
       {int thickness = 1, String color = 'B'}) async {
     if (color == 'B') {
       commandString +=
-          'LINE ${startX * ratio} ${startY * ratio} ${endX * ratio} ${endY * ratio} $thickness\n';
+          'LINE ${startX * ratio} ${startY * ratio} ${endX * ratio} ${endY * ratio} $thickness\r\n';
     } else {
       commandString +=
-          'INVERSE-LINE ${startX * ratio} ${startY * ratio} ${endX * ratio} ${endY * ratio} $thickness\n';
+          'INVERSE-LINE ${startX * ratio} ${startY * ratio} ${endX * ratio} ${endY * ratio} $thickness\r\n';
     }
   }
 
@@ -96,7 +96,7 @@ class CPCLAdapter implements LabelInterFace {
     }
 
     String command =
-        '$_turnString $_type 2 2 $height ${x * ratio} ${y * ratio} $content\n';
+        '$_turnString $_type 2 2 $height ${x * ratio} ${y * ratio} $content\r\n';
     commandString += command;
     bytes += commandString.codeUnits;
   }
@@ -109,7 +109,7 @@ class CPCLAdapter implements LabelInterFace {
       String color = 'B',
       int radius = 0}) async {
     commandString +=
-        'BOX ${x * ratio} ${y * ratio} ${(x + width) * ratio} ${(y + height) * ratio} $thickness\n';
+        'BOX ${x * ratio} ${y * ratio} ${(x + width) * ratio} ${(y + height) * ratio} $thickness\r\n';
     bytes += commandString.codeUnits;
   }
 
@@ -132,10 +132,10 @@ class CPCLAdapter implements LabelInterFace {
       {double width = 1, int thickness = 1, String color = 'B'}) async {
     if (color == 'B') {
       commandString +=
-          'LINE ${x * ratio} ${y * ratio} ${(x + width) * ratio} $y $thickness\n';
+          'LINE ${x * ratio} ${y * ratio} ${(x + width) * ratio} $y $thickness\r\n';
     } else {
       commandString +=
-          'INVERSE-LINE ${x * ratio} ${y * ratio} ${(x + width) * ratio} $y $thickness\n';
+          'INVERSE-LINE ${x * ratio} ${y * ratio} ${(x + width) * ratio} $y $thickness\r\n';
     }
   }
 
@@ -153,8 +153,8 @@ class CPCLAdapter implements LabelInterFace {
       int scale = 6,
       String quality = 'Q',
       int mask = 7}) async {
-    commandString += 'B QR ${x * ratio} ${y * ratio} M $model U $scale\r' +
-        '$quality $mask MA,$content\rENDQR\n';
+    commandString += 'B QR ${x * ratio} ${y * ratio} M $model U $scale\r\n' +
+        '$quality $mask MA,$content\r\nENDQR\r\n';
     bytes += commandString.codeUnits;
   }
 
@@ -162,9 +162,9 @@ class CPCLAdapter implements LabelInterFace {
   Future<void> setup(num width, num height, int pRatio,
       {int gap, int density = 0, int speed = 3, Offset origin}) async {
     ratio = pRatio; // 全部保存，计算是需要用到
-    commandString += '! 0 ${width * ratio} ${height * ratio} 1\n' +
-        'SPEED $speed\n' +
-        'CONTRAST $density\n';
+    commandString += '! 0 ${width * ratio} ${height * ratio} 1\r\n' +
+        'SPEED $speed\r\n' +
+        'CONTRAST $density\r\n';
     bytes += commandString.codeUnits;
   }
 
@@ -204,13 +204,13 @@ class CPCLAdapter implements LabelInterFace {
     }
 
     if (!style.isBold) {
-      commandString += 'SETBOLD 0\n' +
-          'SETMAG ${style.scaleX} ${style.scaleY}\n' +
-          '$turnChar ${style.fontFamily} 0 ${x * ratio} ${y * ratio} $text\n';
+      commandString += 'SETBOLD 0\r\n' +
+          'SETMAG ${style.scaleX} ${style.scaleY}\r\n' +
+          '$turnChar ${style.fontFamily} 0 ${x * ratio} ${y * ratio} $text\r\n';
     } else {
-      commandString += 'SETBOLD 2\n' +
-          'SETMAG ${style.scaleX} ${style.scaleY}\n' +
-          '$turnChar ${style.fontFamily} 0 ${x * ratio} ${y * ratio} $text\n';
+      commandString += 'SETBOLD 2\r\n' +
+          'SETMAG ${style.scaleX} ${style.scaleY}\r\n' +
+          '$turnChar ${style.fontFamily} 0 ${x * ratio} ${y * ratio} $text\r\n';
     }
   }
 
@@ -219,10 +219,10 @@ class CPCLAdapter implements LabelInterFace {
       {double height = 1, int thickness = 1, String color = 'B'}) async {
     if (color == 'B') {
       commandString +=
-          'LINE ${x * ratio} ${y * ratio} ${x * ratio} ${(y + height) * ratio} $thickness\n';
+          'LINE ${x * ratio} ${y * ratio} ${x * ratio} ${(y + height) * ratio} $thickness\r\n';
     } else {
       commandString +=
-          'INVERSE-LINE ${x * ratio} ${y * ratio} ${x * ratio} ${(y + height) * ratio} $thickness\n';
+          'INVERSE-LINE ${x * ratio} ${y * ratio} ${x * ratio} ${(y + height) * ratio} $thickness\r\n';
     }
   }
 }
