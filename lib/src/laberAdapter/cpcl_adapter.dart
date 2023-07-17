@@ -1,13 +1,9 @@
 import 'dart:developer';
-import 'dart:typed_data';
-
 import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
+import 'package:fast_gbk/fast_gbk.dart';
 import 'package:flutter_escpos/src/enums/label_enums.dart';
-
 import 'package:flutter_escpos/src/textStyle.dart';
-
 import '../label_interface.dart';
 
 /// Copyright (C), 2019-2023, 深圳新语网络科技有限公司
@@ -237,7 +233,7 @@ class CPCLAdapter implements LabelInterFace {
           '$turnChar ${style.fontFamily} 0 ${x * ratio} ${y * ratio} $text\r\n';
     }
     commandString += message;
-    bytes += message.codeUnits;
+    bytes += gbk.encode(message);
   }
 
   @override
