@@ -161,8 +161,14 @@ class CPCLAdapter implements LabelInterFace {
   @override
   Future<void> setup(num width, num height, int pRatio,
       {int gap, int density = 0, int speed = 3, Offset origin}) async {
+    int DPI = 203;
+    if (pRatio == 8) {
+      DPI = 203;
+    }
+
     ratio = pRatio; // 全部保存，计算是需要用到
-    commandString += '!0 ${width * ratio} ${height * ratio} 1\r\n' +
+    commandString += '!0 $DPI $DPI 1\r\n' +
+        'PAGE-WIDTH ${width * ratio}\r\n' +
         'SPEED $speed\r\n' +
         'CONTRAST $density\r\n';
     bytes += commandString.codeUnits;
