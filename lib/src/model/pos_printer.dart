@@ -1,3 +1,5 @@
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+
 import '../enums/connection_type.dart';
 
 /// Copyright (C), 2019-2022, 深圳新语网络科技有限公司
@@ -16,6 +18,7 @@ class POSPrinter {
   int productId;
   bool connected;
   int type;
+  BluetoothDevice bluetoothDevice;
   ConnectionType connectionType;
 
   factory POSPrinter.instance() => POSPrinter();
@@ -39,7 +42,6 @@ class POSPrinter {
       'productId': productId
     };
   }
-
 
   POSPrinter({
     this.id,
