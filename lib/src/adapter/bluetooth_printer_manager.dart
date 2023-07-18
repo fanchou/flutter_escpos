@@ -93,7 +93,6 @@ class BluetoothPrinterManager extends PrinterManager {
     cancelTimer();
     if (!_isScanning) return;
     _isScanning = false;
-    scanStream.close();
     _flutterBlue.stopScan();
   }
 
