@@ -131,13 +131,13 @@ class BluetoothPrinterManager extends PrinterManager {
       BluetoothDevice device, List<BluetoothService> services) {
     // 遍历服务
     services.forEach((sItem) {
-      log(sItem.uuid.toString(), name: '遍历服务类型');
+      log(sItem.toString(), name: '遍历服务类型');
       var characteristics = sItem.characteristics;
       // 遍历特征值
       for (BluetoothCharacteristic cItem in characteristics) {
         // 写的特征值
         if (cItem.properties.write && cItem.properties.read) {
-          log("5.0.找到写数据的特征值 >>>>>>name: ${device.name}  characteristicUUID: ${WRITE_DATA_CHARACTERISTIC_UUID.toString()}");
+          log("5.0.找到写数据的特征值 >>>>>>name: ${device.name}  cItem: ${cItem.toString()}");
           WRITE_DATA_SERVICE_UUID = sItem.uuid;
           WRITE_DATA_CHARACTERISTIC_UUID = cItem.uuid;
         } else if (cItem.properties.write &&
@@ -152,7 +152,6 @@ class BluetoothPrinterManager extends PrinterManager {
           log("4.找到读模式的特征值 >>>>>>name: ${device.name}  serviceGuid: ${SET_MODE_SERVICE_UUID.toString()}");
           SET_MODE_SERVICE_UUID = sItem.uuid;
           SET_MODE_CHARACTERISTIC_UUID = cItem.uuid;
-          _writeCharacteristic = cItem; //保存写数据的征值
         }
       }
     });
