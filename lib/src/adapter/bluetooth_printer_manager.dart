@@ -140,6 +140,7 @@ class BluetoothPrinterManager extends PrinterManager {
           log("5.0.找到写数据的特征值 >>>>>>name: ${device.name}  cItem: ${cItem.toString()}");
           WRITE_DATA_SERVICE_UUID = sItem.uuid;
           WRITE_DATA_CHARACTERISTIC_UUID = cItem.uuid;
+          _writeCharacteristic = cItem;
         } else if (cItem.properties.write &&
             !cItem.properties.read &&
             cItem.descriptors.isNotEmpty) {
