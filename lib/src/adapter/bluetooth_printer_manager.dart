@@ -96,6 +96,7 @@ class BluetoothPrinterManager extends PrinterManager {
     if (!_isScanning) return;
     _isScanning = false;
     _flutterBlue.stopScan();
+    _subscription.cancel();
   }
 
   @override
