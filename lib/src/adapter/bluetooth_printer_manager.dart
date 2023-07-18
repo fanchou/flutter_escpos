@@ -102,6 +102,7 @@ class BluetoothPrinterManager extends PrinterManager {
   Future<ConnectionResponse> connect(POSPrinter printer,
       {Duration timeout}) async {
     _printer = printer;
+    _device = printer.bluetoothDevice;
     isConnecting = true;
     log("开始连接 >>>>>>name: ${_device.name}");
     await _device.connect(
@@ -109,6 +110,7 @@ class BluetoothPrinterManager extends PrinterManager {
       autoConnect: false,
     );
     log("连接成功 >>>>>>name: ${_device.name}");
+    _printer.connected = true;
     _discoverServices(_device);
     // todo 最好可以全局保存
     this.isConnected = true;
