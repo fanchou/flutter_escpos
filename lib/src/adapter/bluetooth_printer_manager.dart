@@ -24,9 +24,7 @@ class BluetoothPrinterManager extends PrinterManager {
   Timer _timer = null;
   bool isConnecting = false;
 
-  StreamSubscription<List<ScanResult>> _subscription;
-
-  StreamSubscription<List<ScanResult>> get subscription => _subscription;
+  StreamController<ScanResult> scanStream = StreamController.broadcast();
 
   // 蓝牙单例
   BluetoothPrinterManager._internal();
@@ -56,14 +54,14 @@ class BluetoothPrinterManager extends PrinterManager {
     log("开始扫描设备 >>>>>>");
     if (_isScanning) return;
     _isScanning = true;
-    _subscription = _flutterBlue.scanResults.listen((results) {
+    _flutterBlue.scanResults.listen((results) {
       for (ScanResult item in results) {
         if (_device != null && item.device.id == _device.id) {
           // 自动连接
           stopScan();
           connect(_printer);
         }
-        log(item.toString(), name: '遍历设备');
+        scanStream.add(item);
       }
     });
     _flutterBlue?.startScan(timeout: Duration(seconds: timeout));
@@ -95,8 +93,8 @@ class BluetoothPrinterManager extends PrinterManager {
     cancelTimer();
     if (!_isScanning) return;
     _isScanning = false;
+    scanStream.close();
     _flutterBlue.stopScan();
-    _subscription.cancel();
   }
 
   @override
