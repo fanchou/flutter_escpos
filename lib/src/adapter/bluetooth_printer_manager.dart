@@ -61,7 +61,9 @@ class BluetoothPrinterManager extends PrinterManager {
           stopScan();
           connect(_printer);
         }
-        scanStream.add(item);
+        if (item.device.name != null && item.device.name != '') {
+          scanStream.add(item);
+        }
       }
     });
     _flutterBlue?.startScan(timeout: Duration(seconds: timeout));
