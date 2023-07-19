@@ -234,7 +234,9 @@ class BluetoothPrinterManager extends PrinterManager {
       List<int> packet;
       int offset = 0;
       var buffer = new WriteBuffer();
+      log('分包大小===========$packetSize');
       while (offset < bytes) {
+        log('分包打印： $packet', name: '蓝牙打印');
         buffer = new WriteBuffer();
         packet = data.sublist(offset, math.min(offset + packetSize, bytes));
         offset += packetSize;
@@ -243,9 +245,11 @@ class BluetoothPrinterManager extends PrinterManager {
         });
         final ByteData written = buffer.done();
         final ReadBuffer read = ReadBuffer(written);
-        _writeCharacteristic
-            ?.write(read.getUint8List(packet.length))
-            ?.asStream();
+        await Future.delayed(Duration(milliseconds: 25), () {
+          _writeCharacteristic
+              ?.write(read.getUint8List(packet.length))
+              ?.asStream();
+        });
       }
     }
     return ConnectionResponse.success;
