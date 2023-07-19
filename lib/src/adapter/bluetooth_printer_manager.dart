@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_escpos/src/enums/connection_response.dart';
@@ -224,7 +225,19 @@ class BluetoothPrinterManager extends PrinterManager {
       await connect(_printer);
     }
     // 可能需要切片
-    await _writeCharacteristic?.write(data);
+    int packetSize = (await _device.mtu.first) - 3;
+    int bytes = data.length;
+    int offset = 0;
+    if (bytes < packetSize) {
+      await _writeCharacteristic?.write(data);
+    } else {
+      while (offset < bytes) {
+        List<int> packet;
+        packet = data.sublist(offset, math.min(offset + packetSize, bytes));
+        offset += packetSize;
+        await _writeCharacteristic?.write(packet);
+      }
+    }
     return ConnectionResponse.success;
   }
 }
