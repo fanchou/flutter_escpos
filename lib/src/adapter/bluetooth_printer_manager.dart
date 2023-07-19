@@ -226,30 +226,41 @@ class BluetoothPrinterManager extends PrinterManager {
       await connect(_printer);
     }
     // 可能需要切片
-    int packetSize = (await _device.mtu.first) - 3;
+    int mtu = await _device.mtu.first;
+    var buffer = new WriteBuffer();
     int bytes = data.length;
-    if (bytes < packetSize) {
+    int pos = 0;
+    if (bytes < mtu) {
       await _writeCharacteristic?.write(data);
     } else {
-      List<int> packet;
-      int offset = 0;
-      var buffer = new WriteBuffer();
-      log('分包大小===========$packetSize');
-      while (offset < bytes) {
-        log('分包打印： $packet', name: '蓝牙打印');
+      while (bytes > 0) {
+        List<int> tmp;
         buffer = new WriteBuffer();
-        packet = data.sublist(offset, math.min(offset + packetSize, bytes));
-        offset += packetSize;
-        packet.forEach((element) {
-          buffer.putUint8(element);
-        });
-        final ByteData written = buffer.done();
-        final ReadBuffer read = ReadBuffer(written);
-        await Future.delayed(Duration(milliseconds: 25), () {
-          _writeCharacteristic
-              ?.write(read.getUint8List(packet.length))
-              ?.asStream();
-        });
+        if (bytes > mtu) {
+          tmp = data.sublist(pos, pos + mtu);
+          pos += mtu;
+          bytes -= mtu;
+          tmp.forEach((element) {
+            buffer.putUint8(element);
+          });
+          final ByteData written = buffer.done();
+          final ReadBuffer read = ReadBuffer(written);
+          _writeCharacteristic?.write(read.getUint8List(mtu))?.asStream();
+        } else {
+          Future.delayed(Duration(milliseconds: 25), () {
+            tmp = data.sublist(pos, pos + bytes);
+            pos += bytes;
+            bytes -= bytes;
+            tmp.forEach((element) {
+              buffer.putUint8(element);
+            });
+            final ByteData written = buffer.done();
+            final ReadBuffer read = ReadBuffer(written);
+            _writeCharacteristic
+                ?.write(read.getUint8List(pos % mtu))
+                ?.asStream();
+          });
+        }
       }
     }
     return ConnectionResponse.success;
