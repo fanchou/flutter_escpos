@@ -226,7 +226,7 @@ class BluetoothPrinterManager extends PrinterManager {
       await connect(_printer);
     }
     // 可能需要切片
-    int mtu = await _device.mtu.first;
+    int mtu = (await _device.mtu.first - 3);
     var buffer = new WriteBuffer();
     int bytes = data.length;
     int pos = 0;
