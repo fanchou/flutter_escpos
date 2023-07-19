@@ -102,6 +102,9 @@ class BluetoothPrinterManager extends PrinterManager {
   @override
   Future<ConnectionResponse> connect(POSPrinter printer,
       {Duration timeout}) async {
+    if (isConnected) {
+      return Future<ConnectionResponse>.value(ConnectionResponse.success);
+    }
     _printer = printer;
     _device = printer.bluetoothDevice;
     isConnecting = true;
