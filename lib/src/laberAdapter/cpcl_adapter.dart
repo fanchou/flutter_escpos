@@ -20,7 +20,7 @@ class CPCLAdapter implements LabelInterFace {
   String commandString = '';
 
   @override
-  String endTag = 'PRINT\r\n';
+  String endTag = 'FORM\r\nPRINT\r\n';
 
   @override
   int ratio;
@@ -182,6 +182,7 @@ class CPCLAdapter implements LabelInterFace {
     ratio = pRatio; // 全部保存，计算是需要用到
     message = '! 0 $DPI $DPI ${height * ratio} 1\r\n' +
         'PAGE-WIDTH ${width * ratio}\r\n' +
+        'GAP-SENSE\r\n' +
         'SPEED $speed\r\n' +
         'CONTRAST $density\r\n';
     log(message, name: '初始化指令');
