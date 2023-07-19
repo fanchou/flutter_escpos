@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
@@ -117,7 +118,10 @@ class BluetoothPrinterManager extends PrinterManager {
     );
     log("连接成功 >>>>>>name: ${_device.name}");
     _printer.connected = true;
-    await _requestMtu(_device); //设置MTU
+    // 只有安卓有效
+    if (Platform.isAndroid) {
+      await _requestMtu(_device); //设置MTU
+    }
     _discoverServices(_device);
     // todo 最好可以全局保存
     this.isConnected = true;
