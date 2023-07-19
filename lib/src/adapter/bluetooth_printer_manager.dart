@@ -117,6 +117,7 @@ class BluetoothPrinterManager extends PrinterManager {
     );
     log("连接成功 >>>>>>name: ${_device.name}");
     _printer.connected = true;
+    await _requestMtu(_device); //设置MTU
     _discoverServices(_device);
     // todo 最好可以全局保存
     this.isConnected = true;
@@ -152,7 +153,6 @@ class BluetoothPrinterManager extends PrinterManager {
             cItem.descriptors.isNotEmpty) {
           log("5.0.找到设置模式的特征值 >>>>>>name: ${device.name}  characteristicUUID: ${SET_MODE_CHARACTERISTIC_UUID.toString()}");
           SET_MODE_DESCRIPTOR_UUID = cItem.descriptors[0].uuid;
-          _requestMtu(device); //设置MTU
           _setNotificationMode(device, cItem); //设置为Notification模式(设备主动给手机发数据)
         } else if (!cItem.properties.write && cItem.properties.read) {
           // 读模式
@@ -164,31 +164,12 @@ class BluetoothPrinterManager extends PrinterManager {
     });
   }
 
-  //4.读取特征值(读出设置模式与写数据的特征值)
-  Future<void> _readCharacteristics(
-      BluetoothDevice device, BluetoothService service) async {
-    log(service.characteristics.toString(), name: '读取服务特征值');
-    var characteristics = service.characteristics;
-    for (BluetoothCharacteristic cItem in characteristics) {
-      String cUuid = cItem.uuid.toString();
-      if (cUuid == SET_MODE_CHARACTERISTIC_UUID.toString()) {
-        //找到设置模式的特征值
-        log("5.0.找到设置模式的特征值 >>>>>>name: ${device.name}  characteristicUUID: ${SET_MODE_CHARACTERISTIC_UUID.toString()}");
-        _requestMtu(device); //设置MTU
-        _setNotificationMode(device, cItem); //设置为Notification模式(设备主动给手机发数据)
-      } else if (cUuid == WRITE_DATA_CHARACTERISTIC_UUID.toString()) {
-        //找到写数据的特征值
-        log("5.0.找到写数据的特征值 >>>>>>name: ${device.name}  characteristicUUID: ${WRITE_DATA_CHARACTERISTIC_UUID.toString()}");
-        _writeCharacteristic = cItem; //保存写数据的征值
-      }
-    }
-  }
-
   //4.1.设置MTU
   Future<void> _requestMtu(BluetoothDevice device) async {
     final mtu = await device.mtu.first;
     log("4.1.当前mtu: $mtu 请求设置mtu为512 >>>>>>name: ${device.name}");
-    await device.requestMtu(512);
+    int newMtu = await device.requestMtu(512);
+    log("4.2.设置之后的mtu是多少: $newMtu 请求设置mtu为512 >>>>>>name: ${device.name}");
   }
 
   //4.2.设置为Notification模式(设备主动给手机发数据)，Indication模式需要手机读设备的数据
