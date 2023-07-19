@@ -235,7 +235,9 @@ class BluetoothPrinterManager extends PrinterManager {
       while (offset < bytes) {
         packet = data.sublist(offset, math.min(offset + packetSize, bytes));
         offset += packetSize;
-        await _writeCharacteristic?.write(packet);
+        Future.delayed(Duration(microseconds: 200), () {
+          _writeCharacteristic.write(packet);
+        });
       }
     }
     return ConnectionResponse.success;
