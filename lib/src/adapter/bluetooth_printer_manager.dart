@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_escpos/src/enums/connection_response.dart';
 
@@ -225,19 +226,41 @@ class BluetoothPrinterManager extends PrinterManager {
       await connect(_printer);
     }
     // 可能需要切片
-    int packetSize = (await _device.mtu.first) - 3;
+    int mtu = await _device.mtu.first;
+    var buffer = new WriteBuffer();
     int bytes = data.length;
-    int offset = 0;
-    if (bytes < packetSize) {
+    int pos = 0;
+    if (bytes < mtu) {
       await _writeCharacteristic?.write(data);
     } else {
-      List<int> packet;
-      while (offset < bytes) {
-        packet = data.sublist(offset, math.min(offset + packetSize, bytes));
-        offset += packetSize;
-        await Future.delayed(Duration(microseconds: 200), () {
-          _writeCharacteristic.write(packet);
-        });
+      while (bytes > 0) {
+        List<int> tmp;
+        buffer = new WriteBuffer();
+        if (bytes > mtu) {
+          tmp = data.sublist(pos, pos + mtu);
+          pos += mtu;
+          bytes -= mtu;
+          tmp.forEach((element) {
+            buffer.putUint8(element);
+          });
+          final ByteData written = buffer.done();
+          final ReadBuffer read = ReadBuffer(written);
+          _writeCharacteristic?.write(read.getUint8List(mtu))?.asStream();
+        } else {
+          await Future.delayed(Duration(milliseconds: 25), () {
+            tmp = data.sublist(pos, pos + bytes);
+            pos += bytes;
+            bytes -= bytes;
+            tmp.forEach((element) {
+              buffer.putUint8(element);
+            });
+            final ByteData written = buffer.done();
+            final ReadBuffer read = ReadBuffer(written);
+            _writeCharacteristic
+                ?.write(read.getUint8List(pos % mtu))
+                ?.asStream();
+          });
+        }
       }
     }
     return ConnectionResponse.success;
