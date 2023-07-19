@@ -231,8 +231,8 @@ class BluetoothPrinterManager extends PrinterManager {
     if (bytes < packetSize) {
       await _writeCharacteristic?.write(data);
     } else {
+      List<int> packet;
       while (offset < bytes) {
-        List<int> packet;
         packet = data.sublist(offset, math.min(offset + packetSize, bytes));
         offset += packetSize;
         await _writeCharacteristic?.write(packet);
