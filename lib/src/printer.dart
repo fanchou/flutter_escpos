@@ -1,3 +1,5 @@
+import 'package:flutter_escpos/src/printer_manager.dart';
+
 import '../flutter_escpos.dart';
 import 'model/pos_printer.dart';
 
@@ -6,9 +8,8 @@ import 'model/pos_printer.dart';
 /// Date: 2021/9/14 11:56
 /// Description:
 
-class Printer {
-
-  final dynamic adapter;
+class Printer<T extends PrinterManager> {
+  T adapter;
   Printer(this.adapter);
 
   // 查找打印机
@@ -30,5 +31,4 @@ class Printer {
   Future<void> print(List<int> data) async {
     await adapter.write(data);
   }
-
 }

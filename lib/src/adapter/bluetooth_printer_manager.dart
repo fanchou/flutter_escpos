@@ -50,6 +50,7 @@ class BluetoothPrinterManager extends PrinterManager {
   Guid WRITE_DATA_CHARACTERISTIC_UUID; //写数据-特征值UUID
 
   // 扫描设备
+  @override
   Future discover({int timeout = SCAN_TIMEOUT}) async {
     log("开始扫描设备 >>>>>>");
     if (_isScanning) return;
