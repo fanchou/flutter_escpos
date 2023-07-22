@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -59,12 +60,12 @@ class BluetoothPrinterManager extends PrinterManager {
     _isScanning = true;
     _flutterBlue.scanResults.listen((results) {
       for (ScanResult item in results) {
-        if (_device != null && item.device.remoteId == _device.remoteId) {
+        if (_device != null && item.device.id == _device.id) {
           // 自动连接
           stopScan();
           connect(_printer);
         }
-        if (item.device.localName != null && item.device.localName != '') {
+        if (item.device.name != null && item.device.name != '') {
           scanStream.add(item);
         }
       }
@@ -110,12 +111,12 @@ class BluetoothPrinterManager extends PrinterManager {
     _printer = printer;
     _device = printer.bluetoothDevice;
     isConnecting = true;
-    log("开始连接 >>>>>>name: ${_device.localName}");
+    log("开始连接 >>>>>>name: ${_device.name}");
     await _device.connect(
       timeout: Duration(milliseconds: SCAN_TIMEOUT),
       autoConnect: false,
     );
-    log("连接成功 >>>>>>name: ${_device.localName}");
+    log("连接成功 >>>>>>name: ${_device.name}");
     _printer.connected = true;
     // 只有安卓有效
     if (Platform.isAndroid) {
@@ -129,9 +130,9 @@ class BluetoothPrinterManager extends PrinterManager {
 
   //3.发现服务
   Future<void> _discoverServices(BluetoothDevice device) async {
-    log("开始发现服务 >>>>>>name: ${device.localName}");
+    log("开始发现服务 >>>>>>name: ${device.name}");
     List<BluetoothService> services = await device.discoverServices();
-    log("发现服务成功 >>>>>>name: ${device.localName}");
+    log("发现服务成功 >>>>>>name: ${device.name}");
     _handlerServices(device, services); //遍历服务列表，找出指定服务
     isConnecting = false;
   }
@@ -147,21 +148,21 @@ class BluetoothPrinterManager extends PrinterManager {
       for (BluetoothCharacteristic cItem in characteristics) {
         // 写的特征值
         if (cItem.properties.write && cItem.properties.read) {
-          log("5.0.找到写数据的特征值 >>>>>>name: ${device.localName}  cItem: ${cItem.toString()}");
-          WRITE_DATA_SERVICE_UUID = sItem.serviceUuid;
-          WRITE_DATA_CHARACTERISTIC_UUID = cItem.characteristicUuid;
+          log("5.0.找到写数据的特征值 >>>>>>name: ${device.name}  cItem: ${cItem.toString()}");
+          WRITE_DATA_SERVICE_UUID = sItem.uuid;
+          WRITE_DATA_CHARACTERISTIC_UUID = cItem.uuid;
           _writeCharacteristic = cItem;
         } else if (cItem.properties.write &&
             !cItem.properties.read &&
             cItem.descriptors.isNotEmpty) {
-          log("5.0.找到设置模式的特征值 >>>>>>name: ${device.localName}  characteristicUUID: ${SET_MODE_CHARACTERISTIC_UUID.toString()}");
-          SET_MODE_DESCRIPTOR_UUID = cItem.descriptors[0].descriptorUuid;
+          log("5.0.找到设置模式的特征值 >>>>>>name: ${device.name}  characteristicUUID: ${SET_MODE_CHARACTERISTIC_UUID.toString()}");
+          SET_MODE_DESCRIPTOR_UUID = cItem.descriptors[0].uuid;
           _setNotificationMode(device, cItem); //设置为Notification模式(设备主动给手机发数据)
         } else if (!cItem.properties.write && cItem.properties.read) {
           // 读模式
-          log("4.找到读模式的特征值 >>>>>>name: ${device.localName}  serviceGuid: ${SET_MODE_SERVICE_UUID.toString()}");
-          SET_MODE_SERVICE_UUID = sItem.serviceUuid;
-          SET_MODE_CHARACTERISTIC_UUID = cItem.characteristicUuid;
+          log("4.找到读模式的特征值 >>>>>>name: ${device.name}  serviceGuid: ${SET_MODE_SERVICE_UUID.toString()}");
+          SET_MODE_SERVICE_UUID = sItem.uuid;
+          SET_MODE_CHARACTERISTIC_UUID = cItem.uuid;
         }
       }
     });
@@ -170,26 +171,25 @@ class BluetoothPrinterManager extends PrinterManager {
   //4.1.设置MTU
   Future<void> _requestMtu(BluetoothDevice device) async {
     final mtu = await device.mtu.first;
-    log("4.1.当前mtu: $mtu 请求设置mtu为512 >>>>>>name: ${device.localName}");
+    log("4.1.当前mtu: $mtu 请求设置mtu为512 >>>>>>name: ${device.name}");
     int newMtu = await device.requestMtu(512);
-    log("4.2.设置之后的mtu是多少: $newMtu 请求设置mtu为512 >>>>>>name: ${device.localName}");
+    log("4.2.设置之后的mtu是多少: $newMtu 请求设置mtu为512 >>>>>>name: ${device.name}");
   }
 
   //4.2.设置为Notification模式(设备主动给手机发数据)，Indication模式需要手机读设备的数据
   Future<void> _setNotificationMode(
       BluetoothDevice device, BluetoothCharacteristic cItem) async {
-    log("4.2.设置为通知模式 >>>>>>name: ${device.localName}");
+    log("4.2.设置为通知模式 >>>>>>name: ${device.name}");
     await cItem.setNotifyValue(true); //为指定特征的值设置通知
     cItem.value.listen((value) {
       if (value == null || value.isEmpty) return;
-      log("接收数据 >>>>>>name: ${device.localName}  value: $value");
+      log("接收数据 >>>>>>name: ${device.name}  value: $value");
     });
     var descriptors = cItem.descriptors;
     for (BluetoothDescriptor dItem in descriptors) {
-      if (dItem.descriptorUuid.toString() ==
-          SET_MODE_DESCRIPTOR_UUID.toString()) {
+      if (dItem.uuid.toString() == SET_MODE_DESCRIPTOR_UUID.toString()) {
         //找到设置模式的descriptor
-        log("发送Notification模式给设备 >>>>>>name: ${device.localName}");
+        log("发送Notification模式给设备 >>>>>>name: ${device.name}");
         dItem.write(ENABLE_NOTIFICATION_VALUE); //发送Notification模式给设备
         return;
       }
@@ -198,7 +198,7 @@ class BluetoothPrinterManager extends PrinterManager {
 
   @override
   Future<ConnectionResponse> disconnect({Duration timeout}) async {
-    log("断开连接 >>>>>>name: ${_device.localName}");
+    log("断开连接 >>>>>>name: ${_device.name}");
     _device.disconnect(); //关闭连接
     return ConnectionResponse.success;
   }
@@ -206,7 +206,7 @@ class BluetoothPrinterManager extends PrinterManager {
   @override
   Future<ConnectionResponse> write(List<int> data,
       {bool isDisconnect = true}) async {
-    log("发送指令给设备 >>>>>> ${_writeCharacteristic.characteristicUuid} data: $data");
+    log("发送指令给设备 >>>>>> ${_writeCharacteristic.uuid} data: $data");
     if (!this.isConnected) {
       await connect(_printer);
     }
