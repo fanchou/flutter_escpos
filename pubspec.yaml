@@ -16,7 +16,7 @@ dependencies:
     git:
       url: https://gitee.com/fanchou/esc_pos_utils.git
   quick_usb: 0.3.1
-  flutter_blue_plus: 1.9.5
+  flutter_blue_plus: 1.7.5
   # flutter_libserialport: ^0.2.2
 
 dev_dependencies:

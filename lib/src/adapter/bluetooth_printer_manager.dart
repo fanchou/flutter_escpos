@@ -152,17 +152,20 @@ class BluetoothPrinterManager extends PrinterManager {
           WRITE_DATA_SERVICE_UUID = sItem.uuid;
           WRITE_DATA_CHARACTERISTIC_UUID = cItem.uuid;
           _writeCharacteristic = cItem;
-        } else if (cItem.properties.write &&
+        } else if (!cItem.properties.write &&
             !cItem.properties.read &&
+            cItem.properties.notify &&
             cItem.descriptors.isNotEmpty) {
           log("5.0.找到设置模式的特征值 >>>>>>name: ${device.name}  characteristicUUID: ${SET_MODE_CHARACTERISTIC_UUID.toString()}");
+          SET_MODE_SERVICE_UUID = sItem.uuid;
+          SET_MODE_CHARACTERISTIC_UUID = cItem.uuid;
           SET_MODE_DESCRIPTOR_UUID = cItem.descriptors[0].uuid;
           _setNotificationMode(device, cItem); //设置为Notification模式(设备主动给手机发数据)
         } else if (!cItem.properties.write && cItem.properties.read) {
           // 读模式
           log("4.找到读模式的特征值 >>>>>>name: ${device.name}  serviceGuid: ${SET_MODE_SERVICE_UUID.toString()}");
-          SET_MODE_SERVICE_UUID = sItem.uuid;
-          SET_MODE_CHARACTERISTIC_UUID = cItem.uuid;
+          // SET_MODE_SERVICE_UUID = sItem.uuid;
+          // SET_MODE_CHARACTERISTIC_UUID = cItem.uuid;
         }
       }
     });
