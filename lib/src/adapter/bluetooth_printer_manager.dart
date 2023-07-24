@@ -161,6 +161,7 @@ class BluetoothPrinterManager extends PrinterManager {
         }
       }
 
+      // 找到设置通知的特征值
       for (BluetoothCharacteristic cItem in characteristics) {
         if (cItem.serviceUuid == WRITE_DATA_SERVICE_UUID &&
             !cItem.properties.write &&
@@ -209,6 +210,8 @@ class BluetoothPrinterManager extends PrinterManager {
   Future<ConnectionResponse> disconnect({Duration timeout}) async {
     log("断开连接 >>>>>>name: ${_device.name}");
     _device.disconnect(); //关闭连接
+    _printer = null;
+    this.isConnected = false;
     return ConnectionResponse.success;
   }
 
