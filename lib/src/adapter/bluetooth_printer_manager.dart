@@ -244,19 +244,15 @@ class BluetoothPrinterManager extends PrinterManager {
           final ReadBuffer read = ReadBuffer(written);
           _writeCharacteristic?.write(read.getUint8List(mtu))?.asStream();
         } else {
-          await Future.delayed(Duration(milliseconds: 25), () {
-            tmp = data.sublist(pos, pos + bytes);
-            pos += bytes;
-            bytes -= bytes;
-            tmp.forEach((element) {
-              buffer.putUint8(element);
-            });
-            final ByteData written = buffer.done();
-            final ReadBuffer read = ReadBuffer(written);
-            _writeCharacteristic
-                ?.write(read.getUint8List(pos % mtu))
-                ?.asStream();
+          tmp = data.sublist(pos, pos + bytes);
+          pos += bytes;
+          bytes -= bytes;
+          tmp.forEach((element) {
+            buffer.putUint8(element);
           });
+          final ByteData written = buffer.done();
+          final ReadBuffer read = ReadBuffer(written);
+          _writeCharacteristic?.write(read.getUint8List(pos % mtu))?.asStream();
         }
         log('分包大小 $mtu  分包数据 $tmp', name: '分包打印');
       }
