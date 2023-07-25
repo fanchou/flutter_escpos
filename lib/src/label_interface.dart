@@ -38,6 +38,7 @@ abstract class LabelInterFace {
    * @param density   打印浓度
    * @param speed     打印速度
    * @param origin    原点坐标
+   * @param origin    打印份数
   */
 
   Future<void> setup(
@@ -48,6 +49,7 @@ abstract class LabelInterFace {
     int density,
     int speed,
     Offset origin,
+    int copy,
   });
 
   /**

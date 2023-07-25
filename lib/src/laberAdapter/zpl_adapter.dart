@@ -139,11 +139,12 @@ class ZPLAdapter implements LabelInterFace {
 
   @override
   Future<void> setup(num width, num height, int pRatio,
-      {int gap, int density, int speed, Offset origin}) async {
+      {int gap, int density, int speed, Offset origin, int copy = 1}) async {
     ratio = pRatio;
     commandString += startTag;
     commandString += '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n' +
-        '^PR$speed\n^MD$density\n^LH${origin.dx * ratio},${origin.dy * ratio}\n';
+        '^PR$speed\n^MD$density\n^LH${origin.dx * ratio},${origin.dy * ratio}\n' +
+        '^PQ1,0,$copy,N\n';
     bytes += commandString.codeUnits;
   }
 

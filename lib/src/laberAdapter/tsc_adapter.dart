@@ -101,7 +101,7 @@ class TSCAdapter implements LabelInterFace {
 
   @override
   Future<void> setup(num width, num height, int pRatio,
-      {int gap, int density, int speed, Offset origin}) {
+      {int gap, int density, int speed, Offset origin, int copy}) {
     // TODO: implement setup
     throw UnimplementedError();
   }

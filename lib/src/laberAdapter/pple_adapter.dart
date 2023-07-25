@@ -20,7 +20,7 @@ class PPLEAdapter implements LabelInterFace {
   String commandString = '';
 
   @override
-  String endTag = 'W1\r\n';
+  String endTag = 'W1';
 
   @override
   int ratio;
@@ -30,6 +30,8 @@ class PPLEAdapter implements LabelInterFace {
 
   @override
   CommandType type = CommandType.PPLE;
+
+  int copyPage;
 
   @override
   Future<void> bLine(int startX, int startY, int endX, int endY,
@@ -131,8 +133,9 @@ class PPLEAdapter implements LabelInterFace {
 
   @override
   Future<void> setup(num width, num height, int pRatio,
-      {int gap, int density, int speed, Offset origin}) async {
+      {int gap, int density, int speed, Offset origin, int copy = 1}) async {
     ratio = pRatio; // 全部保存，计算是需要用到
+    copyPage = copy;
     commandString += startTag;
     commandString +=
         'q${width * ratio}\r\nQ${height * ratio},${gap * ratio}\r\n' +
@@ -183,7 +186,7 @@ class PPLEAdapter implements LabelInterFace {
 
   @override
   Future<void> builder() async {
-    commandString += endTag;
+    commandString += endTag + ',$copyPage\r\n';
     bytes += endTag.codeUnits;
     log('\n' + commandString, name: '完整指令集');
   }

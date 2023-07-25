@@ -170,7 +170,11 @@ class CPCLAdapter implements LabelInterFace {
 
   @override
   Future<void> setup(num width, num height, int pRatio,
-      {int gap, int density = 0, int speed = 3, Offset origin}) async {
+      {int gap,
+      int density = 0,
+      int speed = 3,
+      Offset origin,
+      int copy = 1}) async {
     int DPI = 203;
     String message;
     if (pRatio == 8) {
@@ -180,7 +184,7 @@ class CPCLAdapter implements LabelInterFace {
     }
 
     ratio = pRatio; // 全部保存，计算是需要用到
-    message = '! 0 $DPI $DPI ${height * ratio} 1\r\n' +
+    message = '! 0 $DPI $DPI ${height * ratio} $copy\r\n' +
         'PAGE-WIDTH ${width * ratio}\r\n' +
         'GAP-SENSE\r\n' +
         'SPEED $speed\r\n' +
