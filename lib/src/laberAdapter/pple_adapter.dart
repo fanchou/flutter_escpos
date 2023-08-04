@@ -194,8 +194,9 @@ class PPLEAdapter implements LabelInterFace {
 
   @override
   Future<void> builder() async {
-    commandString += endTag + ',$copyPage\r\n';
-    bytes += endTag.codeUnits;
+    String message = endTag + ',$copyPage\r\n';
+    commandString += message;
+    bytes += message.codeUnits;
     log('\n' + commandString, name: '完整指令集');
   }
 
