@@ -36,9 +36,10 @@ class PPLEAdapter implements LabelInterFace {
   @override
   Future<void> bLine(int startX, int startY, int endX, int endY,
       {int thickness = 1, String color = 'B'}) async {
-    commandString +=
+    String message =
         'LS${startX * ratio},${startY * ratio},$thickness,${endX * ratio},${endY * ratio}\r\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -79,10 +80,10 @@ class PPLEAdapter implements LabelInterFace {
         break;
     }
 
-    String command =
+    String message =
         'B${x * ratio},${y * ratio},$turn,$_pre,3,5,$height,$isShowCode,"$content"\r\n';
-    commandString += command;
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -92,23 +93,24 @@ class PPLEAdapter implements LabelInterFace {
       int thickness = 1,
       String color = 'B',
       int radius = 0}) async {
-    commandString +=
+    String message =
         'X${x * ratio},${y * ratio},$thickness,${(x + width) * ratio},${(y + height) * ratio}\r\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
   Future<void> hLine(int x, int y,
       {double width = 1, int thickness = 1, String color = 'B'}) async {
+    String message;
     if (color == 'B') {
-      commandString +=
-          'LO${x * ratio},${y * ratio},${width * ratio},$thickness\r\n';
+      message = 'LO${x * ratio},${y * ratio},${width * ratio},$thickness\r\n';
     } else {
-      commandString +=
-          'LW${x * ratio},${y * ratio},${width * ratio},$thickness\r\n';
+      message = 'LW${x * ratio},${y * ratio},${width * ratio},$thickness\r\n';
     }
 
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -125,22 +127,28 @@ class PPLEAdapter implements LabelInterFace {
       int scale = 2,
       String quality = 'Q',
       int mask = 7}) async {
-    // todo 这里需要进一步抽象
-    commandString +=
+    String message =
         'b${x * ratio},${y * ratio},QR,0,0,o$turn,r$scale,m$model,g$quality,s$mask,"$content"\r\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
   Future<void> setup(num width, num height, int pRatio,
-      {int gap, int density, int speed, Offset origin, int copy = 1}) async {
+      {int gap = 3,
+      int density,
+      int speed,
+      Offset origin,
+      int copy = 1}) async {
     ratio = pRatio; // 全部保存，计算是需要用到
     copyPage = copy;
     commandString += startTag;
-    commandString +=
+    bytes += startTag.codeUnits;
+    String message =
         'q${width * ratio}\r\nQ${height * ratio},${gap * ratio}\r\n' +
             'S$speed\r\nR${origin.dx * ratio},${origin.dy * ratio}\r\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -174,14 +182,14 @@ class PPLEAdapter implements LabelInterFace {
   @override
   Future<void> vLine(int x, int y,
       {double height = 1, int thickness = 1, String color = 'B'}) async {
+    String message;
     if (color == 'B') {
-      commandString +=
-          'LO${x * ratio},${y * ratio},$thickness,${height * ratio}\r\n';
+      message = 'LO${x * ratio},${y * ratio},$thickness,${height * ratio}\r\n';
     } else {
-      'LW${x * ratio},${y * ratio},$thickness,${height * ratio}\r\n';
+      message = 'LW${x * ratio},${y * ratio},$thickness,${height * ratio}\r\n';
     }
-
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
