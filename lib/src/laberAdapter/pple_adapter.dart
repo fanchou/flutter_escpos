@@ -138,7 +138,7 @@ class PPLEAdapter implements LabelInterFace {
       {int gap = 3,
       int density,
       int speed,
-      Offset origin,
+      Offset origin = const Offset(0, 0),
       int copy = 1}) async {
     ratio = pRatio; // 全部保存，计算是需要用到
     copyPage = copy;
