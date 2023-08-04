@@ -80,8 +80,24 @@ class PPLEAdapter implements LabelInterFace {
         break;
     }
 
+    String turnStr;
+    switch (turn) {
+      case Turn.turn270:
+        turnStr = '3';
+        break;
+      case Turn.turn90:
+        turnStr = '1';
+        break;
+      case Turn.turn180:
+        turnStr = '2';
+        break;
+      case Turn.turn0:
+        turnStr = '0';
+        break;
+    }
+
     String message =
-        'B${x * ratio},${y * ratio},$turn,$_pre,3,5,$height,$isShowCode,"$content"\r\n';
+        'B${x * ratio},${y * ratio},$turnStr,$_pre,3,5,$height,$isShowCode,"$content"\r\n';
     commandString += message;
     bytes += message.codeUnits;
   }
@@ -127,8 +143,24 @@ class PPLEAdapter implements LabelInterFace {
       int scale = 2,
       String quality = 'Q',
       int mask = 7}) async {
+    String turnStr;
+    switch (turn) {
+      case Turn.turn270:
+        turnStr = '3';
+        break;
+      case Turn.turn90:
+        turnStr = '1';
+        break;
+      case Turn.turn180:
+        turnStr = '2';
+        break;
+      case Turn.turn0:
+        turnStr = '0';
+        break;
+    }
+
     String message =
-        'b${x * ratio},${y * ratio},QR,0,0,o$turn,r$scale,m$model,g$quality,s$mask,"$content"\r\n';
+        'b${x * ratio},${y * ratio},QR,0,0,o$turnStr,r$scale,m$model,g$quality,s$mask,"$content"\r\n';
     commandString += message;
     bytes += message.codeUnits;
   }
