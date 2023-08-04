@@ -96,8 +96,15 @@ class PPLEAdapter implements LabelInterFace {
         break;
     }
 
+    String isShow;
+    if (isShowCode) {
+      isShow = 'B';
+    } else {
+      isShow = 'N';
+    }
+
     String message =
-        'B${x * ratio},${y * ratio},$turnStr,$_pre,3,5,$height,$isShowCode,"$content"\r\n';
+        'B${x * ratio},${y * ratio},$turnStr,$_pre,3,5,$height,$isShow,"$content"\r\n';
     commandString += message;
     bytes += message.codeUnits;
   }
