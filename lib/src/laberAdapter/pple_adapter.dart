@@ -94,7 +94,7 @@ class PPLEAdapter implements LabelInterFace {
       String color = 'B',
       int radius = 0}) async {
     String message =
-        'X${x * ratio},${y * ratio},$thickness,${(x + width) * ratio},${(y + height) * ratio}\r\n';
+        'X${x * ratio},${y * ratio},$thickness,${((x + width) * ratio).toInt()},${((y + height) * ratio).toInt()}\r\n';
     commandString += message;
     bytes += message.codeUnits;
   }
