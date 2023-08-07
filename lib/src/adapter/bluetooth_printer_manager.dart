@@ -221,41 +221,53 @@ class BluetoothPrinterManager extends PrinterManager {
     if (!this.isConnected) {
       await connect(_printer);
     }
-    // 可能需要切片
+    // // 可能需要切片
     int mtu = await _device.mtu.first;
-    var buffer = new WriteBuffer();
-    int bytes = data.length;
-    int pos = 0;
-    if (bytes < mtu) {
-      await _writeCharacteristic?.write(data);
-    } else {
-      while (bytes > 0) {
-        List<int> tmp;
-        buffer = new WriteBuffer();
-        if (bytes > mtu) {
-          tmp = data.sublist(pos, pos + mtu);
-          pos += mtu;
-          bytes -= mtu;
-          tmp.forEach((element) {
-            buffer.putUint8(element);
-          });
-          final ByteData written = buffer.done();
-          final ReadBuffer read = ReadBuffer(written);
-          _writeCharacteristic?.write(read.getUint8List(mtu))?.asStream();
-        } else {
-          tmp = data.sublist(pos, pos + bytes);
-          pos += bytes;
-          bytes -= bytes;
-          tmp.forEach((element) {
-            buffer.putUint8(element);
-          });
-          final ByteData written = buffer.done();
-          final ReadBuffer read = ReadBuffer(written);
-          _writeCharacteristic?.write(read.getUint8List(pos % mtu))?.asStream();
-        }
-        log('分包大小 $mtu  分包数据 $tmp', name: '分包打印');
+    // var buffer = new WriteBuffer();
+    // int bytes = data.length;
+    // int pos = 0;
+    // if (bytes < mtu) {
+    //   await _writeCharacteristic?.write(data);
+    // } else {
+    //   while (bytes > 0) {
+    //     List<int> tmp;
+    //     buffer = new WriteBuffer();
+    //     if (bytes > mtu) {
+    //       tmp = data.sublist(pos, pos + mtu);
+    //       pos += mtu;
+    //       bytes -= mtu;
+    //       tmp.forEach((element) {
+    //         buffer.putUint8(element);
+    //       });
+    //       final ByteData written = buffer.done();
+    //       final ReadBuffer read = ReadBuffer(written);
+    //       _writeCharacteristic?.write(read.getUint8List(mtu))?.asStream();
+    //     } else {
+    //       tmp = data.sublist(pos, pos + bytes);
+    //       pos += bytes;
+    //       bytes -= bytes;
+    //       tmp.forEach((element) {
+    //         buffer.putUint8(element);
+    //       });
+    //       final ByteData written = buffer.done();
+    //       final ReadBuffer read = ReadBuffer(written);
+    //       _writeCharacteristic?.write(read.getUint8List(pos % mtu))?.asStream();
+    //     }
+    //     log('分包大小 $mtu  分包数据 $tmp', name: '分包打印');
+    //   }
+    // }
+
+    int chunk = mtu - 3;
+    if (data.length > chunk) {
+      for (int i = 0; i < data.length; i += chunk) {
+        List<int> subvalue = data.sublist(i, math.min(i + chunk, data.length));
+        _writeCharacteristic.write(subvalue,
+            withoutResponse: false, timeout: 2000);
       }
+    } else {
+      _writeCharacteristic.write(data);
     }
+
     return ConnectionResponse.success;
   }
 }
