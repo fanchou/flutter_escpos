@@ -34,9 +34,10 @@ class ZPLAdapter implements LabelInterFace {
   @override
   Future<void> bLine(int startX, int startY, int endX, int endY,
       {int thickness = 1, String color = 'B'}) async {
-    commandString += '^FO${startX * ratio},${startX * ratio}\n' +
+    String message = '^FO${startX * ratio},${startX * ratio}\n' +
         '^GD${(endX - startX) * ratio},${(endY - startY) * ratio},${thickness},$color,R^FS\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -47,39 +48,57 @@ class ZPLAdapter implements LabelInterFace {
       bool isShowCode = true,
       bool isBelow = false}) async {
     String _pre;
+
+    String turnStr;
+
+    switch (turn) {
+      case Turn.turn0:
+        turnStr = 'N';
+        break;
+      case Turn.turn90:
+        turnStr = 'R';
+        break;
+      case Turn.turn180:
+        turnStr = 'I';
+        break;
+      case Turn.turn270:
+        turnStr = 'B';
+        break;
+    }
+
     switch (type) {
       case BarcodeType.CODE11:
-        _pre = '^B1$turn,$check,$height,$isShowCode,$isBelow';
+        _pre = '^B1$turnStr,$check,$height,$isShowCode,$isBelow';
         break;
       case BarcodeType.CODE39:
-        _pre = '^B3$turn,$check,$height,$isShowCode,$isBelow';
+        _pre = '^B3$turnStr,$check,$height,$isShowCode,$isBelow';
         break;
       case BarcodeType.CODE49:
-        _pre = '^B4$turn,$height,$isShowCode,A';
+        _pre = '^B4$turnStr,$height,$isShowCode,A';
         break;
       case BarcodeType.CODE93:
-        _pre = '^BA$turn,$height,$isShowCode,$isBelow,$check';
+        _pre = '^BA$turnStr,$height,$isShowCode,$isBelow,$check';
         break;
       case BarcodeType.CODE128:
-        _pre = '^BC$turn,$height,$isShowCode,$isBelow,$check,N';
+        _pre = '^BC$turnStr,$height,$isShowCode,$isBelow,$check,N';
         break;
       case BarcodeType.EAN8:
-        _pre = '^B8$turn,$height,$isBelow';
+        _pre = '^B8$turnStr,$height,$isBelow';
         break;
       case BarcodeType.EAN13:
-        _pre = '^BE$turn,$height,$isShowCode,$isBelow';
+        _pre = '^BE$turnStr,$height,$isShowCode,$isBelow';
         break;
       case BarcodeType.UPCA:
-        _pre = '^BU$turn,$height,$isShowCode,$isBelow,$check';
+        _pre = '^BU$turnStr,$height,$isShowCode,$isBelow,$check';
         break;
       case BarcodeType.UPCE:
-        _pre = '^B9$turn,$height,$isShowCode,$isBelow,$check';
+        _pre = '^B9$turnStr,$height,$isShowCode,$isBelow,$check';
         break;
     }
 
     String command = '^FO${x * ratio},${y * ratio}$_pre\n^FDMM,A$content^FS\n';
     commandString += command;
-    bytes += commandString.codeUnits;
+    bytes += command.codeUnits;
   }
 
   @override
@@ -89,9 +108,10 @@ class ZPLAdapter implements LabelInterFace {
       int thickness = 1,
       String color = 'B',
       int radius = 0}) async {
-    commandString += '^FO${x * ratio},${y * ratio}' +
+    String message = '^FO${x * ratio},${y * ratio}' +
         '^GB${width * ratio},${height * ratio},${thickness},$color,$radius^FS\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -111,9 +131,10 @@ class ZPLAdapter implements LabelInterFace {
   @override
   Future<void> hLine(int x, int y,
       {double width = 1, int thickness = 1, String color = 'B'}) async {
-    commandString += '^FO${x * ratio},${y * ratio}' +
+    String message = '^FO${x * ratio},${y * ratio}' +
         '^GB${width * ratio},0,${thickness},$color,0^FS\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -130,22 +151,41 @@ class ZPLAdapter implements LabelInterFace {
       int scale = 2,
       String quality = 'Q',
       int mask = 7}) async {
-    commandString += '^FO${x * ratio},${y * ratio}' +
-        '^BQ$turn,$model,$scale,$quality,$mask\n';
+    String turnStr;
+    switch (turn) {
+      case Turn.turn0:
+        turnStr = 'N';
+        break;
+      case Turn.turn90:
+        turnStr = 'R';
+        break;
+      case Turn.turn180:
+        turnStr = 'I';
+        break;
+      case Turn.turn270:
+        turnStr = 'B';
+        break;
+    }
+    String message;
+    message = '^FO${x * ratio},${y * ratio}' +
+        '^BQ$turnStr,$model,$scale,$quality,$mask\n';
     String text = '^FDMM,A$content^FS\n';
-    commandString += text;
-    bytes += commandString.codeUnits;
+    message += text;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
   Future<void> setup(num width, num height, int pRatio,
       {int gap, int density, int speed, Offset origin, int copy = 1}) async {
     ratio = pRatio;
-    commandString += startTag;
-    commandString += '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n' +
+    String message;
+    message += startTag;
+    message += '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n' +
         '^PR$speed\n^MD$density\n^LH${origin.dx * ratio},${origin.dy * ratio}\n' +
         '^PQ1,0,$copy,N\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 
   @override
@@ -182,8 +222,9 @@ class ZPLAdapter implements LabelInterFace {
   @override
   Future<void> vLine(int x, int y,
       {double height = 1, int thickness = 1, String color = 'B'}) async {
-    commandString += '^FO${x * ratio},${y * ratio}' +
+    String message = '^FO${x * ratio},${y * ratio}' +
         '^GB0,${height * ratio},${thickness},$color,0^FS\n';
-    bytes += commandString.codeUnits;
+    commandString += message;
+    bytes += message.codeUnits;
   }
 }
