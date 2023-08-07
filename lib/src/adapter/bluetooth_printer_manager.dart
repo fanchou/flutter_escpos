@@ -18,7 +18,6 @@ import '../printer_manager.dart';
 /// Description:
 
 class BluetoothPrinterManager extends PrinterManager {
-  final FlutterBluePlus _flutterBlue = FlutterBluePlus.instance; //蓝牙API
   BluetoothCharacteristic _writeCharacteristic = null;
   static const int SCAN_TIMEOUT = 10000;
   static BluetoothDevice _device;
@@ -58,7 +57,7 @@ class BluetoothPrinterManager extends PrinterManager {
     log("开始扫描设备 >>>>>>");
     if (_isScanning) return;
     _isScanning = true;
-    _flutterBlue.scanResults.listen((results) {
+    FlutterBluePlus.scanResults.listen((results) {
       for (ScanResult item in results) {
         if (_device != null && item.device.id == _device.id) {
           // 自动连接
@@ -70,7 +69,7 @@ class BluetoothPrinterManager extends PrinterManager {
         }
       }
     });
-    _flutterBlue?.startScan(timeout: Duration(seconds: timeout));
+    FlutterBluePlus?.startScan(timeout: Duration(seconds: timeout));
     startTimer();
   }
 
@@ -99,7 +98,7 @@ class BluetoothPrinterManager extends PrinterManager {
     cancelTimer();
     if (!_isScanning) return;
     _isScanning = false;
-    _flutterBlue.stopScan();
+    FlutterBluePlus.stopScan();
   }
 
   @override
