@@ -230,14 +230,52 @@ class CPCLAdapter implements LabelInterFace {
         break;
     }
 
+    String fontFamily;
+    int scaleX = style.scaleX;
+    int scaleY = style.scaleY;
+
+    switch (style.fontType) {
+      case FontFamily.ZH16:
+        fontFamily = '55';
+        break;
+      case FontFamily.ZH24:
+        fontFamily = '88';
+        break;
+      case FontFamily.VZH:
+        if (scaleX > 24) {
+          fontFamily = '88';
+          scaleX = scaleX ~/ 24;
+          scaleY = scaleY ~/ 24;
+        } else {
+          fontFamily = '55';
+          scaleX = 1;
+          scaleY = 1;
+        }
+        break;
+      case FontFamily.ENG12:
+        fontFamily = '2';
+        break;
+      case FontFamily.ENG24:
+        fontFamily = '5';
+        break;
+      case FontFamily.ENG48:
+        fontFamily = '1';
+        break;
+      case FontFamily.VENG:
+        fontFamily = '1';
+        scaleX = scaleX ~/ 8;
+        scaleY = scaleY ~/ 12;
+        break;
+    }
+
     if (!style.isBold) {
       message = 'SETBOLD 0\r\n' +
-          'SETMAG ${style.scaleX} ${style.scaleY}\r\n' +
-          '$turnChar ${style.fontFamily} 0 ${x * ratio} ${y * ratio} $text\r\n';
+          'SETMAG $scaleX $scaleY\r\n' +
+          '$turnChar $fontFamily 0 ${x * ratio} ${y * ratio} $text\r\n';
     } else {
       message = 'SETBOLD 2\r\n' +
-          'SETMAG ${style.scaleX} ${style.scaleY}\r\n' +
-          '$turnChar ${style.fontFamily} 0 ${x * ratio} ${y * ratio} $text\r\n';
+          'SETMAG $scaleX $scaleY\r\n' +
+          '$turnChar $fontFamily 0 ${x * ratio} ${y * ratio} $text\r\n';
     }
     commandString += message;
     bytes += gbk.encode(message);

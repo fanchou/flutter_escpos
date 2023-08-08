@@ -1,6 +1,6 @@
 name: flutter_escpos
 description: ESC/POS printer for flutter
-version: 0.2.4
+version: 0.2.5
 homepage:
 
 environment:
