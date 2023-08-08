@@ -137,8 +137,9 @@ class TSCAdapter implements LabelInterFace {
       String color = 'B',
       int radius = 0}) async {
     // BOX x,y,x_end,y_end,line thickness[,radius]
-    String message = 'BOX ${x * ratio},${y * ratio},${(x + width) * ratio},' +
-        '${(y + height) * ratio},$thickness,$radius\r\n';
+    String message =
+        'BOX ${x * ratio},${y * ratio},${((x + width) * ratio).toInt()},' +
+            '${((y + height) * ratio).toInt()},$thickness,$radius\r\n';
     commandString += message;
     bytes += message.codeUnits;
   }
