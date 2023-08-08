@@ -124,7 +124,7 @@ class TSCAdapter implements LabelInterFace {
     }
 
     String message =
-        'BARCODE ${x * ratio},${y * ratio},"$typeStr",$height,$readable $rotation,$narrow,$wide,0,$content\r\n';
+        'BARCODE ${x * ratio},${y * ratio},"$typeStr",$height,$readable,$rotation,$narrow,$wide,0,$content\r\n';
     commandString += message;
     bytes += message.codeUnits;
   }
