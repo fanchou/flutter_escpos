@@ -258,13 +258,13 @@ class TSCAdapter implements LabelInterFace {
 
     switch (style.fontType) {
       case FontFamily.ZH16:
-        fontFamily = 'TST24.BF2';
+        fontFamily = 'TSS24.BF2';
         break;
       case FontFamily.ZH24:
-        fontFamily = 'TST24.BF2';
+        fontFamily = 'TSS24.BF2';
         break;
       case FontFamily.VZH:
-        fontFamily = 'TST24.BF2';
+        fontFamily = 'TSS24.BF2';
         scaleX = scaleX ~/ 24;
         scaleY = scaleY ~/ 24;
         break;
