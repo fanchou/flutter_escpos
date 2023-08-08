@@ -14,10 +14,10 @@ import '../label_interface.dart';
 
 class TSCAdapter implements LabelInterFace {
   @override
-  List<int> bytes;
+  List<int> bytes = [];
 
   @override
-  String commandString;
+  String commandString = '';
 
   @override
   String endTag = 'PRINT ';
