@@ -6,6 +6,17 @@ import 'enums/label_enums.dart';
 /// Date: 2023/7/13 19:37
 /// Description:
 
+// 统一字体
+enum FontFamily {
+  ZH16, // 中文16点阵，可能有些打印机是不支持的，将自动转化为支持的
+  ZH24, // 中文24点阵
+  VZH, // 中文矢量
+  ENG12, // 英文12点阵
+  ENG24, // 英文 24点阵
+  ENG48, // 英文 48点阵
+  VENG, // 英文矢量
+}
+
 class TextStyles {
   // 旋转方向
   // 对齐方式
@@ -16,6 +27,7 @@ class TextStyles {
     this.scaleX = 24,
     this.scaleY = 24,
     this.turn = Turn.turn0,
+    this.fontType,
     this.isBold = false,
     this.inverse = false,
   });
@@ -38,6 +50,9 @@ class TextStyles {
 
   // 是否反色
   final bool inverse;
+
+  // 使用统一的字体
+  final FontFamily fontType;
 }
 
 // 对齐方式

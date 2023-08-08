@@ -251,8 +251,41 @@ class TSCAdapter implements LabelInterFace {
         turnStr = '270';
         break;
     }
-    String message = 'TEXT ${x * ratio},${y * ratio},"${style.fontFamily}",' +
-        '$turnStr,${style.scaleX},${style.scaleY},"$text"\r\n';
+
+    String fontFamily;
+    int scaleX = style.scaleX;
+    int scaleY = style.scaleY;
+
+    switch (style.fontType) {
+      case FontFamily.ZH16:
+        fontFamily = 'TST24.BF2';
+        break;
+      case FontFamily.ZH24:
+        fontFamily = 'TST24.BF2';
+        break;
+      case FontFamily.VZH:
+        fontFamily = 'TST24.BF2';
+        scaleX = scaleX ~/ 24;
+        scaleY = scaleY ~/ 24;
+        break;
+      case FontFamily.ENG12:
+        fontFamily = '1';
+        break;
+      case FontFamily.ENG24:
+        fontFamily = '3';
+        break;
+      case FontFamily.ENG48:
+        fontFamily = '5';
+        break;
+      case FontFamily.VENG:
+        fontFamily = '1';
+        scaleX = scaleX ~/ 8;
+        scaleY = scaleY ~/ 12;
+        break;
+    }
+
+    String message = 'TEXT ${x * ratio},${y * ratio},"$fontFamily",' +
+        '$turnStr,$scaleX,$scaleY,"$text"\r\n';
     commandString += message;
     bytes += gbk.encode(message);
   }
