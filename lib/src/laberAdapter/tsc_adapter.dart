@@ -145,7 +145,7 @@ class TSCAdapter implements LabelInterFace {
 
   @override
   Future<void> builder() async {
-    String message = endTag + ',$copyPage\r\n';
+    String message = endTag + '$copyPage\r\n';
     commandString += message;
     log('\n' + commandString, name: '完整指令集');
     bytes += message.codeUnits;
@@ -217,10 +217,10 @@ class TSCAdapter implements LabelInterFace {
     ratio = pRatio;
     String message;
     copyPage = copy;
-    String labelSize = 'SIZE $width mm, $height mm';
+    String labelSize = 'SIZE $width mm,$height mm';
     String speed_value = 'SPEED $speed';
     String density_value = 'DENSITY $density';
-    String gapValue = 'GAP $gap mm, 0 mm'; // TODO 暂不实现黑标检测
+    String gapValue = 'GAP $gap mm,0 mm'; // TODO 暂不实现黑标检测
     message = labelSize +
         "\n" +
         speed_value +
@@ -251,7 +251,7 @@ class TSCAdapter implements LabelInterFace {
         break;
     }
     String message = 'TEXT ${x * ratio},${y * ratio},"${style.fontFamily}",' +
-        '$turnStr,${style.scaleX},${style.scaleY},$text\r\n';
+        '$turnStr,${style.scaleX},${style.scaleY},"$text"\r\n';
     commandString += message;
     bytes += gbk.encode(message);
   }
