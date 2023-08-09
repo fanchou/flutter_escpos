@@ -20,3 +20,4 @@ export './src/laberAdapter/cpcl_adapter.dart';
 export './src/laberAdapter/zpl_adapter.dart';
 export './src/laberAdapter/pple_adapter.dart';
 export './src/laberAdapter/tsc_adapter.dart';
+export './src/enums/connection_type.dart';

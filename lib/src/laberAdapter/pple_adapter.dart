@@ -210,9 +210,42 @@ class PPLEAdapter implements LabelInterFace {
         break;
     }
 
-    String textInfo =
-        'T${x * ratio},${y * ratio},$turnChar,${style.fontFamily},' +
-            '${style.scaleX},${style.scaleY},N,"$text"\r\n';
+    String fontFamily;
+    int scaleX = style.scaleX;
+    int scaleY = style.scaleY;
+
+    switch (style.fontType) {
+      case FontFamily.ZH16:
+        fontFamily = '7';
+        scaleX = scaleX ~/ 16;
+        scaleY = scaleY ~/ 16;
+        break;
+      case FontFamily.ZH24:
+        fontFamily = '7';
+        scaleX = scaleX ~/ 24;
+        scaleY = scaleX ~/ 24;
+        break;
+      case FontFamily.VZH:
+        fontFamily = '7';
+        break;
+      case FontFamily.ENG12:
+        fontFamily = '1';
+        break;
+      case FontFamily.ENG24:
+        fontFamily = '4';
+        break;
+      case FontFamily.ENG48:
+        fontFamily = '5';
+        break;
+      case FontFamily.VENG:
+        fontFamily = '8';
+        scaleX = scaleX ~/ 8;
+        scaleY = scaleY ~/ 12;
+        break;
+    }
+
+    String textInfo = 'T${x * ratio},${y * ratio},$turnChar,$fontFamily,' +
+        '$scaleX,$scaleY,N,"$text"\r\n';
     commandString += textInfo;
     List<int> texHex = gbk.encode(textInfo);
     bytes += texHex;
