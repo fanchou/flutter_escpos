@@ -48,11 +48,11 @@ class LabelPrinter<T extends LabelInterFace> {
     num width,
     num height,
     int pRatio, {
-    int gap,
-    int density,
-    int speed,
-    Offset origin,
-    int copy,
+    int gap = 3,
+    int density = 8,
+    int speed = 4,
+    Offset origin = const Offset(0, 0),
+    int copy = 1,
   }) async {
     instance.setup(width, height, pRatio,
         gap: gap, density: density, speed: speed, origin: origin, copy: copy);
