@@ -179,7 +179,7 @@ class ZPLAdapter implements LabelInterFace {
   Future<void> setup(num width, num height, int pRatio,
       {int gap, int density, int speed, Offset origin, int copy = 1}) async {
     ratio = pRatio;
-    String message;
+    String message = '';
     message += startTag;
     message += '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n' +
         '^PR$speed\n^MD$density\n^LH${origin.dx * ratio},${origin.dy * ratio}\n' +
