@@ -1,6 +1,6 @@
 name: flutter_escpos
 description: ESC/POS printer for flutter
-version: 0.3.1
+version: 0.3.2
 homepage:
 
 environment:
@@ -10,8 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  win32: ^2.4.1
-  ffi: ^1.1.0
+  win32: ^4.1.1
+  ffi: ^2.0.0
+  flutter_usb_serial: ^0.0.2
   esc_pos_utils:
     git:
       url: https://gitee.com/fanchou/esc_pos_utils.git
@@ -24,6 +25,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+dependency_overrides:
+  ffi: ^1.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
