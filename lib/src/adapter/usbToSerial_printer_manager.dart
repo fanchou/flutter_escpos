@@ -12,7 +12,7 @@ import 'package:usb_serial/usb_serial.dart';
 /// Date: 2023/8/28 16:44
 /// Description: USB转串口，只适用于Android、Windows
 
-class usbToSerialPrinterManager extends PrinterManager {
+class UsbToSerialPrinterManager extends PrinterManager {
   static UsbPort _port;
   static UsbDevice _device;
   static POSPrinter _printer;
