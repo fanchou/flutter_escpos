@@ -17,6 +17,20 @@ class UsbToSerialPrinterManager extends PrinterManager {
   static UsbDevice _device;
   static POSPrinter _printer;
 
+  static UsbToSerialPrinterManager get instance => _getInstance();
+  static UsbToSerialPrinterManager _instance;
+
+  UsbToSerialPrinterManager._internal();
+
+  static UsbToSerialPrinterManager _getInstance() {
+    if (_instance == null) {
+      _instance = UsbToSerialPrinterManager._internal();
+    }
+    return _instance;
+  }
+
+  factory UsbToSerialPrinterManager() => _getInstance();
+
   @override
   Future<ConnectionResponse> connect(POSPrinter printer,
       {Duration timeout}) async {
