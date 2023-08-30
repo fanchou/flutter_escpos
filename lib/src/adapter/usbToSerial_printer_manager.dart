@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_escpos/src/enums/connection_response.dart';
 import 'package:flutter_escpos/src/model/pos_printer.dart';
+import '../../flutter_escpos.dart';
 import '../printer_manager.dart';
 import 'package:usb_serial/usb_serial.dart';
 
@@ -69,9 +70,17 @@ class UsbToSerialPrinterManager extends PrinterManager {
   }
 
   @override
-  Future<List<UsbDevice>> discover() async {
+  Future<List<POSPrinter>> discover() async {
+    List<POSPrinter> printerList = [];
     List<UsbDevice> devices = await UsbSerial.listDevices();
-    return devices;
+    devices.forEach((device) {
+      POSPrinter posPrinter = POSPrinter();
+      posPrinter.usbDevice = device;
+      posPrinter.connectionType = ConnectionType.serial;
+      posPrinter.baudRate = 9600;
+      printerList.add(posPrinter);
+    });
+    return printerList;
   }
 
   @override
