@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter_escpos/src/enums/connection_response.dart';
-import 'package:flutter_escpos/src/model/pos_printer.dart';
 import '../../flutter_escpos.dart';
 import '../printer_manager.dart';
 import 'package:usb_serial/usb_serial.dart';
