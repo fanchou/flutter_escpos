@@ -48,7 +48,7 @@ class UsbToSerialPrinterManager extends PrinterManager {
       return ConnectionResponse.unknown;
     }
     // 设置创客参数
-    await setPortParameters(9200);
+    await setPortParameters(_printer.baudRate);
     isConnected = true;
     return ConnectionResponse.success;
   }
