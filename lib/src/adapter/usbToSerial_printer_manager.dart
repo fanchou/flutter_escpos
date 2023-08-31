@@ -42,13 +42,15 @@ class UsbToSerialPrinterManager extends PrinterManager {
       return ConnectionResponse.unknown;
     }
 
+    log('创建设备成功~');
     bool openResult = await _port.open();
     if (!openResult) {
       log('打开设备失败~');
       return ConnectionResponse.unknown;
     }
+    log('打开设备成功~');
     // 设置创客参数
-    await setPortParameters(_printer.baudRate);
+    await setPortParameters(9600);
     isConnected = true;
     return ConnectionResponse.success;
   }
@@ -59,6 +61,7 @@ class UsbToSerialPrinterManager extends PrinterManager {
     await _port.setRTS(true);
     await _port.setPortParameters(
         baudRate, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
+    log('参数设置成功~');
   }
 
   @override
