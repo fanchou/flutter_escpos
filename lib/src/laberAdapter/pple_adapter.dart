@@ -26,7 +26,7 @@ class PPLEAdapter implements LabelInterFace {
   int ratio;
 
   @override
-  String startTag = 'N\r\n';
+  String startTag = 'I8,G,001\r\nN\r\n';
 
   @override
   CommandType type = CommandType.PPLE;
