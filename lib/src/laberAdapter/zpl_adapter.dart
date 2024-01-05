@@ -26,7 +26,7 @@ class ZPLAdapter implements LabelInterFace {
   int ratio;
 
   @override
-  String startTag = '^XA\n';
+  String startTag = '^XA\n^CW7,E:SIMSUN.TTF\n^CI28\n';
 
   @override
   CommandType type;
