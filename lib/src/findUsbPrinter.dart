@@ -29,8 +29,8 @@ class FindUsbPrinter {
     }
   }
 
-  Pointer<DWORD> _pBuffSize;
-  Pointer<DWORD> _bPrinterLen;
+  late Pointer<DWORD> _pBuffSize;
+  late Pointer<DWORD> _bPrinterLen;
 
   void _getBufferSize() {
     _pBuffSize = calloc<DWORD>();
@@ -43,13 +43,13 @@ class FindUsbPrinter {
     }
   }
 
-  Pointer<BYTE> _rawBuffer;
+  late Pointer<BYTE> _rawBuffer;
 
   void _readRawBuff() {
     _rawBuffer = malloc.allocate<BYTE>(_pBuffSize.value);
 
     final isRawBuffFail = EnumPrinters(_flags, nullptr, 2, _rawBuffer,
-        _pBuffSize.value, _pBuffSize, _bPrinterLen) ==
+            _pBuffSize.value, _pBuffSize, _bPrinterLen) ==
         0;
 
     if (isRawBuffFail) {

@@ -15,10 +15,10 @@ import '../printer_manager.dart';
 
 class NetworkPrinterManager extends PrinterManager {
   static NetworkPrinterManager get instance => _getInstance();
-  static NetworkPrinterManager _instance;
+  static NetworkPrinterManager? _instance;
 
-  static RawSocket _device;
-  static POSPrinter _printer;
+  static RawSocket? _device;
+  static POSPrinter? _printer;
 
   NetworkPrinterManager._internal();
 
@@ -26,14 +26,14 @@ class NetworkPrinterManager extends PrinterManager {
     if (_instance == null) {
       _instance = NetworkPrinterManager._internal();
     }
-    return _instance;
+    return _instance!;
   }
 
   factory NetworkPrinterManager() => _getInstance();
 
   @override
   Future<ConnectionResponse> connect(POSPrinter printer,
-      {Duration timeout}) async {
+      {Duration? timeout}) async {
     try {
       _device = await RawSocket.connect(printer.address, 9100,
           timeout: const Duration(seconds: 5));
@@ -47,8 +47,8 @@ class NetworkPrinterManager extends PrinterManager {
   }
 
   @override
-  Future<ConnectionResponse> disconnect({Duration timeout}) async {
-    await _device.close();
+  Future<ConnectionResponse> disconnect({Duration? timeout}) async {
+    await _device!.close();
     return ConnectionResponse.success;
   }
 
@@ -56,7 +56,7 @@ class NetworkPrinterManager extends PrinterManager {
   Future<ConnectionResponse> write(List<int> data,
       {bool isDisconnect = true}) async {
     if (!this.isConnected) {
-      await connect(_printer);
+      await connect(_printer!);
     }
     try {
       Uint8List bytes = Uint8List.fromList(data);
@@ -70,13 +70,13 @@ class NetworkPrinterManager extends PrinterManager {
         for (int i = 0; i < round; i++) {
           int fromIndex = i * sliceSize;
           if ((i + 1) * sliceSize <= bufferLength) {
-            _device.write(bytes, fromIndex, sliceSize);
+            _device!.write(bytes, fromIndex, sliceSize);
           } else {
-            _device.write(bytes, fromIndex);
+            _device!.write(bytes, fromIndex);
           }
         }
       } else {
-        _device.write(bytes);
+        _device!.write(bytes);
       }
 
       return ConnectionResponse.success;

@@ -23,13 +23,13 @@ class ZPLAdapter implements LabelInterFace {
   String endTag = '^XZ\n';
 
   @override
-  int ratio;
+  late int ratio;
 
   @override
   String startTag = '^XA\n^CI28\n^CW7,E:SIMSUN.TTF\n';
 
   @override
-  CommandType type;
+  late CommandType type;
 
   @override
   Future<void> bLine(int startX, int startY, int endX, int endY,
@@ -177,19 +177,23 @@ class ZPLAdapter implements LabelInterFace {
 
   @override
   Future<void> setup(num width, num height, int pRatio,
-      {int gap, int density, int speed, Offset origin, int copy = 1}) async {
+      {int? gap,
+      int? density,
+      int? speed,
+      Offset? origin,
+      int copy = 1}) async {
     ratio = pRatio;
     String message = '';
     message += startTag;
     message += '^CI28\n^PW${width * ratio}\n^LL${height * ratio}\n' +
-        '^PR$speed\n^MD$density\n^LH${origin.dx * ratio},${origin.dy * ratio}\n' +
+        '^PR$speed\n^MD$density\n^LH${origin!.dx * ratio},${origin.dy * ratio}\n' +
         '^PQ1,0,$copy,N\n';
     commandString += message;
     bytes += message.codeUnits;
   }
 
   @override
-  Future<void> text(int x, int y, String text, {TextStyles style}) async {
+  Future<void> text(int x, int y, String text, {TextStyles? style}) async {
     if (style == null) {
       style = TextStyles();
     }

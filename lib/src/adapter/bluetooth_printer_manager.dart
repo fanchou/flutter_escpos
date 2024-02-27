@@ -15,25 +15,25 @@ import '../printer_manager.dart';
 /// Description:
 
 class BluetoothPrinterManager extends PrinterManager {
-  BluetoothCharacteristic _writeCharacteristic = null;
+  BluetoothCharacteristic? _writeCharacteristic = null;
   static const int SCAN_TIMEOUT = 10000;
-  static BluetoothDevice _device;
-  static POSPrinter _printer;
+  static BluetoothDevice? _device;
+  static POSPrinter? _printer;
   var _isScanning = false;
-  Timer _timer = null;
+  Timer? _timer = null;
   bool isConnecting = false;
 
   StreamController<ScanResult> scanStream = StreamController.broadcast();
 
   // 蓝牙单例
   BluetoothPrinterManager._internal();
-  static BluetoothPrinterManager _instance;
+  static BluetoothPrinterManager? _instance;
   static BluetoothPrinterManager get instance => _getInstance();
   static BluetoothPrinterManager _getInstance() {
     if (_instance == null) {
       _instance = BluetoothPrinterManager._internal();
     }
-    return _instance;
+    return _instance!;
   }
 
   factory BluetoothPrinterManager() => _getInstance();
@@ -42,11 +42,11 @@ class BluetoothPrinterManager extends PrinterManager {
   final List<int> ENABLE_NOTIFICATION_VALUE = [0x01, 0x00]; //启用Notification模式
   final List<int> DISABLE_NOTIFICATION_VALUE = [0x00, 0x00]; //停用Notification模式
   final List<int> ENABLE_INDICATION_VALUE = [0x02, 0x00]; //启用Indication模式
-  Guid SET_MODE_SERVICE_UUID; //设置模式-服务UUID
-  Guid SET_MODE_CHARACTERISTIC_UUID; //设置模式-特征值UUID
-  Guid SET_MODE_DESCRIPTOR_UUID; //设置模式-特征值描述UUID(固定不变)
-  Guid WRITE_DATA_SERVICE_UUID; //写数据-服务UUID
-  Guid WRITE_DATA_CHARACTERISTIC_UUID; //写数据-特征值UUID
+  Guid? SET_MODE_SERVICE_UUID; //设置模式-服务UUID
+  Guid? SET_MODE_CHARACTERISTIC_UUID; //设置模式-特征值UUID
+  Guid? SET_MODE_DESCRIPTOR_UUID; //设置模式-特征值描述UUID(固定不变)
+  Guid? WRITE_DATA_SERVICE_UUID; //写数据-服务UUID
+  Guid? WRITE_DATA_CHARACTERISTIC_UUID; //写数据-特征值UUID
 
   // 扫描设备
   @override
@@ -56,17 +56,17 @@ class BluetoothPrinterManager extends PrinterManager {
     _isScanning = true;
     FlutterBluePlus.scanResults.listen((results) {
       for (ScanResult item in results) {
-        if (_device != null && item.device.remoteId == _device.remoteId) {
+        if (_device != null && item.device.remoteId == _device!.remoteId) {
           // 自动连接
           stopScan();
-          connect(_printer);
+          connect(_printer!);
         }
-        if (item.device.localName != null && item.device.localName != '') {
+        if (item.device.localName != '') {
           scanStream.add(item);
         }
       }
     });
-    FlutterBluePlus?.startScan(timeout: Duration(seconds: timeout));
+    FlutterBluePlus.startScan(timeout: Duration(seconds: timeout));
     startTimer();
   }
 
@@ -100,26 +100,26 @@ class BluetoothPrinterManager extends PrinterManager {
 
   @override
   Future<ConnectionResponse> connect(POSPrinter printer,
-      {Duration timeout}) async {
+      {Duration? timeout}) async {
     if (isConnected) {
       return Future<ConnectionResponse>.value(ConnectionResponse.success);
     }
     _printer = printer;
     _device = printer.bluetoothDevice;
     isConnecting = true;
-    log("开始连接 >>>>>>name: ${_device.localName}");
-    await _device.connect(
+    log("开始连接 >>>>>>name: ${_device!.localName}");
+    await _device!.connect(
       timeout: Duration(milliseconds: SCAN_TIMEOUT),
       autoConnect: false,
     );
-    log("连接成功 >>>>>>name: ${_device.localName}");
-    _printer.connected = true;
-    _printer.connectionType = ConnectionType.bluetooth;
+    log("连接成功 >>>>>>name: ${_device!.localName}");
+    _printer!.connected = true;
+    _printer!.connectionType = ConnectionType.bluetooth;
     // 只有安卓有效
     if (Platform.isAndroid) {
-      await _requestMtu(_device); //设置MTU
+      await _requestMtu(_device!); //设置MTU
     }
-    _discoverServices(_device);
+    _discoverServices(_device!);
     // todo 最好可以全局保存
     this.isConnected = true;
     return Future<ConnectionResponse>.value(ConnectionResponse.success);
@@ -189,7 +189,7 @@ class BluetoothPrinterManager extends PrinterManager {
     log("4.2.设置为通知模式 >>>>>>name: ${device.localName}");
     await cItem.setNotifyValue(true); //为指定特征的值设置通知
     cItem.lastValueStream.listen((value) {
-      if (value == null || value.isEmpty) return;
+      if (value.isEmpty) return;
       log("接收数据 >>>>>>name: ${device.localName}  value: $value");
     });
     var descriptors = cItem.descriptors;
@@ -204,9 +204,9 @@ class BluetoothPrinterManager extends PrinterManager {
   }
 
   @override
-  Future<ConnectionResponse> disconnect({Duration timeout}) async {
-    log("断开连接 >>>>>>name: ${_device.localName}");
-    _device.disconnect(); //关闭连接
+  Future<ConnectionResponse> disconnect({Duration? timeout}) async {
+    log("断开连接 >>>>>>name: ${_device!.localName}");
+    _device!.disconnect(); //关闭连接
     _printer = null;
     this.isConnected = false;
     return ConnectionResponse.success;
@@ -215,12 +215,12 @@ class BluetoothPrinterManager extends PrinterManager {
   @override
   Future<ConnectionResponse> write(List<int> data,
       {bool isDisconnect = true}) async {
-    log("发送指令给设备 >>>>>> ${_writeCharacteristic.uuid} data: $data");
+    log("发送指令给设备 >>>>>> ${_writeCharacteristic!.uuid} data: $data");
     if (!this.isConnected) {
-      await connect(_printer);
+      await connect(_printer!);
     }
     // // 可能需要切片
-    int mtu = await _device.mtu.first;
+    int mtu = await _device!.mtu.first;
     // var buffer = new WriteBuffer();
     // int bytes = data.length;
     // int pos = 0;
@@ -259,11 +259,11 @@ class BluetoothPrinterManager extends PrinterManager {
     if (data.length > chunk) {
       for (int i = 0; i < data.length; i += chunk) {
         List<int> subvalue = data.sublist(i, math.min(i + chunk, data.length));
-        _writeCharacteristic.write(subvalue,
-            withoutResponse: false, timeout: 2000);
+        _writeCharacteristic!
+            .write(subvalue, withoutResponse: false, timeout: 2000);
       }
     } else {
-      _writeCharacteristic.write(data);
+      _writeCharacteristic!.write(data);
     }
 
     return ConnectionResponse.success;

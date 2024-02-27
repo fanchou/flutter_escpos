@@ -8,12 +8,11 @@ import 'package:esc_pos_utils/esc_pos_utils.dart';
 /// Description: print until
 
 class PrintScriptUtil {
-
   final PaperSize paperSize;
   final CapabilityProfile profile;
 
-  List<int> _bytes;
-  Generator _generator;
+  late List<int> _bytes;
+  late Generator _generator;
 
   PrintScriptUtil(this.paperSize, this.profile, {int spaceBetweenRows = 5}) {
     _bytes = [];
@@ -33,7 +32,7 @@ class PrintScriptUtil {
       {PosStyles styles = const PosStyles(),
       int linesAfter = 0,
       bool containsChinese = false,
-      int maxCharsPerLine}) {
+      int? maxCharsPerLine}) {
     _bytes += _generator.text(text,
         styles: styles,
         linesAfter: linesAfter,
@@ -47,7 +46,7 @@ class PrintScriptUtil {
     return this;
   }
 
-  PrintScriptUtil setGlobalFont(PosFontType font, {int maxCharsPerLine}) {
+  PrintScriptUtil setGlobalFont(PosFontType font, {int? maxCharsPerLine}) {
     _bytes += _generator.setGlobalFont(font, maxCharsPerLine: maxCharsPerLine);
     return this;
   }
@@ -77,7 +76,7 @@ class PrintScriptUtil {
     return this;
   }
 
-  PrintScriptUtil printCodeTable({String codeTable}) {
+  PrintScriptUtil printCodeTable({String? codeTable}) {
     _bytes += _generator.printCodeTable(codeTable: codeTable);
     return this;
   }
@@ -122,9 +121,9 @@ class PrintScriptUtil {
 
   PrintScriptUtil barcode(
     Barcode barcode, {
-    int width,
-    int height,
-    BarcodeFont font,
+    int? width,
+    int? height,
+    BarcodeFont? font,
     BarcodeText textPos = BarcodeText.below,
     PosAlign align = PosAlign.center,
   }) {
@@ -154,7 +153,7 @@ class PrintScriptUtil {
     return this;
   }
 
-  PrintScriptUtil hr({String ch = '-', int len, int linesAfter = 0}) {
+  PrintScriptUtil hr({String ch = '-', int? len, int linesAfter = 0}) {
     _bytes += _generator.hr(ch: ch, linesAfter: linesAfter);
     return this;
   }
@@ -163,7 +162,7 @@ class PrintScriptUtil {
     Uint8List textBytes, {
     PosStyles styles = const PosStyles(),
     int linesAfter = 0,
-    int maxCharsPerLine,
+    int? maxCharsPerLine,
   }) {
     _bytes += _generator.textEncoded(
       textBytes,

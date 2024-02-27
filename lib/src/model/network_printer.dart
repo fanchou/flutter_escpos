@@ -1,5 +1,4 @@
 import '../../flutter_escpos.dart';
-import '../enums/connection_type.dart';
 
 /// Copyright (C), 2019-2022, 深圳新语网络科技有限公司
 /// FileName: network_printer
@@ -9,12 +8,12 @@ import '../enums/connection_type.dart';
 
 class NetworkPrinter extends POSPrinter {
   NetworkPrinter({
-    String name,
-    String address,
-    int port,
-    bool connected: false,
-    int type: 1,
-    ConnectionType connectionType,
+    String? name,
+    required String address,
+    int? port,
+    bool connected = false,
+    int type = 1,
+    ConnectionType? connectionType,
   }) {
     this.name = name;
     this.address = address;

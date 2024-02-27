@@ -52,7 +52,7 @@ class TextStyles {
   final bool inverse;
 
   // 使用统一的字体
-  final FontFamily fontType;
+  final FontFamily? fontType;
 }
 
 // 对齐方式

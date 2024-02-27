@@ -23,18 +23,18 @@ class CPCLAdapter implements LabelInterFace {
   String endTag = 'FORM\r\nPRINT\r\n';
 
   @override
-  int ratio;
+  late int ratio;
 
   @override
   String startTag = '';
 
   @override
-  CommandType type;
+  late CommandType type;
 
   @override
   Future<void> bLine(int startX, int startY, int endX, int endY,
       {int thickness = 1, String color = 'B'}) async {
-    String message;
+    String message = '';
     if (color == 'B') {
       message =
           'LINE ${startX * ratio} ${startY * ratio} ${endX * ratio} ${endY * ratio} $thickness\r\n';
@@ -161,7 +161,7 @@ class CPCLAdapter implements LabelInterFace {
       int scale = 6,
       String quality = 'Q',
       int mask = 7}) async {
-    String message;
+    String message = '';
     commandString += 'B QR ${x * ratio} ${y * ratio} M $model U $scale\r\n' +
         '$quality $mask MA,$content\r\nENDQR\r\n';
     commandString += message;
@@ -170,10 +170,10 @@ class CPCLAdapter implements LabelInterFace {
 
   @override
   Future<void> setup(num width, num height, int pRatio,
-      {int gap,
+      {int? gap,
       int density = 0,
       int speed = 3,
-      Offset origin,
+      Offset? origin,
       int copy = 1}) async {
     int DPI = 203;
     String message;
@@ -195,11 +195,11 @@ class CPCLAdapter implements LabelInterFace {
   }
 
   @override
-  Future<void> text(int x, int y, String text, {TextStyles style}) async {
+  Future<void> text(int x, int y, String text, {TextStyles? style}) async {
     String turnChar;
     String message;
     // 旋转方向
-    switch (style.turn) {
+    switch (style!.turn) {
       case Turn.turn270:
         if (!style.inverse) {
           turnChar = 'TEXT270';
@@ -230,7 +230,7 @@ class CPCLAdapter implements LabelInterFace {
         break;
     }
 
-    String fontFamily;
+    String fontFamily = '88';
     int scaleX = style.scaleX;
     int scaleY = style.scaleY;
 

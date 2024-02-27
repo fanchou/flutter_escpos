@@ -23,15 +23,15 @@ class TSCAdapter implements LabelInterFace {
   String endTag = 'PRINT ';
 
   @override
-  int ratio;
+  late int ratio;
 
   @override
-  String startTag;
+  late String startTag;
 
   @override
-  CommandType type;
+  late CommandType type;
 
-  int copyPage;
+  late int copyPage;
 
   @override
   Future<void> bLine(int startX, int startY, int endX, int endY,
@@ -212,8 +212,8 @@ class TSCAdapter implements LabelInterFace {
   Future<void> setup(num width, num height, int pRatio,
       {int gap = 3,
       int density = 8,
-      int speed,
-      Offset origin,
+      int? speed,
+      Offset? origin,
       int copy = 1}) async {
     ratio = pRatio;
     String message;
@@ -235,9 +235,9 @@ class TSCAdapter implements LabelInterFace {
   }
 
   @override
-  Future<void> text(int x, int y, String text, {TextStyles style}) async {
+  Future<void> text(int x, int y, String text, {TextStyles? style}) async {
     String turnStr;
-    switch (style.turn) {
+    switch (style!.turn) {
       case Turn.turn0:
         turnStr = '0';
         break;
@@ -252,8 +252,8 @@ class TSCAdapter implements LabelInterFace {
         break;
     }
 
-    String fontFamily;
-    int scaleX = style.scaleX;
+    String fontFamily = 'TSS24.BF2';
+    int scaleX = style!.scaleX;
     int scaleY = style.scaleY;
 
     switch (style.fontType) {

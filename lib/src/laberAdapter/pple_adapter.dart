@@ -23,7 +23,7 @@ class PPLEAdapter implements LabelInterFace {
   String endTag = 'W1';
 
   @override
-  int ratio;
+  late int ratio;
 
   @override
   String startTag = 'I8,G,001\r\nN\r\n';
@@ -31,7 +31,7 @@ class PPLEAdapter implements LabelInterFace {
   @override
   CommandType type = CommandType.PPLE;
 
-  int copyPage;
+  late int copyPage;
 
   @override
   Future<void> bLine(int startX, int startY, int endX, int endY,
@@ -175,8 +175,8 @@ class PPLEAdapter implements LabelInterFace {
   @override
   Future<void> setup(num width, num height, int pRatio,
       {int gap = 3,
-      int density,
-      int speed,
+      int? density,
+      int? speed,
       Offset origin = const Offset(0, 0),
       int copy = 1}) async {
     ratio = pRatio; // 全部保存，计算是需要用到
@@ -191,11 +191,11 @@ class PPLEAdapter implements LabelInterFace {
   }
 
   @override
-  Future<void> text(int x, int y, String text, {TextStyles style}) async {
+  Future<void> text(int x, int y, String text, {TextStyles? style}) async {
     String turnChar;
 
     // 旋转方向
-    switch (style.turn) {
+    switch (style!.turn) {
       case Turn.turn270:
         turnChar = '3';
         break;
@@ -210,7 +210,7 @@ class PPLEAdapter implements LabelInterFace {
         break;
     }
 
-    String fontFamily;
+    String fontFamily = '7';
     int scaleX = style.scaleX;
     int scaleY = style.scaleY;
 

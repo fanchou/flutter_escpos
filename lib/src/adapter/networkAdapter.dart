@@ -8,13 +8,12 @@ import 'dart:typed_data';
 /// Date: 2021/9/17 10:51
 /// Description: Network adapter
 
-class NetworkAdapter{
-
+class NetworkAdapter {
   factory NetworkAdapter() => _getInstance();
   static NetworkAdapter get instance => _getInstance();
-  static NetworkAdapter _instance;
+  static NetworkAdapter? _instance;
 
-  static RawSocket device;
+  static RawSocket? device;
 
   NetworkAdapter._internal();
 
@@ -22,21 +21,20 @@ class NetworkAdapter{
     if (_instance == null) {
       _instance = NetworkAdapter._internal();
     }
-    return _instance;
+    return _instance!;
   }
 
-
-  static Future<void> connect(String address, {int port = 9100}) async{
-    try{
-      device = await RawSocket.connect(address, port, timeout: const Duration(seconds: 5));
+  static Future<void> connect(String address, {int port = 9100}) async {
+    try {
+      device = await RawSocket.connect(address, port,
+          timeout: const Duration(seconds: 5));
       // device = await Socket.connect(address, port, timeout:  const Duration(seconds: 5));
-    }catch(e){
+    } catch (e) {
       print("报错了" + e.toString());
     }
   }
 
   Future<void> write(List<int> data) async {
-
     Uint8List bytes = Uint8List.fromList(data);
 
     // await device.write(data);
@@ -47,33 +45,29 @@ class NetworkAdapter{
 
     print("打印内容的长度" + bufferLength.toString());
 
-    if(bufferLength > sliceSize){
+    if (bufferLength > sliceSize) {
       int round = (bufferLength / sliceSize).ceil();
-      for(int i = 0; i < round; i++){
+      for (int i = 0; i < round; i++) {
         int fromIndex = i * sliceSize;
-        if((i+1) * sliceSize <= bufferLength){
-          device.write(bytes, fromIndex, sliceSize);
-        }else{
-          device.write(bytes, fromIndex);
+        if ((i + 1) * sliceSize <= bufferLength) {
+          device!.write(bytes, fromIndex, sliceSize);
+        } else {
+          device!.write(bytes, fromIndex);
         }
       }
-    }else{
-      device.write(bytes);
+    } else {
+      device!.write(bytes);
     }
-
-
   }
 
-  Future<void> read(Function callback) async{
-    device.listen((event) {
+  Future<void> read(Function callback) async {
+    device!.listen((event) {
       callback(event);
     });
   }
 
   static Future<void> disconnect() async {
-    await device.close();
+    await device!.close();
     // device.destroy();
   }
-
 }
-

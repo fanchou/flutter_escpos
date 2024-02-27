@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -25,7 +24,7 @@ class PPLEPrinter {
   // todo 如果记录一个高度值，是否更加方便计算？？？
 
   // 点密度
-  int ratio;
+  late int ratio;
 
   /**
    * 打印机初始化
@@ -86,7 +85,7 @@ class PPLEPrinter {
     int x,
     int y,
     String text, {
-    TextStyles style,
+    TextStyles? style,
   }) async {
     if (style == null) {
       style = TextStyles();

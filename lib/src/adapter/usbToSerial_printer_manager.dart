@@ -13,12 +13,12 @@ import 'package:usb_serial/usb_serial.dart';
 /// Description: USB转串口，只适用于Android、Windows
 
 class UsbToSerialPrinterManager extends PrinterManager {
-  static UsbPort _port;
-  static UsbDevice _device;
-  static POSPrinter _printer;
+  static UsbPort? _port;
+  static UsbDevice? _device;
+  static POSPrinter? _printer;
 
   static UsbToSerialPrinterManager get instance => _getInstance();
-  static UsbToSerialPrinterManager _instance;
+  static UsbToSerialPrinterManager? _instance;
 
   UsbToSerialPrinterManager._internal();
 
@@ -26,24 +26,24 @@ class UsbToSerialPrinterManager extends PrinterManager {
     if (_instance == null) {
       _instance = UsbToSerialPrinterManager._internal();
     }
-    return _instance;
+    return _instance!;
   }
 
   factory UsbToSerialPrinterManager() => _getInstance();
 
   @override
   Future<ConnectionResponse> connect(POSPrinter printer,
-      {Duration timeout}) async {
+      {Duration? timeout}) async {
     _printer = printer;
     _device = printer.usbDevice;
-    _port = await _device.create();
+    _port = await _device!.create();
     if (_port == null) {
       log('创建设备失败~');
       return ConnectionResponse.unknown;
     }
 
     log('创建设备成功~');
-    bool openResult = await _port.open();
+    bool openResult = await _port!.open();
     if (!openResult) {
       log('打开设备失败~');
       return ConnectionResponse.unknown;
@@ -57,16 +57,16 @@ class UsbToSerialPrinterManager extends PrinterManager {
 
   // 设置串口参数
   Future<void> setPortParameters(int baudRate) async {
-    await _port.setDTR(true);
-    await _port.setRTS(true);
-    await _port.setPortParameters(
+    await _port!.setDTR(true);
+    await _port!.setRTS(true);
+    await _port!.setPortParameters(
         baudRate, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
     log('参数设置成功~');
   }
 
   @override
-  Future<ConnectionResponse> disconnect({Duration timeout}) async {
-    await _port.close();
+  Future<ConnectionResponse> disconnect({Duration? timeout}) async {
+    await _port!.close();
     isConnected = false;
     return ConnectionResponse.success;
   }
@@ -89,10 +89,10 @@ class UsbToSerialPrinterManager extends PrinterManager {
   Future<ConnectionResponse> write(List<int> data,
       {bool isDisconnect = true}) async {
     if (!this.isConnected) {
-      await connect(_printer);
+      await connect(_printer!);
     }
     Uint8List bytes = Uint8List.fromList(data);
-    _port.write(bytes);
+    await _port!.write(bytes);
     return ConnectionResponse.success;
   }
 }

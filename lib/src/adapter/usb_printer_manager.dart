@@ -16,11 +16,11 @@ import '../model/usb_printer.dart';
 /// Description:
 
 class USBPrinterManager extends PrinterManager {
-  static UsbEndpoint _endpoint;
-  POSPrinter _printer;
+  static UsbEndpoint? _endpoint;
+  POSPrinter? _printer;
 
   static USBPrinterManager get instance => _getInstance();
-  static USBPrinterManager _instance;
+  static USBPrinterManager? _instance;
 
   USBPrinterManager._internal() {
     _init();
@@ -30,7 +30,7 @@ class USBPrinterManager extends PrinterManager {
     if (_instance == null) {
       _instance = USBPrinterManager._internal();
     }
-    return _instance;
+    return _instance!;
   }
 
   factory USBPrinterManager() => _getInstance();
@@ -53,7 +53,7 @@ class USBPrinterManager extends PrinterManager {
 
   @override
   Future<ConnectionResponse> connect(POSPrinter printer,
-      {Duration timeout: const Duration(seconds: 5)}) async {
+      {Duration timeout = const Duration(seconds: 5)}) async {
     _printer = printer;
     if (Platform.isWindows) {
       // try {
@@ -76,6 +76,7 @@ class USBPrinterManager extends PrinterManager {
       //   this.isConnected = false;
       //   return Future<ConnectionResponse>.value(ConnectionResponse.timeout);
       // }
+      return Future<ConnectionResponse>.value(ConnectionResponse.success);
     } else {
       bool openDevice = false;
       try {
@@ -145,17 +146,17 @@ class USBPrinterManager extends PrinterManager {
 
   /// getDevicesWithDescription
   static Future<List<UsbDeviceDescription>> getDevicesWithDescription() async {
-    List<UsbDeviceDescription> _usbList;
+    List<UsbDeviceDescription>? _usbList;
     try {
       _usbList = await QuickUsb.getDevicesWithDescription();
     } catch (e) {
       print("getDevicesWithDescription error: + $e");
     }
-    return _usbList;
+    return _usbList!;
   }
 
   @override
-  Future<ConnectionResponse> disconnect({Duration timeout}) async {
+  Future<ConnectionResponse> disconnect({Duration? timeout}) async {
     if (Platform.isWindows) {
       this.isConnected = false;
       if (timeout != null) {
@@ -177,9 +178,9 @@ class USBPrinterManager extends PrinterManager {
   Future<ConnectionResponse> write(List<int> data,
       {bool isDisconnect = true}) async {
     if (Platform.isWindows) {
-      int hPrinter;
-      int dwCount;
-      int dwJob;
+      int? hPrinter;
+      int? dwCount;
+      int? dwJob;
       final phPrinter = calloc<HANDLE>();
       final pDocName = 'My Document'.toNativeUtf16();
       final pDataType = 'RAW'.toNativeUtf16();
@@ -189,7 +190,7 @@ class USBPrinterManager extends PrinterManager {
         ..ref.pOutputFile = nullptr
         ..ref.pDatatype = pDataType;
 
-      final szPrinterName = _printer.name.toNativeUtf16();
+      final szPrinterName = _printer!.name!.toNativeUtf16();
       final lpData = data.toUint8();
 
       try {
@@ -204,7 +205,7 @@ class USBPrinterManager extends PrinterManager {
         }
 
         // Inform the spooler the document is beginning.
-        dwJob = StartDocPrinter(hPrinter, 1, docInfo);
+        dwJob = StartDocPrinter(hPrinter!, 1, docInfo);
         if (dwJob == 0) {
           ClosePrinter(hPrinter);
           return ConnectionResponse.printInProgress;
@@ -254,14 +255,16 @@ class USBPrinterManager extends PrinterManager {
         free(docInfo);
         free(szPrinterName);
         free(lpData);
+        return ConnectionResponse.success;
       }
     } else {
       if (!this.isConnected) {
-        await connect(_printer);
+        await connect(_printer!);
       }
 
-      await QuickUsb.bulkTransferOut(_endpoint, Uint8List.fromList(data),
+      await QuickUsb.bulkTransferOut(_endpoint!, Uint8List.fromList(data),
           timeout: 6000);
+      return ConnectionResponse.success;
     }
   }
 }

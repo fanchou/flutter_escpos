@@ -70,7 +70,7 @@ class LabelPrinter<T extends LabelInterFace> {
     int x,
     int y,
     String text, {
-    TextStyles style,
+    required TextStyles style,
   }) async {
     instance.text(x, y, text, style: style);
   }

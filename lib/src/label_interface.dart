@@ -19,16 +19,16 @@ abstract class LabelInterFace {
   String commandString = '';
 
   // 开始标识
-  String startTag;
+  late String startTag;
 
   // 结束标识
-  String endTag;
+  late String endTag;
 
   // 打印机分辨率
-  int ratio;
+  late int ratio;
 
   // 指令集类型
-  CommandType type;
+  late CommandType type;
 
   /** 初始化打印机
    * @param width     纸张宽度、单位mm

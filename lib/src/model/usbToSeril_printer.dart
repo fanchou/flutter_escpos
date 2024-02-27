@@ -9,16 +9,16 @@ import 'package:usb_serial/usb_serial.dart';
 
 class UsbToSerialPrinter extends POSPrinter {
   UsbToSerialPrinter({
-    String id,
-    String name,
-    String address,
-    int deviceId,
-    int vendorId,
-    int productId,
+    String? id,
+    String? name,
+    String? address,
+    int? deviceId,
+    int? vendorId,
+    int? productId,
     bool connected = false,
     int type = 6,
-    UsbDevice usbDevice,
-    ConnectionType connectionType,
+    UsbDevice? usbDevice,
+    ConnectionType? connectionType,
   }) {
     this.id = id;
     this.name = name;

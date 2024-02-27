@@ -2,12 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui';
-import 'package:flutter_escpos/src/laberAdapter/pple_adapter.dart';
 import 'package:hex/hex.dart';
 
 import 'enums/label_enums.dart';
-import 'labelprinter.dart';
-import 'laberAdapter/cpcl_adapter.dart';
 import 'textStyle.dart';
 
 /// Copyright (C), 2019-2023, 深圳新语网络科技有限公司
@@ -28,7 +25,7 @@ class ZPLPrinter {
   // todo 如果记录一个高度值，是否更加方便计算？？？
 
   // 点密度
-  int ratio;
+  late int ratio;
 
   /**
    * 打印机初始化
@@ -85,7 +82,7 @@ class ZPLPrinter {
     int x,
     int y,
     String text, {
-    TextStyles style,
+    TextStyles? style,
   }) async {
     if (style == null) {
       style = TextStyles();

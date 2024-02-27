@@ -10,7 +10,7 @@ import 'package:fast_gbk/fast_gbk.dart';
 /// Description: tsc commands
 
 class TscPrinter {
-  List<int> _bytes;
+  late List<int> _bytes;
   List<int> get bytes => _bytes;
 
   /**

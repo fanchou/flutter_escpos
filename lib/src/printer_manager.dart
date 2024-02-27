@@ -10,17 +10,17 @@ import 'model/pos_printer.dart';
 /// Description:
 
 abstract class PrinterManager {
-  PaperSize paperSize;
-  CapabilityProfile profile;
-  Generator generator;
+  PaperSize? paperSize;
+  CapabilityProfile? profile;
+  Generator? generator;
   bool isConnected = false;
-  String address;
-  int vendorId;
-  int productId;
-  int deviceId;
+  String? address;
+  int? vendorId;
+  int? productId;
+  int? deviceId;
   int port = 9100;
   int spaceBetweenRows = 5;
-  POSPrinter printer;
+  POSPrinter? printer;
 
   Future<ConnectionResponse> connect(POSPrinter printer, {Duration timeout});
 
