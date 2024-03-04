@@ -1,6 +1,6 @@
 name: flutter_escpos
 description: ESC/POS printer for flutter
-version: 0.4.2
+version: 0.4.3
 homepage:
 
 environment:
@@ -16,6 +16,7 @@ dependencies:
   esc_pos_utils:
     git:
       url: https://github.com/fanchou/esc_pos_utils.git
+      ref: dart3
   quick_usb: 0.3.1
   flutter_blue_plus:
     git:
