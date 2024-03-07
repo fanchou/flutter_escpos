@@ -35,7 +35,7 @@ dependencies:
       ref: dart3
   quick_usb:
     git: https://github.com/fanchou/quick.flutter
-    path: /packages/quick_usb
+    path: packages/quick_usb
   flutter_escpos:
     path: ../
 
