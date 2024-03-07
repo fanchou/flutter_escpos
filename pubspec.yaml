@@ -18,8 +18,9 @@ dependencies:
       url: https://github.com/fanchou/esc_pos_utils.git
       ref: dart3
   quick_usb:
-    git: https://github.com/fanchou/quick.flutter
-    path: packages/quick_usb
+    git:
+      url: https://github.com/fanchou/quick.flutter
+      path: packages/quick_usb
   flutter_blue_plus:
     git:
       url: https://github.com/fanchou/flutter_blue_plus
