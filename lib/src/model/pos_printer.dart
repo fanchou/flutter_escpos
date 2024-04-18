@@ -1,5 +1,6 @@
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:usb_serial/usb_serial.dart';
+import 'package:quick_usb/quick_usb.dart';
+// import 'package:usb_serial/usb_serial.dart';
 import '../enums/connection_type.dart';
 
 /// Copyright (C), 2019-2022, 深圳新语网络科技有限公司

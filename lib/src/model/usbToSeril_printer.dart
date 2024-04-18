@@ -1,5 +1,7 @@
+import 'package:quick_usb/quick_usb.dart';
+
 import '../../flutter_escpos.dart';
-import 'package:usb_serial/usb_serial.dart';
+// import 'package:usb_serial/usb_serial.dart';
 
 /// Copyright (C), 2019-2023, 深圳新语网络科技有限公司
 /// FileName: usbToSeril_printer
