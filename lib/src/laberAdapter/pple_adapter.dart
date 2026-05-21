@@ -210,23 +210,23 @@ class PPLEAdapter implements LabelInterFace {
         break;
     }
 
-    String fontFamily = '6';
+    String fontFamily = '7';
     int scaleX = style.scaleX;
     int scaleY = style.scaleY;
 
     switch (style.fontType) {
       case FontFamily.ZH16:
-        fontFamily = '6';
+        fontFamily = '7';
         scaleX = scaleX ~/ 16;
         scaleY = scaleY ~/ 16;
         break;
       case FontFamily.ZH24:
-        fontFamily = '6';
+        fontFamily = '7';
         scaleX = scaleX ~/ 24;
         scaleY = scaleX ~/ 24;
         break;
       case FontFamily.VZH:
-        fontFamily = '6';
+        fontFamily = '7';
         break;
       case FontFamily.ENG12:
         fontFamily = '1';
